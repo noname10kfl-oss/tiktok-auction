@@ -1,0 +1,394 @@
+
+/* ═══════════════════════════════════════════════════════════
+   FIRE AUCTION — Premium Theme
+   ═══════════════════════════════════════════════════════════ */
+
+/* Biến màu */
+:root {
+  --c1: #ff5500;
+  --c2: #ffcc00;
+  --c3: #ff2200;
+  --c4: #ff8800;
+  --c5: #aa2200;
+  --c-bg: #3d0a00;
+}
+
+/* ─── Main wrapper — Glass + multi-glow ─── */
+.wrap {
+  background:
+    /* Lớp radial glow */
+    radial-gradient(circle at 15% 15%,
+      rgba(255,85,0,0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%,
+      rgba(255,136,0,0.15) 0%, transparent 45%),
+    /* Nền chính */
+    linear-gradient(160deg,
+      rgba(60,5,0,0.92) 0%,
+      rgba(120,20,0,0.92) 50%,
+      rgba(40,0,0,0.92) 100%);
+
+  border: 1px solid rgba(255,85,0,0.4);
+
+  box-shadow:
+    /* Bóng ngoài */
+    0 30px 100px rgba(0, 0, 0, 0.7),
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    /* Glow nhiều màu */
+    0 0 80px rgba(255,85,0,0.35),
+    0 0 160px rgba(255,136,0,0.25),
+    0 0 240px rgba(170,34,0,0.15),
+    /* Viền trong sáng */
+    inset 0 0 0 1px rgba(255,85,0,0.2),
+    inset 0 1px 0 rgba(255,204,0,0.3),
+    /* Chiều sâu trong */
+    inset 0 -40px 80px rgba(0, 0, 0, 0.4);
+
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* ─── Viền conic gradient xoay ─── */
+.wrap::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 28px;
+  padding: 2px;
+  background: conic-gradient(from 0deg,
+    #ff5500, #ffcc00, #ff2200, #ff8800, #aa2200, #ff5500);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderRotate 4s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.9;
+}
+
+@keyframes borderRotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ─── Top deco ─── */
+.top-deco {
+  background: linear-gradient(90deg,
+    rgba(255,85,0,0.15), rgba(255,204,0,0.15), rgba(255,136,0,0.15));
+  border: 1px solid rgba(255,85,0,0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,204,0,0.25),
+    0 0 20px rgba(255,85,0,0.25);
+}
+
+.deco-text {
+  background: linear-gradient(135deg, #ff5500, #ffcc00, #ff2200, #ff5500);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: decoTextShift 2s ease infinite;
+  filter: drop-shadow(0 0 10px rgba(255,85,0,0.8));
+}
+
+@keyframes decoTextShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Logo + Title ─── */
+.logo {
+  filter:
+    drop-shadow(0 0 12px #ff5500)
+    drop-shadow(0 0 30px rgba(255,85,0,0.6));
+}
+
+.title {
+  background: linear-gradient(135deg, #ff5500, #ffcc00, #ff2200, #ff5500);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShift 3s ease infinite;
+  filter: drop-shadow(0 0 12px rgba(255,85,0,0.8));
+}
+
+@keyframes titleShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Snap badge ─── */
+.snap-badge {
+  background: linear-gradient(90deg, #ff2200, #ff5500, #ff2200);
+  background-size: 200% 100%;
+  color: #fff;
+  box-shadow:
+    0 0 20px #ff5500,
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  animation: snapShift 1s ease infinite,
+             snapPulse 0.6s ease infinite alternate;
+}
+
+@keyframes snapShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes snapPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+/* ─── Timer ─── */
+.timer {
+  background: linear-gradient(135deg, rgba(255,85,0,0.3), rgba(255,136,0,0.3));
+  border: 1px solid rgba(255,85,0,0.5);
+  color: #fff;
+  text-shadow: 0 0 12px #ff5500;
+  box-shadow:
+    0 0 30px rgba(255,85,0,0.4),
+    inset 0 1px 0 rgba(255,204,0,0.3);
+}
+
+.timer.warn {
+  background: linear-gradient(135deg, #ff0033, #ff5500);
+  border-color: #ffcc00;
+  animation: timerWarn 0.6s infinite;
+}
+
+@keyframes timerWarn {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 30px #ff0033; }
+  50% { transform: scale(1.08); box-shadow: 0 0 60px #ff5500; }
+}
+
+/* ─── Marquee ─── */
+.marquee {
+  background: linear-gradient(90deg, rgba(255,85,0,0.1), rgba(255,136,0,0.1));
+  border: 1px solid rgba(255,85,0,0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255,85,0,0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.marquee::before {
+  background: linear-gradient(90deg, #3d0a00 0%, transparent 100%);
+}
+
+.marquee::after {
+  background: linear-gradient(270deg, #3d0a00 0%, transparent 100%);
+}
+
+.marquee-track span {
+  color: #ffcc00;
+  filter: drop-shadow(0 0 8px #ff5500);
+}
+
+/* ─── Row ─── */
+.row {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255,85,0,0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255,85,0,0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.row.rank-1 {
+  background: linear-gradient(135deg,
+    rgba(255,85,0,0.4) 0%,
+    rgba(255,34,0,0.15) 100%);
+  border: 2px solid rgba(255,85,0,0.7);
+  box-shadow:
+    0 0 40px rgba(255,85,0,0.6),
+    0 0 80px rgba(255,85,0,0.3),
+    inset 0 1px 0 rgba(255,204,0,0.4),
+    inset 0 -20px 40px rgba(255,34,0,0.2);
+}
+
+.row.rank-2 {
+  background: linear-gradient(135deg,
+    rgba(220, 220, 240, 0.25) 0%,
+    rgba(150, 150, 180, 0.08) 100%);
+  border: 1px solid rgba(220, 220, 240, 0.6);
+  box-shadow:
+    0 0 30px rgba(200, 200, 220, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.row.rank-3 {
+  background: linear-gradient(135deg,
+    rgba(205, 127, 50, 0.3) 0%,
+    rgba(140, 80, 20, 0.08) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.7);
+  box-shadow:
+    0 0 30px rgba(205, 127, 50, 0.4),
+    inset 0 1px 0 rgba(255, 200, 150, 0.3);
+}
+
+.medal {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+.row.rank-1 .medal {
+  filter:
+    drop-shadow(0 0 12px #ff5500)
+    drop-shadow(0 0 24px rgba(255,85,0,0.6));
+  animation: medalBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes medalBounce {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.08) rotate(3deg); }
+}
+
+.user {
+  color: #fff;
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(255,85,0,0.4);
+}
+
+.row.rank-1 .user {
+  color: #fff8d0;
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(255,85,0,0.9);
+}
+
+.score {
+  color: #00ff88;
+  text-shadow:
+    0 0 12px rgba(0, 255, 136, 0.8),
+    0 0 24px rgba(0, 255, 136, 0.4);
+}
+
+.row.rank-1 .score {
+  color: #ffcc00;
+  text-shadow:
+    0 0 16px #ff5500,
+    0 0 32px rgba(255,85,0,0.7);
+}
+
+.empty {
+  color: rgba(255,85,0,0.6);
+  text-shadow: 0 0 10px rgba(255,85,0,0.4);
+}
+
+/* ─── Tie overlay ─── */
+.tie-overlay::before {
+  background: radial-gradient(circle at center,
+    rgba(120,20,0,0.92) 0%,
+    rgba(0, 0, 0, 0.98) 100%);
+}
+
+.tie-card {
+  border: 2px solid rgba(255,85,0,0.6);
+  color: #ff5500;
+  box-shadow:
+    0 0 60px #ff5500,
+    inset 0 1px 0 rgba(255,204,0,0.3),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.tie-title {
+  background: linear-gradient(135deg, #ff5500, #ffcc00, #ff2200, #ff5500);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: decoTextShift 2s ease infinite;
+  filter: drop-shadow(0 0 20px rgba(255,85,0,0.9));
+}
+
+.tie-vs {
+  color: #ff2200;
+  text-shadow:
+    0 0 20px #ff2200,
+    0 0 40px #ff2200;
+}
+
+.tie-score {
+  color: #ff5500;
+  text-shadow: 0 0 12px #ff5500;
+}
+
+.tie-footer {
+  background: linear-gradient(90deg, #ff2200, #aa2200, #ff2200);
+  background-size: 200% 100%;
+  color: #fff;
+  animation: snapShift 1.5s ease infinite;
+}
+
+/* ─── Winner ─── */
+.winner-overlay::before {
+  background: radial-gradient(circle at center,
+    rgba(120,20,0,0.92) 0%,
+    rgba(0, 0, 0, 0.98) 100%);
+}
+
+.wo-card {
+  border: 2px solid rgba(255,85,0,0.7);
+  color: #ff5500;
+  box-shadow:
+    0 0 80px #ff5500,
+    inset 0 1px 0 rgba(255,204,0,0.3),
+    0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.wo-label {
+  color: #ff5500;
+  text-shadow: 0 0 20px #ff5500;
+}
+
+.wo-name {
+  background: linear-gradient(135deg, #fff, #ff5500, #ff2200, #ff5500);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: decoTextShift 2s ease infinite;
+  filter: drop-shadow(0 0 20px rgba(255,85,0,0.9));
+}
+
+/* ─── Decorations ─── */
+@keyframes batFly {
+  0% { transform: translateX(0) translateY(0) rotate(0); }
+  25% { transform: translateY(-25px) rotate(-15deg); }
+  50% { transform: translateX(50vw) translateY(20px) rotate(15deg); }
+  75% { transform: translateY(-15px) rotate(-15deg); }
+  100% { transform: translateX(110vw) translateY(0) rotate(0); }
+}
+
+@keyframes pumpkinPulse {
+  0%, 100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+}
+
+@keyframes ghostFloat {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+  50% { transform: translateY(-30px) translateX(15px); opacity: 0.9; }
+}
+
+@keyframes snowFall {
+  0% { transform: translateY(0) rotate(0); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+@keyframes treeShake {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes giftBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}

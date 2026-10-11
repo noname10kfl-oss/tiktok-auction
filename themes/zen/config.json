@@ -1,0 +1,51 @@
+{
+  "title": "ZEN AUCTION",
+  "logo": "☯",
+  "deco_text": "PEACE & ZEN",
+  "deco_left": "☯",
+  "deco_right": "🎋",
+  "winner_hat": "☯",
+  "marquee": [
+    "☯ Peace & Zen",
+    "🎋 Bamboo",
+    "🍵 Tea Time",
+    "🧘 Meditation",
+    "🌸 Inner Peace"
+  ],
+  "particles": [
+    "#88aa66",
+    "#aacc88",
+    "#ccddaa",
+    "#88ccaa"
+  ],
+  "decorations": [
+    {
+      "class": "yin",
+      "emoji": "☯",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "bamboo",
+      "emoji": "🎋",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "tea",
+      "emoji": "🍵",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "flower",
+      "emoji": "🌸",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

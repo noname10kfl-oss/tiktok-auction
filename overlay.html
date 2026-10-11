@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Auction Widget</title>
+<link rel="stylesheet" href="/static/overlay.css?v=14">
+<link rel="stylesheet" id="themeCSS" href="/static/themes/halloween/theme.css?v=1">
+</head>
+<body>
+  <style>
+  /* Preview mode: nền tối + căn giữa */
+    body.preview-mode {
+      background: repeating-conic-gradient(#1a1a28 0 25%, #222230 0 50%) 50% / 30px 30px !important;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+  }
+    body.preview-mode .wrap {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+  }
+  </style>
+
+  <script>
+    // Detect preview mode
+    if (new URLSearchParams(location.search).get('preview') === '1') {
+      document.body.classList.add('preview-mode');
+    }
+  </script>
+  <div class="theme-decorations" id="themeDecorations"></div>
+
+  <div class="wrap">
+    <div class="top-deco">
+      <span class="deco-item" id="decoLeft">🎃</span>
+      <span class="deco-text" id="decoText">HALLOWEEN</span>
+      <span class="deco-item" id="decoRight">🎃</span>
+    </div>
+
+    <div class="header">
+      <div class="brand">
+        <span class="logo" id="themeLogo">🎃</span>
+        <span class="title" id="themeTitle">HALLOWEEN AUCTION</span>
+        <span class="snap-badge" id="snapBadge">⚡ SNAP</span>
+      </div>
+      <div class="timer" id="timer">--:--</div>
+    </div>
+
+    <div class="marquee">
+      <div class="marquee-track" id="marqueeTrack"></div>
+    </div>
+
+    <div class="ranking" id="ranking">
+      <div class="empty">Waiting for players...</div>
+    </div>
+
+    <div class="tie-overlay" id="tieOverlay">
+      <div class="tie-card">
+        <div class="tie-title">⚡ TIE! ⚡</div>
+        <div class="tie-players">
+          <div class="tie-player">
+            <div class="tie-avatar" id="tieAvatar1"></div>
+            <div class="tie-name" id="tieName1">—</div>
+            <div class="tie-score" id="tieScore1">0</div>
+          </div>
+          <div class="tie-vs">VS</div>
+          <div class="tie-player">
+            <div class="tie-avatar" id="tieAvatar2"></div>
+            <div class="tie-name" id="tieName2">—</div>
+            <div class="tie-score" id="tieScore2">0</div>
+          </div>
+        </div>
+        <div class="tie-footer">⚡ SNAP TIME INCOMING ⚡</div>
+      </div>
+    </div>
+
+    <div class="winner-overlay" id="winnerOverlay">
+      <div class="wo-card">
+        <div class="wo-hat" id="winnerHat">🎃</div>
+        <div class="wo-crown">👑</div>
+        <div class="wo-label">WINNER</div>
+        <div class="wo-name" id="woName">—</div>
+        <div class="wo-sparks">
+          <span>✨</span><span>⭐</span><span>✨</span><span>⭐</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+let ws;
+let reconnectTimer = null;
+let lastWinner = null;
+let winnerTimer = null;
+let lastSnapCount = 0;
+let tiePopupTimer = null;
+let botAvatars = [];
+let currentTheme = null;
+
+// ============================================================
+// THEME LOADING
+// ============================================================
+// ============================================================
+// THEME LOADING
+// ============================================================
+const DECO_ANIMATIONS = {
+  // Animation theo class decoration
+  "bat": "batFly 8s linear infinite",
+  "pumpkin": "pumpkinPulse 2s ease-in-out infinite",
+  "ghost": "ghostFloat 6s ease-in-out infinite",
+  "spider": "spiderDrop 3s ease-in-out infinite",
+  "snow": "snowFall 6s linear infinite",
+  "tree": "treeShake 2s ease-in-out infinite",
+  "gift": "giftBounce 1.5s ease-in-out infinite",
+  "bell": "bellRing 1s ease-in-out infinite",
+  "lantern": "lanternSwing 3s ease-in-out infinite",
+  "flower": "flowerSpin 4s linear infinite",
+  "envelope": "envelopePop 2s ease-in-out infinite",
+  "dragon": "dragonWiggle 3s ease-in-out infinite",
+  "heart": "heartBeat 1s ease-in-out infinite",
+  "rose": "roseSway 2.5s ease-in-out infinite",
+  "kiss": "kissFloat 2s ease-in-out infinite",
+  "ring": "ringSpin 3s linear infinite",
+  "pad": "padShake 0.5s ease-in-out infinite",
+  "target": "targetPulse 1.5s ease-in-out infinite",
+  "joystick": "joystickMove 1s ease-in-out infinite",
+  "trophy": "trophyBounce 1.5s ease-in-out infinite",
+  "bolt": "boltZap 1.5s ease-in-out infinite",
+  "star": "starTwinkle 2s ease-in-out infinite",
+  "city": "cityGlow 3s ease-in-out infinite",
+  "blossom": "blossomFall 5s linear infinite",
+  "blossom2": "blossomFall 7s linear infinite",
+  "leaf": "leafSway 3s ease-in-out infinite",
+  "temple": "templeGlow 2s ease-in-out infinite",
+  "fire": "fireFlicker 0.6s ease-in-out infinite",
+  "wave": "waveMove 3s ease-in-out infinite",
+  "fish": "fishSwim 4s ease-in-out infinite",
+  "shell": "shellRock 3s ease-in-out infinite",
+  "shark": "sharkSwim 5s ease-in-out infinite",
+  "deer": "deerJump 2s ease-in-out infinite",
+  "wolf": "wolfHowl 3s ease-in-out infinite",
+  "sun": "sunGlow 2s ease-in-out infinite",
+  "skyline": "skylinePulse 3s ease-in-out infinite",
+  "bridge": "bridgeGlow 2s ease-in-out infinite",
+  "moon": "moonGlow 3s ease-in-out infinite",
+  "sparkle": "sparkleTwinkle 1.5s ease-in-out infinite",
+  "galaxy": "galaxySpin 8s linear infinite",
+  "rocket": "rocketLaunch 3s ease-in-out infinite",
+  "planet": "planetSpin 10s linear infinite",
+  "comet": "cometFly 4s linear infinite",
+  "boom": "boomPop 1s ease-in-out infinite",
+  "volcano": "volcanoRumble 2s ease-in-out infinite",
+  "cube": "cubeSpin 3s linear infinite",
+  "snowman": "snowmanWobble 2s ease-in-out infinite",
+  "penguin": "penguinWaddle 1s ease-in-out infinite",
+  "crown": "crownGlow 1.5s ease-in-out infinite",
+  "money": "moneyRain 2s ease-in-out infinite",
+  "diamond": "diamondSparkle 1.2s ease-in-out infinite",
+  "blood": "bloodDrip 3s ease-in-out infinite",
+  "sword": "swordSwing 2s ease-in-out infinite",
+  "skull": "skullGlow 2s ease-in-out infinite",
+  "knife": "knifeSpin 3s linear infinite",
+  "battery": "batteryPulse 1s ease-in-out infinite",
+  "rabbit": "rabbitHop 1s ease-in-out infinite",
+  "pill": "pillSpin 2s linear infinite",
+  "tape": "tapeSpin 4s linear infinite",
+  "music": "musicFloat 2s ease-in-out infinite",
+  "radio": "radioWave 1.5s ease-in-out infinite",
+  "rainbow": "rainbowGlow 2s ease-in-out infinite",
+  "cloud": "cloudFloat 4s ease-in-out infinite",
+  "robot": "robotBeep 1s ease-in-out infinite",
+  "gear": "gearSpin 3s linear infinite",
+  "plug": "plugZap 1.5s ease-in-out infinite",
+  "globe": "globeSpin 5s linear infinite",
+  "bow": "bowSway 2s ease-in-out infinite",
+  "tulip": "tulipSway 2.5s ease-in-out infinite",
+  "unicorn": "unicornRun 2s ease-in-out infinite",
+  "palm": "palmSway 3s ease-in-out infinite",
+  "statue": "statueSpin 4s linear infinite",
+  "disc": "discSpin 3s linear infinite",
+  "train": "trainRun 3s ease-in-out infinite",
+  "clock": "clockTick 1s ease-in-out infinite",
+  "candle": "candleFlicker 0.8s ease-in-out infinite",
+  "coffin": "coffinShake 3s ease-in-out infinite",
+  "cocktail": "cocktailShake 1s ease-in-out infinite",
+  "parrot": "parrotBob 0.8s ease-in-out infinite",
+  "castle": "castleGlow 2s ease-in-out infinite",
+  "katana": "katanaSwing 2s ease-in-out infinite",
+  "pyramid": "pyramidGlow 3s ease-in-out infinite",
+  "camel": "camelWalk 3s ease-in-out infinite",
+  "eye": "eyeBlink 2s ease-in-out infinite",
+  "jar": "jarWobble 2s ease-in-out infinite",
+  "flag": "flagWave 1.5s ease-in-out infinite",
+  "anchor": "anchorSwing 3s ease-in-out infinite",
+  "ufo": "ufoHover 2s ease-in-out infinite",
+  "alien": "alienBeep 1s ease-in-out infinite",
+  "earth": "earthSpin 8s linear infinite",
+  "shooting": "shootingStar 3s linear infinite",
+  "film": "filmSpin 5s linear infinite",
+  "coffee": "coffeeSteam 2s ease-in-out infinite",
+  "tv": "tvFlicker 0.3s ease-in-out infinite",
+  "wrench": "wrenchTurn 2s ease-in-out infinite",
+  "yin": "yinSpin 6s linear infinite",
+  "bamboo": "bambooSway 3s ease-in-out infinite",
+  "tea": "teaSteam 2s ease-in-out infinite",
+  "honey": "honeyWobble 2s ease-in-out infinite",
+  "bee": "beeFly 2s ease-in-out infinite",
+  "dizzy": "dizzySpin 2s linear infinite",
+  "shopping": "shoppingBounce 1.5s ease-in-out infinite",
+};
+
+function getDecoAnimation(decoClass) {
+  return DECO_ANIMATIONS[decoClass] || "decoBob 2s ease-in-out infinite";
+}
+
+async function loadTheme(themeName, force = false) {
+  if (!themeName) return;
+  if (currentTheme === themeName && !force) {
+    return;
+  }
+
+  try {
+    console.log(`🎨 Loading theme: ${themeName}`);
+    const r = await fetch(`/static/themes/${themeName}/config.json?t=${Date.now()}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const config = await r.json();
+
+    currentTheme = themeName;
+
+    // Đổi CSS
+    const cssEl = document.getElementById('themeCSS');
+    cssEl.href = `/static/themes/${themeName}/theme.css?v=${Date.now()}`;
+
+    // Đổi title + logo
+    document.getElementById('themeLogo').textContent = config.logo || '🏆';
+    document.getElementById('themeTitle').textContent = config.title || 'AUCTION';
+    document.getElementById('decoText').textContent = config.deco_text || '';
+    document.getElementById('decoLeft').textContent = config.deco_left || '';
+    document.getElementById('decoRight').textContent = config.deco_right || '';
+    document.getElementById('winnerHat').textContent = config.winner_hat || '👑';
+
+    // Marquee
+    const marquee = config.marquee || [];
+    const track = document.getElementById('marqueeTrack');
+    const items = marquee.map(t => `<span>${t}</span>`).join('');
+    track.innerHTML = items + items;
+
+    // ★ Decorations — GÁN ANIMATION
+    const deco = document.getElementById('themeDecorations');
+    deco.innerHTML = (config.decorations || []).map(d => {
+      const styles = [
+        `position: absolute`,
+        `font-size: ${d.size || '40px'}`,
+        `pointer-events: none`,
+        `will-change: transform, opacity`,
+        `filter: drop-shadow(0 0 15px currentColor)`,
+      ];
+      if (d.top) styles.push(`top: ${d.top}`);
+      if (d.bottom) styles.push(`bottom: ${d.bottom}`);
+      if (d.left) styles.push(`left: ${d.left}`);
+      if (d.right) styles.push(`right: ${d.right}`);
+
+      // ★ Gán animation theo class
+      const anim = getDecoAnimation(d.class);
+      styles.push(`animation: ${anim}`);
+
+      return `<div class="deco-${d.class}" style="${styles.join(';')}">${d.emoji}</div>`;
+    }).join('');
+
+    // Tạo particles
+    createParticles(config.particles);
+
+    console.log(`✅ Theme loaded: ${config.title}`);
+  } catch (e) {
+    console.warn(`⚠️ Lỗi theme ${themeName}:`, e);
+  }
+}
+
+// ★ Tạo particles bay
+function createParticles(colors) {
+  const deco = document.getElementById('themeDecorations');
+  if (!deco) return;
+
+  // Xóa particles cũ
+  deco.querySelectorAll('.particle').forEach(p => p.remove());
+
+  const palette = colors || ['#ffffff', '#cccccc', '#ffd700'];
+  const count = 30;
+
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    const color = palette[Math.floor(Math.random() * palette.length)];
+    p.style.background = color;
+    p.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.animationDuration = (6 + Math.random() * 6) + 's';
+    p.style.setProperty('--px', (Math.random() - 0.5) * 200 + 'px');
+    p.style.width = (4 + Math.random() * 6) + 'px';
+    p.style.height = p.style.width;
+    deco.appendChild(p);
+  }
+}
+// ★ Tạo particles bay xung quanh
+function createParticles() {
+  const deco = document.getElementById('themeDecorations');
+  if (!deco) return;
+
+  // Xóa particles cũ
+  deco.querySelectorAll('.particle').forEach(p => p.remove());
+
+  const colors = ['#ff8000', '#ffcc00', '#ff5500', '#a020f0', '#ff0055'];
+  const count = 25;
+
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.boxShadow = `0 0 10px ${p.style.background}, 0 0 20px ${p.style.background}`;
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.animationDuration = (6 + Math.random() * 6) + 's';
+    p.style.setProperty('--px', (Math.random() - 0.5) * 100 + 'px');
+    p.style.width = (4 + Math.random() * 6) + 'px';
+    p.style.height = p.style.width;
+    deco.appendChild(p);
+  }
+}
+// ============================================================
+// UTILS
+// ============================================================
+function fmtTime(sec) {
+  sec = Math.max(0, Math.round(sec));
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function initials(name) {
+  const cleaned = String(name).replace(/[^A-Za-z0-9 ]/g, '').trim();
+  const parts = cleaned.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return cleaned.slice(0, 2).toUpperCase() || '?';
+}
+
+function avatarColor(name) {
+  const colors = [
+    '#fe2c55', '#ff6b9d', '#c77dff', '#7c5cff',
+    '#5c9dff', '#00bfff', '#00d68f', '#ffd700', '#ff6b35',
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) % 1000000;
+  }
+  return colors[hash % colors.length];
+}
+
+async function loadBotAvatars() {
+  try {
+    const r = await fetch('/api/bots/avatars');
+    const data = await r.json();
+    botAvatars = data.avatars || [];
+  } catch (e) {
+    botAvatars = [];
+  }
+}
+
+const avatarCache = {};
+
+function renderTieAvatar(container, displayName) {
+  const avatarsDir = '/static/assets/bots/avatars/';
+
+  if (botAvatars.length === 0) {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+    return;
+  }
+
+  if (!avatarCache[displayName]) {
+    avatarCache[displayName] =
+      botAvatars[Math.floor(Math.random() * botAvatars.length)];
+  }
+  const pick = avatarCache[displayName];
+
+  const img = new Image();
+  img.onload = () => {
+    container.innerHTML = `<img src="${avatarsDir}${pick}" alt="">`;
+  };
+  img.onerror = () => {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+  };
+  img.src = avatarsDir + pick;
+}
+
+function showTiePopup(leaders, scores) {
+  const popup = document.getElementById('tieOverlay');
+  if (leaders.length < 2) return;
+
+  document.getElementById('tieName1').textContent = leaders[0];
+  document.getElementById('tieName2').textContent = leaders[1];
+  document.getElementById('tieScore1').textContent = scores[0] || 0;
+  document.getElementById('tieScore2').textContent = scores[1] || 0;
+
+  renderTieAvatar(document.getElementById('tieAvatar1'), leaders[0]);
+  renderTieAvatar(document.getElementById('tieAvatar2'), leaders[1]);
+
+  popup.classList.remove('show', 'hide');
+  void popup.offsetWidth;
+  popup.classList.add('show');
+
+  if (tiePopupTimer) clearTimeout(tiePopupTimer);
+  tiePopupTimer = setTimeout(() => {
+    popup.classList.add('hide');
+    setTimeout(() => popup.classList.remove('show', 'hide'), 500);
+  }, 2500);
+}
+
+function showWinner(name) {
+  const overlay = document.getElementById('winnerOverlay');
+  document.getElementById('woName').textContent = name;
+
+  overlay.classList.remove('show', 'hide');
+  void overlay.offsetWidth;
+  overlay.classList.add('show');
+
+  if (winnerTimer) clearTimeout(winnerTimer);
+  winnerTimer = setTimeout(() => {
+    overlay.classList.add('hide');
+    setTimeout(() => overlay.classList.remove('show', 'hide'), 700);
+  }, 7000);
+}
+
+function renderState(d) {
+  if (!d) return;
+
+  const timerEl = document.getElementById('timer');
+  const snapBadge = document.getElementById('snapBadge');
+  const ranking = document.getElementById('ranking');
+  const winnerOverlay = document.getElementById('winnerOverlay');
+
+  if (d.phase === 'idle') {
+    timerEl.textContent = '--:--';
+    timerEl.classList.remove('warn');
+    snapBadge.classList.remove('show');
+    winnerOverlay.classList.remove('show', 'hide');
+    lastSnapCount = 0;
+  } else if (d.phase === 'main') {
+    timerEl.textContent = fmtTime(d.remaining);
+    timerEl.classList.toggle('warn', d.remaining <= 10);
+    snapBadge.classList.remove('show');
+  } else if (d.phase === 'snap') {
+    timerEl.textContent = fmtTime(d.remaining);
+    timerEl.classList.add('warn');
+
+    if (d.snap_count > lastSnapCount) {
+      lastSnapCount = d.snap_count;
+      const leaders = d.leaders || [];
+      if (leaders.length >= 2 && d.top) {
+        const scoreMap = {};
+        d.top.forEach(row => { scoreMap[row.user] = row.score; });
+        const scores = leaders.slice(0, 2).map(u => scoreMap[u] || 0);
+        showTiePopup(leaders, scores);
+      }
+    }
+
+    snapBadge.classList.add('show');
+    snapBadge.textContent = '⚡ SNAP #' + d.snap_count
+                          + ' · ' + Math.round(d.remaining) + 's';
+  } else if (d.phase === 'finished') {
+    timerEl.textContent = '00:00';
+    timerEl.classList.remove('warn');
+    snapBadge.classList.remove('show');
+
+    if (d.winner && d.winner !== lastWinner) {
+      lastWinner = d.winner;
+      showWinner(d.winner);
+    }
+  } else {
+    lastWinner = null;
+    lastSnapCount = 0;
+    winnerOverlay.classList.remove('show', 'hide');
+  }
+
+  if (!d.top || d.top.length === 0) {
+    ranking.innerHTML = '<div class="empty">Waiting for players...</div>';
+  } else {
+    const leaders = new Set(d.leaders || []);
+    const medals = ['🥇','🥈','🥉'];
+    ranking.innerHTML = d.top.map((row, i) => {
+      const rank = i + 1;
+      const cls = [
+        'row',
+        rank <= 3 ? 'rank-' + rank : '',
+        leaders.has(row.user) && d.phase !== 'finished' ? 'leader' : ''
+      ].filter(Boolean).join(' ');
+      const medal = i < 3 ? medals[i] : '#' + rank;
+      return '<div class="' + cls + '">' +
+        '<div class="medal">' + medal + '</div>' +
+        '<div class="user">' + escapeHtml(row.user) + '</div>' +
+        '<div class="score">' + row.score + '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try {
+    ws = new WebSocket(proto + '://' + location.host + '/ws');
+  } catch (e) {
+    reconnectTimer = setTimeout(connect, 2000);
+    return;
+  }
+
+  ws.onopen = () => console.log('🔌 Widget connected');
+
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+
+      if (msg.type === 'state') {
+        renderState(msg.data);
+      } else if (msg.type === 'theme_change') {
+        // ★ QUAN TRỌNG — nhận lệnh đổi theme từ app
+        console.log('🎨 Theme change received:', msg.data.theme);
+        loadTheme(msg.data.theme, true);
+      } else if (!msg.type) {
+        renderState(msg);
+      }
+    } catch (err) {}
+  };
+
+  ws.onclose = () => {
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadBotAvatars();
+
+// Đọc theme từ URL (nếu có) — VD: /widget.html?theme=christmas
+const urlParams = new URLSearchParams(location.search);
+const themeFromUrl = urlParams.get('theme') || 'halloween';
+loadTheme(themeFromUrl);
+
+connect();
+setInterval(loadBotAvatars, 30000);
+</script>
+</body>
+</html>

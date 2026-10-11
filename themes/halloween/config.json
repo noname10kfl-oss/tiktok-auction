@@ -1,0 +1,53 @@
+{
+  "title": "HALLOWEEN AUCTION",
+  "logo": "🎃",
+  "deco_text": "HAPPY HALLOWEEN",
+  "deco_left": "🧙",
+  "deco_right": "🧹",
+  "winner_hat": "🧙",
+  "marquee": [
+    "🎃 Trick or Treat",
+    "🦇 Spooky Vibes",
+    "🎃 Boo!",
+    "🧙 Happy Halloween",
+    "👻 Halloween Night",
+    "🍬 Candy Time",
+    "🕷 Spider Web"
+  ],
+  "particles": [
+    "#ff8000",
+    "#ffcc00",
+    "#a020f0",
+    "#ff5500"
+  ],
+  "decorations": [
+    {
+      "class": "bat",
+      "emoji": "🦇",
+      "top": "12%",
+      "left": "3%",
+      "size": "42px"
+    },
+    {
+      "class": "pumpkin",
+      "emoji": "🎃",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "50px"
+    },
+    {
+      "class": "ghost",
+      "emoji": "👻",
+      "top": "25%",
+      "right": "5%",
+      "size": "38px"
+    },
+    {
+      "class": "spider",
+      "emoji": "🕷",
+      "top": "55%",
+      "left": "4%",
+      "size": "36px"
+    }
+  ]
+}

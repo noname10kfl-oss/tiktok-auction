@@ -1,0 +1,51 @@
+{
+  "title": "GOTHIC AUCTION",
+  "logo": "🥀",
+  "deco_text": "GOTHIC ROMANCE",
+  "deco_left": "🥀",
+  "deco_right": "🦇",
+  "winner_hat": "🥀",
+  "marquee": [
+    "🥀 Gothic Romance",
+    "🦇 Dark Wings",
+    "🕯 Candle Light",
+    "🌹 Black Rose",
+    "⚰️ Vampire"
+  ],
+  "particles": [
+    "#8b0000",
+    "#4b0082",
+    "#2f0033",
+    "#000000"
+  ],
+  "decorations": [
+    {
+      "class": "rose",
+      "emoji": "🥀",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "bat",
+      "emoji": "🦇",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "candle",
+      "emoji": "🕯",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "coffin",
+      "emoji": "⚰️",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

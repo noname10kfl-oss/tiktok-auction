@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>VTuber Character</title>
+<link rel="stylesheet" href="/static/vtuber/vtuber.css?v=5">
+</head>
+<body>
+
+  <div class="vtuber-stage" id="vtuberStage">
+    <div class="character-wrap" id="charWrap">
+      <img class="character-img" id="charImg"
+        src="/static/vtuber/assets/character.png"
+        alt="Character">
+    </div>
+  </div>
+
+<script>
+let ws;
+let reconnectTimer = null;
+let idleBlinkTimer = null;
+let mouthAnimTimer = null;
+let isTalking = false;
+let lastVolumeTime = 0;
+let mouthFrame = 0;
+
+const BASE_PATH = '/static/vtuber/assets';
+const IMG_IDLE = `${BASE_PATH}/character.png`;
+
+// ★ 3 ảnh xoay vòng khi nói
+const TALK_FRAMES = [
+  `${BASE_PATH}/character.png`,
+  `${BASE_PATH}/character-talking.png`,
+  `${BASE_PATH}/character-blink.png`,
+];
+
+let availableFrames = [];
+
+function checkFrames() {
+  availableFrames = [];
+  let checked = 0;
+
+  TALK_FRAMES.forEach((src, idx) => {
+    const img = new Image();
+    img.onload = () => {
+      availableFrames.push({ idx, src });
+      checked++;
+      if (checked === TALK_FRAMES.length) finishCheck();
+    };
+    img.onerror = () => {
+      checked++;
+      if (checked === TALK_FRAMES.length) finishCheck();
+    };
+    img.src = src;
+  });
+}
+
+function finishCheck() {
+  console.log(`✅ ${availableFrames.length}/${TALK_FRAMES.length} frames available`);
+  console.log('Available:', availableFrames.map(f => f.src.split('/').pop()));
+}
+
+// ============ NHÉP MIỆNG ============
+function startMouthAnimation() {
+  if (isTalking) return;
+  isTalking = true;
+  mouthFrame = 0;
+
+  const charImg = document.getElementById('charImg');
+  const charWrap = document.getElementById('charWrap');
+  charWrap.classList.add('talking');
+
+  if (availableFrames.length >= 2) {
+    if (mouthAnimTimer) clearInterval(mouthAnimTimer);
+
+    mouthAnimTimer = setInterval(() => {
+      const frame = availableFrames[mouthFrame % availableFrames.length];
+      charImg.src = frame.src;
+      mouthFrame++;
+    }, 250);   // ★ 250ms — chậm, tự nhiên
+  }
+}
+
+function stopMouthAnimation() {
+  isTalking = false;
+  const charImg = document.getElementById('charImg');
+  const charWrap = document.getElementById('charWrap');
+
+  if (mouthAnimTimer) {
+    clearInterval(mouthAnimTimer);
+    mouthAnimTimer = null;
+  }
+
+  charWrap.classList.remove('talking');
+  charImg.src = IMG_IDLE;
+}
+
+// ============ VOLUME ============
+function onVolumeUpdate(volume) {
+  const THRESHOLD = 12;
+
+  if (volume >= THRESHOLD) {
+    startMouthAnimation();
+    lastVolumeTime = Date.now();
+  }
+
+  setTimeout(() => {
+    if (Date.now() - lastVolumeTime >= 400) {
+      stopMouthAnimation();
+    }
+  }, 420);
+}
+
+// ============ CHỚP MẮT KHI IM ============
+function startIdleBlink() {
+  if (idleBlinkTimer) clearInterval(idleBlinkTimer);
+
+  idleBlinkTimer = setInterval(() => {
+    if (isTalking) return;
+    if (Date.now() - lastVolumeTime < 1000) return;
+
+    const charImg = document.getElementById('charImg');
+    const blinkSrc = `${BASE_PATH}/character-blink.png`;
+
+    const test = new Image();
+    test.onload = () => {
+      if (isTalking) return;
+      charImg.src = blinkSrc;
+      setTimeout(() => {
+        if (!isTalking) charImg.src = IMG_IDLE;
+      }, 150);
+    };
+    test.onerror = () => {
+      const charWrap = document.getElementById('charWrap');
+      charWrap.classList.add('blink');
+      setTimeout(() => charWrap.classList.remove('blink'), 200);
+    };
+    test.src = blinkSrc;
+  }, 4500);
+}
+
+// ============ WEBSOCKET ============
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try {
+    ws = new WebSocket(proto + '://' + location.host + '/ws');
+  } catch (e) {
+    reconnectTimer = setTimeout(connect, 2000);
+    return;
+  }
+  ws.onopen = () => console.log('🔌 VTuber connected');
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'vtuber_volume') {
+        onVolumeUpdate(msg.data.volume || 0);
+      }
+    } catch (err) {}
+  };
+  ws.onclose = () => {
+    console.log('🔌 Disconnected, retry...');
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+
+// ============ INIT ============
+checkFrames();
+connect();
+setTimeout(startIdleBlink, 2000);
+</script>
+</body>
+</html>

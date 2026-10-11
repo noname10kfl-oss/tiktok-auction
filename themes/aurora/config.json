@@ -1,0 +1,50 @@
+{
+  "title": "AURORA AUCTION",
+  "logo": "🌌",
+  "deco_text": "AURORA BOREALIS",
+  "deco_left": "🌌",
+  "deco_right": "❄️",
+  "winner_hat": "🌌",
+  "marquee": [
+    "🌌 Aurora Borealis",
+    "❄️ Northern Lights",
+    "✨ Polar Sky",
+    "🌟 Star Shower"
+  ],
+  "particles": [
+    "#00ffcc",
+    "#cc88ff",
+    "#00ccff",
+    "#88ffcc"
+  ],
+  "decorations": [
+    {
+      "class": "galaxy",
+      "emoji": "🌌",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "snow",
+      "emoji": "❄️",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "star",
+      "emoji": "✨",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "shooting",
+      "emoji": "🌠",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

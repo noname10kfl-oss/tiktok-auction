@@ -1,0 +1,50 @@
+{
+  "title": "SAKURA NIGHT",
+  "logo": "🌙",
+  "deco_text": "MOONLIT SAKURA",
+  "deco_left": "🌙",
+  "deco_right": "🌸",
+  "winner_hat": "🌙",
+  "marquee": [
+    "🌙 Moonlit Sakura",
+    "🌸 Night Blossom",
+    "✨ Starry Petals",
+    "🍃 Gentle Breeze"
+  ],
+  "particles": [
+    "#ffb3cc",
+    "#aaccff",
+    "#cc88ff",
+    "#ffffff"
+  ],
+  "decorations": [
+    {
+      "class": "moon",
+      "emoji": "🌙",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "blossom",
+      "emoji": "🌸",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "sparkle",
+      "emoji": "✨",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "leaf",
+      "emoji": "🍃",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "40px"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+# Bot Names - International
+# Mỗi dòng 1 tên. Dòng bắt đầu bằng # là comment, sẽ bị bỏ qua.
+
+# === Anh/Mỹ ===
+Emily Rose
+James Carter
+Sophia Miller
+Michael Brown
+Olivia Davis
+William Wilson
+Ava Martinez
+Daniel Anderson
+Mia Thompson
+Ethan Garcia
+Charlotte Lee
+Noah Rodriguez
+Amelia White
+Lucas Harris
+Isabella Clark
+Mason Lewis
+Harper Walker
+Logan Hall
+Evelyn Young
+Jacob King
+
+# === Nhật Bản ===
+Yuki Tanaka
+Haruto Sato
+Sakura Ito
+Ren Suzuki
+Hina Takahashi
+Sota Watanabe
+Aoi Yamamoto
+Yuto Nakamura
+Rin Kobayashi
+Kaito Kato
+
+# === Hàn Quốc ===
+Min-jun Kim
+Seo-yeon Lee
+Ji-ho Park
+Ha-eun Choi
+Do-yun Jung
+Soo-ah Kang
+Jun-seo Yoon
+Ye-jin Jang
+Tae-yang Lim
+Na-eun Han
+
+# === Trung Quốc ===
+Wei Chen
+Mei Lin
+Jun Wang
+Xin Zhang
+Hao Liu
+Yan Zhao
+Bo Huang
+Lan Zhou
+Feng Wu
+Jing Xu
+
+# === Châu Âu ===
+Lukas Müller
+Sofia Rossi
+Pierre Dubois
+Emma Schmidt
+Marco Ferrari
+Chloé Martin
+Felix Weber
+Isabella Romano
+Antoine Bernard
+Lena Fischer
+
+# === Biệt danh kiểu TikTok ===
+Alex Storm
+Nova Star
+Luna Moon
+Max Blaze
+Sky Phoenix
+Riley Frost
+Zoe Thunder
+Kai Shadow
+Ivy Raven
+Leo Night

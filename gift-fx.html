@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gift FX</title>
+<link rel="stylesheet" href="/static/gift-fx.css?v=6">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+  <div class="fx-layer" id="fxLayer"></div>
+
+<script>
+let ws;
+let reconnectTimer = null;
+let giftEffects = {};
+let giftIcons = {};
+
+function giftToFolder(giftName) {
+  return String(giftName || '').toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+}
+
+function showGiftFX(data) {
+  const layer = document.getElementById('fxLayer');
+  const folder = data.folder || giftToFolder(data.gift_name);
+  const effect = giftEffects[folder];
+  const icon = giftIcons[folder];
+
+  if (!effect && !icon) {
+    console.log('⏭ No effect for', folder);
+    return;
+  }
+
+  const el = document.createElement('div');
+  el.className = 'fx-video-wrap';
+
+  let mediaHtml = '';
+  let mediaType = '';
+
+  if (effect) {
+    const url = `/static/assets/gift-effects/${effect.file}`;
+    console.log('🎆 Playing:', effect.type, url);
+
+    if (effect.type === 'lottie') {
+      mediaHtml = `<div class="fx-lottie" data-anim="${url}"></div>`;
+      mediaType = 'lottie';
+    } else if (effect.type === 'gif') {
+      mediaHtml = `<img class="fx-media" src="${url}" alt="">`;
+      mediaType = 'gif';
+    } else if (effect.type === 'video') {
+      mediaHtml = `<video class="fx-media" src="${url}"
+        autoplay playsinline preload="auto"></video>`;
+      mediaType = 'video';
+    }
+  } else if (icon) {
+    mediaHtml = `<img class="fx-media"
+      src="/static/assets/gift-icons/${icon}" alt="">`;
+    mediaType = 'gif';
+  }
+
+  el.innerHTML = mediaHtml;
+  layer.appendChild(el);
+
+  // Lottie
+  if (mediaType === 'lottie') {
+    const container = el.querySelector('.fx-lottie');
+    if (container && window.lottie) {
+      lottie.loadAnimation({
+        container: container,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: container.dataset.anim,
+      });
+    }
+  }
+
+  // Video — force play + tự tắt khi hết
+  if (mediaType === 'video') {
+    const video = el.querySelector('.fx-media');
+    if (video) {
+      video.play().catch(err => console.warn('Autoplay failed:', err));
+
+      video.addEventListener('ended', () => {
+        el.classList.add('fade-out');
+        setTimeout(() => el.remove(), 800);
+      });
+    }
+  }
+
+  // Tạo particles bay xung quanh
+  spawnParticles(layer);
+
+  // Rung màn hình
+  document.body.classList.add('shake-screen');
+  setTimeout(() => document.body.classList.remove('shake-screen'), 500);
+
+  // ★ Tự xóa sau 8 giây (lâu hơn) — nếu video không phát hết
+  setTimeout(() => {
+    if (el.parentNode) {
+      el.classList.add('fade-out');
+      setTimeout(() => el.remove(), 800);
+    }
+  }, 8000);
+}
+
+function spawnParticles(layer) {
+  // 30 particles bay tỏa ra từ giữa
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'fx-particle';
+    p.style.left = '50%';
+    p.style.top = '50%';
+
+    // Màu random giữa các tone vàng/cam/đỏ
+    const colors = ['#ffcc00', '#ff8800', '#ff5500', '#ffd700'];
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.color = p.style.background;
+
+    // Bay tỏa ra 4 phía
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 300 + Math.random() * 500;
+    p.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+    p.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+    p.style.animationDelay = (Math.random() * 0.5) + 's';
+
+    layer.appendChild(p);
+    setTimeout(() => p.remove(), 3000);
+  }
+}
+
+// ============ LOAD ASSETS ============
+async function loadAssets() {
+  try {
+    const r = await fetch('/api/gifts/list');
+    const data = await r.json();
+    giftEffects = data.effects || {};
+    giftIcons = data.icons || {};
+    console.log(`🎆 Effects: ${Object.keys(giftEffects).length}`);
+  } catch (e) {
+    giftEffects = {};
+    giftIcons = {};
+  }
+}
+
+// ============ WEBSOCKET ============
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try {
+    ws = new WebSocket(proto + '://' + location.host + '/ws');
+  } catch (e) {
+    reconnectTimer = setTimeout(connect, 2000);
+    return;
+  }
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'gift_event' && msg.data.effect === 'fx') {
+        showGiftFX(msg.data);
+      }
+    } catch (err) {}
+  };
+  ws.onclose = () => {
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+
+loadAssets().then(() => connect());
+setInterval(loadAssets, 30000);
+</script>
+</body>
+</html>

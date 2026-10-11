@@ -1,0 +1,51 @@
+{
+  "title": "CYBERPUNK AUCTION",
+  "logo": "🤖",
+  "deco_text": "CYBERPUNK 2077",
+  "deco_left": "🤖",
+  "deco_right": "⚙️",
+  "winner_hat": "🤖",
+  "marquee": [
+    "🤖 Cyberpunk",
+    "⚙️ Cyborg",
+    "🔌 Neo Tokyo",
+    "🌐 Netrunner",
+    "⚡ High Tech Low Life"
+  ],
+  "particles": [
+    "#ff00ff",
+    "#00ffff",
+    "#ffea00",
+    "#ff0055"
+  ],
+  "decorations": [
+    {
+      "class": "robot",
+      "emoji": "🤖",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "gear",
+      "emoji": "⚙️",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "plug",
+      "emoji": "🔌",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "globe",
+      "emoji": "🌐",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

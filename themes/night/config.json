@@ -1,0 +1,51 @@
+{
+  "title": "NIGHT AUCTION",
+  "logo": "🌙",
+  "deco_text": "MOONLIGHT",
+  "deco_left": "🌙",
+  "deco_right": "⭐",
+  "winner_hat": "🌙",
+  "marquee": [
+    "🌙 Moonlight",
+    "⭐ Starry Night",
+    "🌌 Milky Way",
+    "✨ Twinkle",
+    "🌠 Shooting Star"
+  ],
+  "particles": [
+    "#aaccff",
+    "#ffee88",
+    "#88aaff",
+    "#ffffff"
+  ],
+  "decorations": [
+    {
+      "class": "moon",
+      "emoji": "🌙",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "star",
+      "emoji": "⭐",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "40px"
+    },
+    {
+      "class": "sparkle",
+      "emoji": "✨",
+      "top": "25%",
+      "right": "5%",
+      "size": "40px"
+    },
+    {
+      "class": "galaxy",
+      "emoji": "🌌",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

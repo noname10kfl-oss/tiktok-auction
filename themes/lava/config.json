@@ -1,0 +1,51 @@
+{
+  "title": "LAVA AUCTION",
+  "logo": "🌋",
+  "deco_text": "LAVA FLOW",
+  "deco_left": "🌋",
+  "deco_right": "🔥",
+  "winner_hat": "🌋",
+  "marquee": [
+    "🌋 Lava Flow",
+    "🔥 Molten",
+    "♨️ Hot Lava",
+    "💥 Eruption",
+    "🌡 Heat Wave"
+  ],
+  "particles": [
+    "#ff2200",
+    "#ff6600",
+    "#ffcc00",
+    "#ff8800"
+  ],
+  "decorations": [
+    {
+      "class": "volcano",
+      "emoji": "🌋",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "fire",
+      "emoji": "🔥",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "boom",
+      "emoji": "💥",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "thermometer",
+      "emoji": "🌡",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

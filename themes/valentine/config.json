@@ -1,0 +1,51 @@
+{
+  "title": "VALENTINE AUCTION",
+  "logo": "💝",
+  "deco_text": "BE MY VALENTINE",
+  "deco_left": "🌹",
+  "deco_right": "💕",
+  "winner_hat": "💝",
+  "marquee": [
+    "💝 Happy Valentine",
+    "🌹 Love is in the air",
+    "💕 Kiss me",
+    "💖 Sweet Heart",
+    "💌 Love Letter"
+  ],
+  "particles": [
+    "#ff6b9d",
+    "#ff0055",
+    "#ffb3cc",
+    "#ff3366"
+  ],
+  "decorations": [
+    {
+      "class": "heart",
+      "emoji": "💖",
+      "top": "10%",
+      "left": "5%",
+      "size": "40px"
+    },
+    {
+      "class": "rose",
+      "emoji": "🌹",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "50px"
+    },
+    {
+      "class": "kiss",
+      "emoji": "💋",
+      "top": "25%",
+      "right": "5%",
+      "size": "40px"
+    },
+    {
+      "class": "ring",
+      "emoji": "💍",
+      "bottom": "10%",
+      "right": "4%",
+      "size": "42px"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "title": "ICE AUCTION",
+  "logo": "❄️",
+  "deco_text": "FROZEN WORLD",
+  "deco_left": "❄️",
+  "deco_right": "🧊",
+  "winner_hat": "❄️",
+  "marquee": [
+    "❄️ Frozen World",
+    "🧊 Ice Cold",
+    "⛄ Snowman",
+    "🌨 Blizzard",
+    "💧 Chill",
+    "🐧 Penguin"
+  ],
+  "particles": [
+    "#aae0ff",
+    "#ffffff",
+    "#88ccff",
+    "#ccf0ff"
+  ],
+  "decorations": [
+    {
+      "class": "snow",
+      "emoji": "❄️",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "cube",
+      "emoji": "🧊",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "snowman",
+      "emoji": "⛄",
+      "top": "25%",
+      "right": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "penguin",
+      "emoji": "🐧",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "46px"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "title": "BLOOD AUCTION",
+  "logo": "🩸",
+  "deco_text": "BLOOD MOON",
+  "deco_left": "🩸",
+  "deco_right": "🗡",
+  "winner_hat": "🩸",
+  "marquee": [
+    "🩸 Blood Moon",
+    "🗡 Death Match",
+    "💀 Last One",
+    "⚔️ Duel",
+    "🩸 Blood Bath",
+    "🔪 Killer"
+  ],
+  "particles": [
+    "#ff0000",
+    "#cc0000",
+    "#ff3366",
+    "#990000"
+  ],
+  "decorations": [
+    {
+      "class": "blood",
+      "emoji": "🩸",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "sword",
+      "emoji": "🗡",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "skull",
+      "emoji": "💀",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "knife",
+      "emoji": "🔪",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "46px"
+    }
+  ]
+}

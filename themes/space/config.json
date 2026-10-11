@@ -1,0 +1,51 @@
+{
+  "title": "SPACE AUCTION",
+  "logo": "🛸",
+  "deco_text": "OUTER SPACE",
+  "deco_left": "🛸",
+  "deco_right": "👽",
+  "winner_hat": "🛸",
+  "marquee": [
+    "🛸 Outer Space",
+    "👽 Aliens",
+    "🚀 Rocket Launch",
+    "🌍 Earth",
+    "🌞 Solar System"
+  ],
+  "particles": [
+    "#00ccff",
+    "#cc88ff",
+    "#ffffff",
+    "#66ddff"
+  ],
+  "decorations": [
+    {
+      "class": "ufo",
+      "emoji": "🛸",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "alien",
+      "emoji": "👽",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "rocket",
+      "emoji": "🚀",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "earth",
+      "emoji": "🌍",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

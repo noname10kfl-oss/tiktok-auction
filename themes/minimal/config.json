@@ -1,0 +1,20 @@
+{
+  "title": "MINIMAL AUCTION",
+  "logo": "⚫",
+  "deco_text": "MINIMAL",
+  "deco_left": "⚫",
+  "deco_right": "⚪",
+  "winner_hat": "👑",
+  "marquee": [
+    "⚫ Minimal",
+    "⚪ Clean",
+    "◾ Simple",
+    "◽ Elegant"
+  ],
+  "particles": [
+    "#ffffff",
+    "#888888",
+    "#cccccc"
+  ],
+  "decorations": []
+}

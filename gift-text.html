@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gift Text Feed</title>
+<link rel="stylesheet" href="/static/gift-text.css?v=7">
+</head>
+<body>
+  <div class="gift-panel" id="giftPanel">
+    <div class="gift-header">
+      <span class="live-dot"></span>
+      <span class="live-title">LIVE chat</span>
+    </div>
+    <div class="gift-feed" id="giftFeed"></div>
+  </div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let ws = null;
+let reconnectTimer = null;
+let giftIcons = {};
+let botAvatars = [];
+let wsConnected = false;
+
+// Cache avatar theo tên user (random 1 lần)
+const avatarCache = {};
+
+// ============================================================
+// UTILS
+// ============================================================
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function giftToFolder(giftName) {
+  return String(giftName || '').toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+}
+
+function initials(name) {
+  const cleaned = String(name).replace(/[^A-Za-z0-9 ]/g, '').trim();
+  const parts = cleaned.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return cleaned.slice(0, 2).toUpperCase() || '?';
+}
+
+function avatarColor(name) {
+  const colors = [
+    '#fe2c55', '#ff6b9d', '#c77dff', '#7c5cff',
+    '#5c9dff', '#00bfff', '#00d68f', '#ffd700', '#ff6b35',
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) % 1000000;
+  }
+  return colors[hash % colors.length];
+}
+
+// ============================================================
+// LOAD ASSETS
+// ============================================================
+async function loadBotAvatars() {
+  try {
+    const r = await fetch('/api/bots/avatars');
+    const data = await r.json();
+    botAvatars = data.avatars || [];
+    console.log(`🖼 Loaded ${botAvatars.length} bot avatars`);
+  } catch (e) {
+    botAvatars = [];
+    console.warn('⚠️ Không load được avatars:', e);
+  }
+}
+
+async function loadGiftAssets() {
+  try {
+    const r = await fetch('/api/gifts/list');
+    const data = await r.json();
+    giftIcons = data.icons || {};
+    console.log(`🎁 Loaded ${Object.keys(giftIcons).length} gift icons`);
+  } catch (e) {
+    giftIcons = {};
+  }
+}
+
+// ============================================================
+// AVATAR
+// ============================================================
+function getAvatarForUser(displayName) {
+  if (avatarCache[displayName]) return avatarCache[displayName];
+  if (botAvatars.length === 0) return null;
+  const pick = botAvatars[Math.floor(Math.random() * botAvatars.length)];
+  avatarCache[displayName] = pick;
+  return pick;
+}
+
+function renderAvatar(container, displayName) {
+  const avatarsDir = '/static/assets/bots/avatars/';
+
+  if (botAvatars.length === 0) {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+    return;
+  }
+
+  const pick = getAvatarForUser(displayName);
+
+  const img = new Image();
+  img.onload = () => {
+    container.innerHTML = `<img src="${avatarsDir}${pick}" alt="">`;
+  };
+  img.onerror = () => {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+  };
+  img.src = avatarsDir + pick;
+}
+
+// ============================================================
+// HIỂN THỊ GIFT LINE
+// ============================================================
+function showGiftLine(data) {
+  try {
+    console.log('🎁 showGiftLine:', JSON.stringify(data));
+
+    const feed = document.getElementById('giftFeed');
+    if (!feed) {
+      console.error('❌ giftFeed element not found');
+      return;
+    }
+
+    const el = document.createElement('div');
+    el.className = 'gift-line';
+
+    // Lấy thông tin
+    const displayName = data.display_name || data.user || 'Unknown';
+    const giftName = data.gift_name || 'Unknown Gift';
+    const giftIcon = data.gift_icon || '🎁';
+    const count = data.gift_count || 1;
+    const vip = data.is_chaser === true;
+
+    // Tìm icon file
+    const folder = data.folder || giftToFolder(giftName);
+    const iconFile = giftIcons[folder];
+
+    let iconHtml;
+    if (iconFile) {
+      iconHtml = `<img class="gl-gift-icon"
+        src="/static/assets/gift-icons/${iconFile}" alt="">`;
+    } else {
+      iconHtml = `<span class="gl-gift-emoji">${giftIcon}</span>`;
+    }
+
+    el.innerHTML = `
+      <div class="gl-avatar"></div>
+      <span class="gl-user">${escapeHtml(displayName)}</span>
+      ${vip ? '<span class="gl-crown">👑</span>' : ''}
+      <span class="gl-verb">sent</span>
+      <span class="gl-gift-name">${escapeHtml(giftName)}</span>
+      ${iconHtml}
+      <span class="gl-x">x${count}</span>
+    `;
+
+    // Xóa highlight dòng cũ
+    feed.querySelectorAll('.gift-line').forEach(line => {
+      line.classList.remove('highlight');
+    });
+
+    // Thêm dòng mới với highlight
+    el.classList.add('highlight');
+    feed.appendChild(el);
+
+    setTimeout(() => {
+      el.classList.remove('highlight');
+    }, 3000);
+
+    // Render avatar
+    const avatarEl = el.querySelector('.gl-avatar');
+    if (avatarEl) {
+      renderAvatar(avatarEl, displayName);
+    }
+
+    // Giới hạn 10 dòng
+    while (feed.children.length > 10) {
+      feed.removeChild(feed.firstChild);
+    }
+
+    // Tự xóa sau 20s
+    setTimeout(() => {
+      el.classList.add('fade-out');
+      setTimeout(() => el.remove(), 600);
+    }, 20000);
+
+  } catch (err) {
+    console.error('❌ showGiftLine error:', err);
+  }
+}
+
+// ============================================================
+// WEBSOCKET
+// ============================================================
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try {
+    ws = new WebSocket(proto + '://' + location.host + '/ws');
+  } catch (e) {
+    console.warn('WS create error:', e);
+    reconnectTimer = setTimeout(connect, 2000);
+    return;
+  }
+
+  ws.onopen = () => {
+    wsConnected = true;
+    console.log('🔌 WebSocket connected');
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      console.log('📨 WS msg:', msg.type);
+
+      if (msg.type === 'gift_event') {
+        console.log('✅ Received gift_event, showing line...');
+        showGiftLine(msg.data);
+      }
+      // Bỏ qua 'state' — gift-text không cần
+    } catch (err) {
+      console.error('❌ Parse WS error:', err);
+    }
+  };
+
+  ws.onclose = () => {
+    wsConnected = false;
+    console.log('🔌 WS closed, retry in 2s...');
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+
+  ws.onerror = (err) => {
+    console.warn('🔌 WS error:', err);
+    try { ws.close(); } catch(e) {}
+  };
+}
+
+// ============================================================
+// FALLBACK POLLING (nếu WS chết)
+// ============================================================
+let lastPollTime = 0;
+
+setInterval(async () => {
+  // Nếu WS đang hoạt động → skip
+  if (ws && ws.readyState === WebSocket.OPEN) return;
+
+  // Fallback: ping server để giữ kết nối sống
+  try {
+    await fetch('/api/health');
+  } catch (e) {}
+}, 3000);
+
+// ============================================================
+// INIT
+// ============================================================
+console.log('🚀 Gift-text overlay loading...');
+Promise.all([loadGiftAssets(), loadBotAvatars()]).then(() => {
+  console.log('✅ Assets loaded, connecting WS...');
+  connect();
+});
+
+// Refresh assets mỗi 30s
+setInterval(loadGiftAssets, 30000);
+setInterval(loadBotAvatars, 30000);
+
+// Log khi có kết nối lại
+window.addEventListener('focus', () => {
+  if (!wsConnected) {
+    console.log('🔄 Window focus, reconnecting WS...');
+    connect();
+  }
+});
+</script>
+</body>
+</html>

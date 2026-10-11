@@ -1,0 +1,52 @@
+{
+  "title": "PIRATE AUCTION",
+  "logo": "🏴‍☠️",
+  "deco_text": "PIRATE ADVENTURE",
+  "deco_left": "🏴‍☠️",
+  "deco_right": "⚓",
+  "winner_hat": "🏴‍☠️",
+  "marquee": [
+    "🏴‍☠️ Pirate Adventure",
+    "⚓ Anchor",
+    "🦜 Parrot",
+    "💰 Treasure",
+    "🗺 Treasure Map",
+    "⚔️ Ship Battle"
+  ],
+  "particles": [
+    "#8b4513",
+    "#ffd700",
+    "#cc6600",
+    "#ff8c00"
+  ],
+  "decorations": [
+    {
+      "class": "flag",
+      "emoji": "🏴‍☠️",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "anchor",
+      "emoji": "⚓",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "parrot",
+      "emoji": "🦜",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "money",
+      "emoji": "💰",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

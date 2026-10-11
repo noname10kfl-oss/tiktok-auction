@@ -1,0 +1,52 @@
+{
+  "title": "TẾT AUCTION",
+  "logo": "🧧",
+  "deco_text": "CHÚC MỪNG NĂM MỚI",
+  "deco_left": "🏮",
+  "deco_right": "🌸",
+  "winner_hat": "🧧",
+  "marquee": [
+    "🧧 Chúc Mừng Năm Mới",
+    "🌸 Hoa Mai",
+    "🏮 Lì Xì",
+    "🐉 Rồng Vàng",
+    "🎊 Tết Sum Vầy",
+    "🍀 An Khang"
+  ],
+  "particles": [
+    "#ffcc00",
+    "#ff5500",
+    "#ff0033",
+    "#ffaa00"
+  ],
+  "decorations": [
+    {
+      "class": "lantern",
+      "emoji": "🏮",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "flower",
+      "emoji": "🌸",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "40px"
+    },
+    {
+      "class": "envelope",
+      "emoji": "🧧",
+      "bottom": "8%",
+      "right": "3%",
+      "size": "50px"
+    },
+    {
+      "class": "dragon",
+      "emoji": "🐉",
+      "top": "40%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

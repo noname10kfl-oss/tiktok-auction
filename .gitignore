@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec
+*.log
+.DS_Store
+assets/bots/avatars/*.png
+assets/bots/avatars/*.jpg
+assets/bots/avatars/*.jpeg
+assets/bots/avatars/*.webp
+assets/gifts/*/animation.*

@@ -1,0 +1,110 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: transparent !important;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden !important;
+  border: none !important;
+  /* Ẩn scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ẩn scrollbar mọi element */
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ============================================================
+   VTUBER STAGE — Nhân vật ở góc phải dưới
+   ============================================================ */
+.vtuber-stage {
+  position: fixed;
+  bottom: 0;
+  right: 60px;
+  width: 480px;
+  height: 90%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 50;
+  overflow: hidden !important;
+}
+
+.character-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: charFloat 4s ease-in-out infinite;
+  overflow: hidden !important;
+}
+
+@keyframes charFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.character-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 60px rgba(124, 92, 255, 0.4));
+  transition: transform 0.08s;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.character-wrap.talking .character-img {
+  animation: charTalk 0.12s ease-in-out infinite;
+}
+
+@keyframes charTalk {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.03) translateY(-3px); }
+}
+
+.character-wrap.blink .character-img {
+  animation: charBlink 0.2s ease;
+}
+
+@keyframes charBlink {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.95); }
+}
+
+.character-wrap.talking::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(124, 92, 255, 0.4) 0%,
+    transparent 70%);
+  filter: blur(30px);
+  animation: talkGlow 0.4s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes talkGlow {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  to { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}

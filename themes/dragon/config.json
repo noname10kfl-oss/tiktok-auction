@@ -1,0 +1,52 @@
+{
+  "title": "DRAGON AUCTION",
+  "logo": "🐉",
+  "deco_text": "DRAGON BALL",
+  "deco_left": "🐉",
+  "deco_right": "⚡",
+  "winner_hat": "🐉",
+  "marquee": [
+    "🐉 Dragon Ball",
+    "⚡ Super Saiyan",
+    "🔥 Kamehameha",
+    "⭐ 7 Dragon Balls",
+    "💥 Power Level",
+    "🌟 Ultra Instinct"
+  ],
+  "particles": [
+    "#ffcc00",
+    "#ff5500",
+    "#ffaa00",
+    "#ff8800"
+  ],
+  "decorations": [
+    {
+      "class": "dragon",
+      "emoji": "🐉",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "bolt",
+      "emoji": "⚡",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "46px"
+    },
+    {
+      "class": "fire",
+      "emoji": "🔥",
+      "top": "25%",
+      "right": "5%",
+      "size": "46px"
+    },
+    {
+      "class": "star",
+      "emoji": "⭐",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "46px"
+    }
+  ]
+}

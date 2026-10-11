@@ -1,0 +1,51 @@
+{
+  "title": "VINTAGE AUCTION",
+  "logo": "📻",
+  "deco_text": "VINTAGE ERA",
+  "deco_left": "📻",
+  "deco_right": "🎞",
+  "winner_hat": "📻",
+  "marquee": [
+    "📻 Vintage Era",
+    "🎞 Old Times",
+    "☕ Retro Cafe",
+    "🕰 Classic",
+    "📷 Old Camera"
+  ],
+  "particles": [
+    "#d4a574",
+    "#8b6f47",
+    "#ffd700",
+    "#b87333"
+  ],
+  "decorations": [
+    {
+      "class": "radio",
+      "emoji": "📻",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "film",
+      "emoji": "🎞",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "coffee",
+      "emoji": "☕",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "clock",
+      "emoji": "🕰",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

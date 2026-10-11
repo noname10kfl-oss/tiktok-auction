@@ -1,0 +1,51 @@
+{
+  "title": "EGYPTIAN AUCTION",
+  "logo": "🔺",
+  "deco_text": "ANCIENT EGYPT",
+  "deco_left": "🔺",
+  "deco_right": "🐫",
+  "winner_hat": "🔺",
+  "marquee": [
+    "🔺 Ancient Egypt",
+    "🐫 Desert Sands",
+    "👁 Eye of Horus",
+    "🏺 Pharaoh",
+    "☀️ Ra"
+  ],
+  "particles": [
+    "#ffd700",
+    "#d4af37",
+    "#ffcc00",
+    "#c9a227"
+  ],
+  "decorations": [
+    {
+      "class": "pyramid",
+      "emoji": "🔺",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "camel",
+      "emoji": "🐫",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "eye",
+      "emoji": "👁",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "jar",
+      "emoji": "🏺",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

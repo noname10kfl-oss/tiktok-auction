@@ -1,0 +1,52 @@
+{
+  "title": "ANIME AUCTION",
+  "logo": "🌸",
+  "deco_text": "ANIME WORLD",
+  "deco_left": "🌸",
+  "deco_right": "⭐",
+  "winner_hat": "🌸",
+  "marquee": [
+    "🌸 Anime World",
+    "⭐ Kawaii",
+    "🌸 Senpai",
+    "💖 Waifu",
+    "🗾 Otaku",
+    "⚡ Sugoi"
+  ],
+  "particles": [
+    "#ff80aa",
+    "#80b3ff",
+    "#ffb3d9",
+    "#aaccff"
+  ],
+  "decorations": [
+    {
+      "class": "flower",
+      "emoji": "🌸",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "star",
+      "emoji": "⭐",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "heart",
+      "emoji": "💖",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "bolt",
+      "emoji": "⚡",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

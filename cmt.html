@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Fake Comment</title>
+<link rel="stylesheet" href="/static/cmt.css?v=11">
+</head>
+<body>
+  <div class="cmt-layer" id="cmtLayer"></div>
+
+<script>
+let ws;
+let reconnectTimer = null;
+let botAvatars = [];
+const avatarCache = {};
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function initials(name) {
+  const cleaned = String(name).replace(/[^A-Za-z0-9 ]/g, '').trim();
+  const parts = cleaned.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+  return cleaned.slice(0, 2).toUpperCase() || '?';
+}
+
+function avatarColor(name) {
+  const colors = [
+    '#fe2c55', '#ff6b9d', '#c77dff', '#7c5cff',
+    '#5c9dff', '#00bfff', '#00d68f', '#ffd700', '#ff6b35',
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash * 31 + name.charCodeAt(i)) % 1000000;
+  }
+  return colors[hash % colors.length];
+}
+
+async function loadBotAvatars() {
+  try {
+    const r = await fetch('/api/bots/avatars');
+    const data = await r.json();
+    botAvatars = data.avatars || [];
+  } catch (e) {
+    botAvatars = [];
+  }
+}
+
+function getAvatarForUser(displayName) {
+  if (avatarCache[displayName]) return avatarCache[displayName];
+  if (botAvatars.length === 0) return null;
+  const pick = botAvatars[Math.floor(Math.random() * botAvatars.length)];
+  avatarCache[displayName] = pick;
+  return pick;
+}
+
+function renderAvatar(container, displayName) {
+  const avatarsDir = '/static/assets/bots/avatars/';
+
+  if (botAvatars.length === 0) {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+    return;
+  }
+
+  const pick = getAvatarForUser(displayName);
+  const img = new Image();
+  img.onload = () => {
+    container.innerHTML = `<img src="${avatarsDir}${pick}" alt="">`;
+  };
+  img.onerror = () => {
+    const ini = initials(displayName);
+    const bg = avatarColor(displayName);
+    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+  };
+  img.src = avatarsDir + pick;
+}
+
+function showComment(data) {
+  const layer = document.getElementById('cmtLayer');
+  const delay = (data.delay || 1.5) * 1000;
+
+  setTimeout(() => {
+    const el = document.createElement('div');
+    el.className = 'tiktok-pin-cmt';
+
+    const displayName = data.display_name || data.user;
+    const robloxUser = data.roblox_username || 'user';
+
+    // ★ Bắt đầu đếm ngược từ 50 giây
+    let countdown = 50;
+
+    el.innerHTML = `
+      <div class="pin-avatar"></div>
+      <div class="pin-body">
+        <div class="pin-header">
+          <span class="pin-name">
+            ${escapeHtml(displayName)}<span class="pin-icon">✦</span>
+          </span>
+          <span class="pin-timer">
+            <span class="pin-star">⭐</span>
+            <span class="pin-sec" id="pinSec">${countdown}s</span>
+          </span>
+          <span class="pin-close">✕</span>
+        </div>
+        <div class="pin-text">${escapeHtml(robloxUser)}</div>
+      </div>
+    `;
+
+    layer.appendChild(el);
+
+    const avatarEl = el.querySelector('.pin-avatar');
+    renderAvatar(avatarEl, displayName);
+
+    // ★ Đếm ngược mỗi giây
+    const secEl = el.querySelector('.pin-sec');
+    const countdownTimer = setInterval(() => {
+      countdown -= 1;
+      if (secEl) {
+        secEl.textContent = `${Math.max(0, countdown)}s`;
+      }
+      if (countdown <= 0) {
+        clearInterval(countdownTimer);
+      }
+    }, 1000);
+
+    // Tự mất sau 15s
+    setTimeout(() => {
+      clearInterval(countdownTimer);
+      el.classList.add('hide');
+      setTimeout(() => el.remove(), 800);
+    }, 15000);
+  }, delay);
+}
+
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try {
+    ws = new WebSocket(proto + '://' + location.host + '/ws');
+  } catch (e) {
+    reconnectTimer = setTimeout(connect, 2000);
+    return;
+  }
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'roblox_comment') showComment(msg.data);
+    } catch (err) {}
+  };
+  ws.onclose = () => {
+    reconnectTimer = setTimeout(connect, 2000);
+  };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+
+loadBotAvatars().then(() => connect());
+setInterval(loadBotAvatars, 30000);
+</script>
+</body>
+</html>

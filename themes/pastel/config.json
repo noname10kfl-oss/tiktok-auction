@@ -1,0 +1,51 @@
+{
+  "title": "PASTEL AUCTION",
+  "logo": "🎀",
+  "deco_text": "PASTEL DREAM",
+  "deco_left": "🎀",
+  "deco_right": "🌷",
+  "winner_hat": "🎀",
+  "marquee": [
+    "🎀 Pastel Dream",
+    "🌷 Soft Aesthetic",
+    "🦄 Unicorn",
+    "☁️ Dreamy",
+    "🌸 Kawaii"
+  ],
+  "particles": [
+    "#ffd1dc",
+    "#c8e6ff",
+    "#e0d1ff",
+    "#d1ffe0"
+  ],
+  "decorations": [
+    {
+      "class": "bow",
+      "emoji": "🎀",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "tulip",
+      "emoji": "🌷",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "unicorn",
+      "emoji": "🦄",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "cloud",
+      "emoji": "☁️",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

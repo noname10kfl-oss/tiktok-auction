@@ -1,0 +1,52 @@
+{
+  "title": "COSMIC AUCTION",
+  "logo": "✨",
+  "deco_text": "COSMIC DREAM",
+  "deco_left": "✨",
+  "deco_right": "💫",
+  "winner_hat": "✨",
+  "marquee": [
+    "✨ Cosmic Dream",
+    "💫 Nebula",
+    "🌌 Andromeda",
+    "⭐ Supernova",
+    "🪐 Cosmic Dust"
+  ],
+  "particles": [
+    "#cc88ff",
+    "#88ccff",
+    "#ff88cc",
+    "#ffffff",
+    "#aaffcc"
+  ],
+  "decorations": [
+    {
+      "class": "sparkle",
+      "emoji": "✨",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "dizzy",
+      "emoji": "💫",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "galaxy",
+      "emoji": "🌌",
+      "top": "25%",
+      "right": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "star",
+      "emoji": "⭐",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

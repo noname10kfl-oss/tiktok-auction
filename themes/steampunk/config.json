@@ -1,0 +1,51 @@
+{
+  "title": "STEAMPUNK AUCTION",
+  "logo": "⚙️",
+  "deco_text": "STEAMPUNK ERA",
+  "deco_left": "⚙️",
+  "deco_right": "🎩",
+  "winner_hat": "🎩",
+  "marquee": [
+    "⚙️ Steampunk Era",
+    "🎩 Victorian",
+    "🚂 Steam Train",
+    "🔧 Mechanic",
+    "🕰 Clockwork"
+  ],
+  "particles": [
+    "#d4a574",
+    "#b87333",
+    "#ffd700",
+    "#8b6f47"
+  ],
+  "decorations": [
+    {
+      "class": "gear",
+      "emoji": "⚙️",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "hat",
+      "emoji": "🎩",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "train",
+      "emoji": "🚂",
+      "top": "25%",
+      "right": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "clock",
+      "emoji": "🕰",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

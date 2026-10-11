@@ -1,0 +1,51 @@
+{
+  "title": "HONEY AUCTION",
+  "logo": "🍯",
+  "deco_text": "SWEET HONEY",
+  "deco_left": "🍯",
+  "deco_right": "🐝",
+  "winner_hat": "🍯",
+  "marquee": [
+    "🍯 Sweet Honey",
+    "🐝 Busy Bee",
+    "🌸 Flower Field",
+    "☀️ Sunny Day",
+    "🍯 Golden Drop"
+  ],
+  "particles": [
+    "#ffcc00",
+    "#ffaa00",
+    "#ffdd66",
+    "#ff8800"
+  ],
+  "decorations": [
+    {
+      "class": "honey",
+      "emoji": "🍯",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "bee",
+      "emoji": "🐝",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "flower",
+      "emoji": "🌸",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "sun",
+      "emoji": "☀️",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "GLITCH AUCTION",
+  "logo": "📺",
+  "deco_text": "GLITCH ART",
+  "deco_left": "📺",
+  "deco_right": "💥",
+  "winner_hat": "📺",
+  "marquee": [
+    "📺 Glitch Art",
+    "💥 Error 404",
+    "⚡ System Failure",
+    "🎮 Game Over",
+    "🔧 Reboot"
+  ],
+  "particles": [
+    "#ff00ff",
+    "#00ffff",
+    "#00ff00",
+    "#ff0000"
+  ],
+  "decorations": [
+    {
+      "class": "tv",
+      "emoji": "📺",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "boom",
+      "emoji": "💥",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "bolt",
+      "emoji": "⚡",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "wrench",
+      "emoji": "🔧",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}
