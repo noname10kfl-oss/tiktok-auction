@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Auction Widget</title>
-<link rel="stylesheet" href="/static/overlay.css?v=14">
+<link rel="stylesheet" href="/static/overlay.css?v=18">
 <link rel="stylesheet" id="themeCSS" href="/static/themes/halloween/theme.css?v=1">
 </head>
 <body>
   <style>
-  /* Preview mode: nền tối + căn giữa */
     body.preview-mode {
       background: repeating-conic-gradient(#1a1a28 0 25%, #222230 0 50%) 50% / 30px 30px !important;
       padding: 40px;
@@ -25,7 +24,6 @@
   </style>
 
   <script>
-    // Detect preview mode
     if (new URLSearchParams(location.search).get('preview') === '1') {
       document.body.classList.add('preview-mode');
     }
@@ -50,6 +48,21 @@
 
     <div class="marquee">
       <div class="marquee-track" id="marqueeTrack"></div>
+    </div>
+
+           <!-- ★ VOUCHES + MIN — gộp 1 dòng -->
+    <div class="info-row">
+      <div class="vouch-row">
+        <span class="vouch-icon">⭐</span>
+        <span class="vouch-text" id="vouchText">0 VOUCHES</span>
+      </div>
+      <div class="min-row">
+        <span class="min-label">MIN :</span>
+        <span class="min-badge">
+          <span class="min-value" id="minValue">10</span>
+          <span class="min-coin">🪙</span>
+        </span>
+      </div>
     </div>
 
     <div class="ranking" id="ranking">
@@ -98,15 +111,12 @@ let lastSnapCount = 0;
 let tiePopupTimer = null;
 let botAvatars = [];
 let currentTheme = null;
+let _lastRenderKey = "";
 
 // ============================================================
 // THEME LOADING
 // ============================================================
-// ============================================================
-// THEME LOADING
-// ============================================================
 const DECO_ANIMATIONS = {
-  // Animation theo class decoration
   "bat": "batFly 8s linear infinite",
   "pumpkin": "pumpkinPulse 2s ease-in-out infinite",
   "ghost": "ghostFloat 6s ease-in-out infinite",
@@ -217,9 +227,7 @@ function getDecoAnimation(decoClass) {
 
 async function loadTheme(themeName, force = false) {
   if (!themeName) return;
-  if (currentTheme === themeName && !force) {
-    return;
-  }
+  if (currentTheme === themeName && !force) return;
 
   try {
     console.log(`🎨 Loading theme: ${themeName}`);
@@ -228,12 +236,11 @@ async function loadTheme(themeName, force = false) {
     const config = await r.json();
 
     currentTheme = themeName;
+    localStorage.setItem('auction_theme', themeName);   // ★ Lưu
 
-    // Đổi CSS
     const cssEl = document.getElementById('themeCSS');
     cssEl.href = `/static/themes/${themeName}/theme.css?v=${Date.now()}`;
 
-    // Đổi title + logo
     document.getElementById('themeLogo').textContent = config.logo || '🏆';
     document.getElementById('themeTitle').textContent = config.title || 'AUCTION';
     document.getElementById('decoText').textContent = config.deco_text || '';
@@ -241,13 +248,11 @@ async function loadTheme(themeName, force = false) {
     document.getElementById('decoRight').textContent = config.deco_right || '';
     document.getElementById('winnerHat').textContent = config.winner_hat || '👑';
 
-    // Marquee
     const marquee = config.marquee || [];
     const track = document.getElementById('marqueeTrack');
     const items = marquee.map(t => `<span>${t}</span>`).join('');
     track.innerHTML = items + items;
 
-    // ★ Decorations — GÁN ANIMATION
     const deco = document.getElementById('themeDecorations');
     deco.innerHTML = (config.decorations || []).map(d => {
       const styles = [
@@ -262,33 +267,25 @@ async function loadTheme(themeName, force = false) {
       if (d.left) styles.push(`left: ${d.left}`);
       if (d.right) styles.push(`right: ${d.right}`);
 
-      // ★ Gán animation theo class
       const anim = getDecoAnimation(d.class);
       styles.push(`animation: ${anim}`);
 
       return `<div class="deco-${d.class}" style="${styles.join(';')}">${d.emoji}</div>`;
     }).join('');
 
-    // Tạo particles
     createParticles(config.particles);
-
     console.log(`✅ Theme loaded: ${config.title}`);
   } catch (e) {
     console.warn(`⚠️ Lỗi theme ${themeName}:`, e);
   }
 }
 
-// ★ Tạo particles bay
 function createParticles(colors) {
   const deco = document.getElementById('themeDecorations');
   if (!deco) return;
-
-  // Xóa particles cũ
   deco.querySelectorAll('.particle').forEach(p => p.remove());
-
   const palette = colors || ['#ffffff', '#cccccc', '#ffd700'];
   const count = 30;
-
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
@@ -304,31 +301,7 @@ function createParticles(colors) {
     deco.appendChild(p);
   }
 }
-// ★ Tạo particles bay xung quanh
-function createParticles() {
-  const deco = document.getElementById('themeDecorations');
-  if (!deco) return;
 
-  // Xóa particles cũ
-  deco.querySelectorAll('.particle').forEach(p => p.remove());
-
-  const colors = ['#ff8000', '#ffcc00', '#ff5500', '#a020f0', '#ff0055'];
-  const count = 25;
-
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    p.style.boxShadow = `0 0 10px ${p.style.background}, 0 0 20px ${p.style.background}`;
-    p.style.animationDelay = (Math.random() * 8) + 's';
-    p.style.animationDuration = (6 + Math.random() * 6) + 's';
-    p.style.setProperty('--px', (Math.random() - 0.5) * 100 + 'px');
-    p.style.width = (4 + Math.random() * 6) + 'px';
-    p.style.height = p.style.width;
-    deco.appendChild(p);
-  }
-}
 // ============================================================
 // UTILS
 // ============================================================
@@ -376,47 +349,68 @@ async function loadBotAvatars() {
   }
 }
 
-const avatarCache = {};
+function resolveAvatarUrl(displayName, avatarFromEngine) {
+  if (avatarFromEngine) return avatarFromEngine;
+  if (botAvatars.length > 0) {
+    const clean = String(displayName).replace(/^@/, '').toLowerCase();
+    let hash = 0;
+    for (let i = 0; i < clean.length; i++) {
+      hash = (hash * 31 + clean.charCodeAt(i)) % 1000000;
+    }
+    const pick = botAvatars[hash % botAvatars.length];
+    return '/static/assets/bots/avatars/' + pick;
+  }
+  return null;
+}
 
-function renderTieAvatar(container, displayName) {
-  const avatarsDir = '/static/assets/bots/avatars/';
+function renderAvatar(container, displayName, avatarFromEngine) {
+  if (!container) return;
+  const url = resolveAvatarUrl(displayName, avatarFromEngine);
 
-  if (botAvatars.length === 0) {
+  if (!url) {
     const ini = initials(displayName);
     const bg = avatarColor(displayName);
     container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
     return;
   }
 
-  if (!avatarCache[displayName]) {
-    avatarCache[displayName] =
-      botAvatars[Math.floor(Math.random() * botAvatars.length)];
-  }
-  const pick = avatarCache[displayName];
-
   const img = new Image();
   img.onload = () => {
-    container.innerHTML = `<img src="${avatarsDir}${pick}" alt="">`;
+    container.innerHTML = `<img src="${url}" alt="">`;
   };
   img.onerror = () => {
     const ini = initials(displayName);
     const bg = avatarColor(displayName);
     container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
   };
-  img.src = avatarsDir + pick;
+  img.src = url;
 }
 
-function showTiePopup(leaders, scores) {
+function renderTieAvatar(container, displayName, avatarFromEngine) {
+  renderAvatar(container, displayName, avatarFromEngine);
+}
+
+function showTiePopup(leaders, scores, topRows) {
   const popup = document.getElementById('tieOverlay');
   if (leaders.length < 2) return;
 
-  document.getElementById('tieName1').textContent = leaders[0];
-  document.getElementById('tieName2').textContent = leaders[1];
+  const avatarMap = {};
+  const nameMap = {};
+  (topRows || []).forEach(r => {
+    avatarMap[r.user] = r.avatar;
+    nameMap[r.user] = r.display_name;
+  });
+
+  const n1 = nameMap[leaders[0]] || leaders[0].replace(/^@/, '');
+  const n2 = nameMap[leaders[1]] || leaders[1].replace(/^@/, '');
+
+  document.getElementById('tieName1').textContent = n1;
+  document.getElementById('tieName2').textContent = n2;
   document.getElementById('tieScore1').textContent = scores[0] || 0;
   document.getElementById('tieScore2').textContent = scores[1] || 0;
 
-  renderTieAvatar(document.getElementById('tieAvatar1'), leaders[0]);
-  renderTieAvatar(document.getElementById('tieAvatar2'), leaders[1]);
+  renderTieAvatar(document.getElementById('tieAvatar1'), leaders[0], avatarMap[leaders[0]]);
+  renderTieAvatar(document.getElementById('tieAvatar2'), leaders[1], avatarMap[leaders[1]]);
 
   popup.classList.remove('show', 'hide');
   void popup.offsetWidth;
@@ -452,6 +446,32 @@ function renderState(d) {
   const ranking = document.getElementById('ranking');
   const winnerOverlay = document.getElementById('winnerOverlay');
 
+    // ★ Cập nhật VOUCHES + MIN
+  const minC = d.min_coins || 0;
+  const vouchC = d.vouch || 0;
+  const vouchTextEl = document.getElementById('vouchText');
+  const minValueEl = document.getElementById('minValue');
+  if (vouchTextEl) {
+    vouchTextEl.textContent = vouchC + ' VOUCHES';
+  }
+  if (minValueEl) {
+    minValueEl.textContent = minC;
+  }
+
+  const topKey = (d.top || []).map(r => r.user + ':' + r.score + ':' + (r.display_name || '')).join('|');
+  const renderKey = [
+    d.phase,
+    d.snap_count,
+    d.winner || '',
+    topKey,
+    Math.round(d.remaining),
+    minC,
+    vouchC
+  ].join('::');
+
+  if (renderKey === _lastRenderKey) return;
+  _lastRenderKey = renderKey;
+
   if (d.phase === 'idle') {
     timerEl.textContent = '--:--';
     timerEl.classList.remove('warn');
@@ -473,7 +493,7 @@ function renderState(d) {
         const scoreMap = {};
         d.top.forEach(row => { scoreMap[row.user] = row.score; });
         const scores = leaders.slice(0, 2).map(u => scoreMap[u] || 0);
-        showTiePopup(leaders, scores);
+        showTiePopup(leaders, scores, d.top);
       }
     }
 
@@ -487,7 +507,7 @@ function renderState(d) {
 
     if (d.winner && d.winner !== lastWinner) {
       lastWinner = d.winner;
-      showWinner(d.winner);
+      showWinner(d.winner_display || d.winner.replace(/^@/, ''));
     }
   } else {
     lastWinner = null;
@@ -495,25 +515,71 @@ function renderState(d) {
     winnerOverlay.classList.remove('show', 'hide');
   }
 
-  if (!d.top || d.top.length === 0) {
-    ranking.innerHTML = '<div class="empty">Waiting for players...</div>';
+  const top = d.top || [];
+  const currentUsers = Array.from(ranking.querySelectorAll('.row'))
+    .map(el => el.dataset.user).join('|');
+  const newUsers = top.map(r => r.user).join('|');
+
+    if (currentUsers !== newUsers) {
+    if (top.length === 0) {
+      ranking.innerHTML = '<div class="empty">💰 Need at least '
+        + minC + ' coin' + (minC !== 1 ? 's' : '')
+        + ' to join the leaderboard</div>';
+    } else {
+      const leaders = new Set(d.leaders || []);
+      const medals = ['🥇','🥈','🥉'];
+      ranking.innerHTML = top.map((row, i) => {
+        const rank = i + 1;
+        const isQualified = row.qualified !== false;  // ★ Mặc định true
+        const cls = [
+          'row',
+          rank <= 3 ? 'rank-' + rank : '',
+          leaders.has(row.user) && d.phase !== 'finished' ? 'leader' : '',
+          !isQualified ? 'unqualified' : ''   // ★ Người chưa đủ min_coins
+        ].filter(Boolean).join(' ');
+        const medal = isQualified ? (i < 3 ? medals[i] : '#' + rank) : '—';
+
+        const display = row.display_name || row.user.replace(/^@/, '');
+        const avatarHtml = '<div class="avatar" data-user="' +
+          escapeHtml(row.user) + '"></div>';
+
+        return '<div class="' + cls + '" data-user="' + escapeHtml(row.user) + '">' +
+          '<div class="medal">' + medal + '</div>' +
+          avatarHtml +
+          '<div class="user">' + escapeHtml(display) + '</div>' +
+          '<div class="score">' + row.score + '</div>' +
+        '</div>';
+      }).join('');
+
+      top.forEach((row, i) => {
+        const el = ranking.querySelectorAll('.row .avatar')[i];
+        if (el) renderAvatar(el, row.user, row.avatar);
+      });
+    }
   } else {
-    const leaders = new Set(d.leaders || []);
-    const medals = ['🥇','🥈','🥉'];
-    ranking.innerHTML = d.top.map((row, i) => {
-      const rank = i + 1;
-      const cls = [
-        'row',
-        rank <= 3 ? 'rank-' + rank : '',
-        leaders.has(row.user) && d.phase !== 'finished' ? 'leader' : ''
-      ].filter(Boolean).join(' ');
-      const medal = i < 3 ? medals[i] : '#' + rank;
-      return '<div class="' + cls + '">' +
-        '<div class="medal">' + medal + '</div>' +
-        '<div class="user">' + escapeHtml(row.user) + '</div>' +
-        '<div class="score">' + row.score + '</div>' +
-      '</div>';
-    }).join('');
+      top.forEach((row, i) => {
+      const rowEl = ranking.querySelectorAll('.row')[i];
+      if (!rowEl) return;
+      const scoreEl = rowEl.querySelector('.score');
+      if (scoreEl && scoreEl.textContent !== String(row.score)) {
+        scoreEl.textContent = row.score;
+      }
+      const display = row.display_name || row.user.replace(/^@/, '');
+      const userEl = rowEl.querySelector('.user');
+      if (userEl && userEl.textContent !== display) {
+        userEl.textContent = display;
+      }
+      const isLeader = (d.leaders || []).includes(row.user)
+                       && d.phase !== 'finished';
+      rowEl.classList.toggle('leader', isLeader);
+      // ★ Toggle unqualified
+      const isQualified = row.qualified !== false;
+      rowEl.classList.toggle('unqualified', !isQualified);
+      const avatarEl = rowEl.querySelector('.avatar');
+      if (avatarEl && !avatarEl.querySelector('img, span') && row.avatar) {
+        renderAvatar(avatarEl, row.user, row.avatar);
+      }
+    });
   }
 }
 
@@ -532,11 +598,9 @@ function connect() {
   ws.onmessage = (e) => {
     try {
       const msg = JSON.parse(e.data);
-
       if (msg.type === 'state') {
         renderState(msg.data);
       } else if (msg.type === 'theme_change') {
-        // ★ QUAN TRỌNG — nhận lệnh đổi theme từ app
         console.log('🎨 Theme change received:', msg.data.theme);
         loadTheme(msg.data.theme, true);
       } else if (!msg.type) {
@@ -556,10 +620,12 @@ function connect() {
 // ============================================================
 loadBotAvatars();
 
-// Đọc theme từ URL (nếu có) — VD: /widget.html?theme=christmas
+// ★ Ưu tiên: URL > localStorage > halloween
 const urlParams = new URLSearchParams(location.search);
-const themeFromUrl = urlParams.get('theme') || 'halloween';
-loadTheme(themeFromUrl);
+const themeFromUrl = urlParams.get('theme');
+const themeFromStorage = localStorage.getItem('auction_theme');
+const themeToLoad = themeFromUrl || themeFromStorage || 'halloween';
+loadTheme(themeToLoad);
 
 connect();
 setInterval(loadBotAvatars, 30000);

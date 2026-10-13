@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Gift Text Feed</title>
-<link rel="stylesheet" href="/static/gift-text.css?v=7">
+<link rel="stylesheet" href="/static/gift-text.css?v=10">
 </head>
 <body>
   <div class="gift-panel" id="giftPanel">
@@ -15,21 +15,14 @@
   </div>
 
 <script>
-// ============================================================
-// STATE
-// ============================================================
 let ws = null;
 let reconnectTimer = null;
 let giftIcons = {};
 let botAvatars = [];
 let wsConnected = false;
 
-// Cache avatar theo tên user (random 1 lần)
 const avatarCache = {};
 
-// ============================================================
-// UTILS
-// ============================================================
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -63,18 +56,13 @@ function avatarColor(name) {
   return colors[hash % colors.length];
 }
 
-// ============================================================
-// LOAD ASSETS
-// ============================================================
 async function loadBotAvatars() {
   try {
     const r = await fetch('/api/bots/avatars');
     const data = await r.json();
     botAvatars = data.avatars || [];
-    console.log(`🖼 Loaded ${botAvatars.length} bot avatars`);
   } catch (e) {
     botAvatars = [];
-    console.warn('⚠️ Không load được avatars:', e);
   }
 }
 
@@ -83,71 +71,74 @@ async function loadGiftAssets() {
     const r = await fetch('/api/gifts/list');
     const data = await r.json();
     giftIcons = data.icons || {};
-    console.log(`🎁 Loaded ${Object.keys(giftIcons).length} gift icons`);
   } catch (e) {
     giftIcons = {};
   }
 }
 
-// ============================================================
-// AVATAR
-// ============================================================
-function getAvatarForUser(displayName) {
-  if (avatarCache[displayName]) return avatarCache[displayName];
-  if (botAvatars.length === 0) return null;
-  const pick = botAvatars[Math.floor(Math.random() * botAvatars.length)];
-  avatarCache[displayName] = pick;
-  return pick;
+// ★ Check avatar default TikTok
+function isDefaultAvatar(url) {
+  if (!url) return true;
+  const u = String(url).toLowerCase();
+  if (u.length < 30) return true;
+  if (u.includes('default')) return true;
+  if (u.includes('avatar_default')) return true;
+  if (u.includes('tiktok_default')) return true;
+  if (u.includes('musically')) return true;
+  return false;
 }
 
-function renderAvatar(container, displayName) {
-  const avatarsDir = '/static/assets/bots/avatars/';
-
-  if (botAvatars.length === 0) {
-    const ini = initials(displayName);
-    const bg = avatarColor(displayName);
-    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+// ★ Render avatar — ưu tiên avatar thật
+function renderAvatar(container, displayName, avatarUrl, isBot) {
+  // 1. Avatar thật từ engine
+  if (avatarUrl && !isDefaultAvatar(avatarUrl)) {
+    const img = new Image();
+    img.onload = () => {
+      container.innerHTML = `<img src="${escapeHtml(avatarUrl)}" alt="">`;
+    };
+    img.onerror = () => {
+      renderInitials(container, displayName);
+    };
+    img.src = avatarUrl;
     return;
   }
 
-  const pick = getAvatarForUser(displayName);
+  // 2. Nếu là bot → dùng avatar bot
+  if (isBot && botAvatars.length > 0) {
+    if (!avatarCache[displayName]) {
+      avatarCache[displayName] = botAvatars[Math.floor(Math.random() * botAvatars.length)];
+    }
+    const pick = avatarCache[displayName];
+    container.innerHTML = `<img src="/static/assets/bots/avatars/${pick}" alt="">`;
+    return;
+  }
 
-  const img = new Image();
-  img.onload = () => {
-    container.innerHTML = `<img src="${avatarsDir}${pick}" alt="">`;
-  };
-  img.onerror = () => {
-    const ini = initials(displayName);
-    const bg = avatarColor(displayName);
-    container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
-  };
-  img.src = avatarsDir + pick;
+  // 3. Fallback initials
+  renderInitials(container, displayName);
 }
 
-// ============================================================
-// HIỂN THỊ GIFT LINE
-// ============================================================
+function renderInitials(container, displayName) {
+  const ini = initials(displayName);
+  const bg = avatarColor(displayName);
+  container.innerHTML = `<span style="background: ${bg};">${ini}</span>`;
+}
+
 function showGiftLine(data) {
   try {
-    console.log('🎁 showGiftLine:', JSON.stringify(data));
-
     const feed = document.getElementById('giftFeed');
-    if (!feed) {
-      console.error('❌ giftFeed element not found');
-      return;
-    }
+    if (!feed) return;
 
     const el = document.createElement('div');
     el.className = 'gift-line';
 
-    // Lấy thông tin
     const displayName = data.display_name || data.user || 'Unknown';
     const giftName = data.gift_name || 'Unknown Gift';
     const giftIcon = data.gift_icon || '🎁';
     const count = data.gift_count || 1;
     const vip = data.is_chaser === true;
+    const isBot = data.is_bot === true;
+    const avatarUrl = data.avatar || '';
 
-    // Tìm icon file
     const folder = data.folder || giftToFolder(giftName);
     const iconFile = giftIcons[folder];
 
@@ -169,12 +160,10 @@ function showGiftLine(data) {
       <span class="gl-x">x${count}</span>
     `;
 
-    // Xóa highlight dòng cũ
     feed.querySelectorAll('.gift-line').forEach(line => {
       line.classList.remove('highlight');
     });
 
-    // Thêm dòng mới với highlight
     el.classList.add('highlight');
     feed.appendChild(el);
 
@@ -182,18 +171,15 @@ function showGiftLine(data) {
       el.classList.remove('highlight');
     }, 3000);
 
-    // Render avatar
     const avatarEl = el.querySelector('.gl-avatar');
     if (avatarEl) {
-      renderAvatar(avatarEl, displayName);
+      renderAvatar(avatarEl, displayName, avatarUrl, isBot);
     }
 
-    // Giới hạn 10 dòng
     while (feed.children.length > 10) {
       feed.removeChild(feed.firstChild);
     }
 
-    // Tự xóa sau 20s
     setTimeout(() => {
       el.classList.add('fade-out');
       setTimeout(() => el.remove(), 600);
@@ -204,87 +190,37 @@ function showGiftLine(data) {
   }
 }
 
-// ============================================================
-// WEBSOCKET
-// ============================================================
 function connect() {
   if (reconnectTimer) clearTimeout(reconnectTimer);
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   try {
     ws = new WebSocket(proto + '://' + location.host + '/ws');
   } catch (e) {
-    console.warn('WS create error:', e);
     reconnectTimer = setTimeout(connect, 2000);
     return;
   }
 
-  ws.onopen = () => {
-    wsConnected = true;
-    console.log('🔌 WebSocket connected');
-  };
+  ws.onopen = () => { wsConnected = true; console.log('🔌 WS connected'); };
 
   ws.onmessage = (e) => {
     try {
       const msg = JSON.parse(e.data);
-      console.log('📨 WS msg:', msg.type);
-
       if (msg.type === 'gift_event') {
-        console.log('✅ Received gift_event, showing line...');
         showGiftLine(msg.data);
       }
-      // Bỏ qua 'state' — gift-text không cần
-    } catch (err) {
-      console.error('❌ Parse WS error:', err);
-    }
+    } catch (err) {}
   };
 
   ws.onclose = () => {
     wsConnected = false;
-    console.log('🔌 WS closed, retry in 2s...');
     reconnectTimer = setTimeout(connect, 2000);
   };
-
-  ws.onerror = (err) => {
-    console.warn('🔌 WS error:', err);
-    try { ws.close(); } catch(e) {}
-  };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
 }
 
-// ============================================================
-// FALLBACK POLLING (nếu WS chết)
-// ============================================================
-let lastPollTime = 0;
-
-setInterval(async () => {
-  // Nếu WS đang hoạt động → skip
-  if (ws && ws.readyState === WebSocket.OPEN) return;
-
-  // Fallback: ping server để giữ kết nối sống
-  try {
-    await fetch('/api/health');
-  } catch (e) {}
-}, 3000);
-
-// ============================================================
-// INIT
-// ============================================================
-console.log('🚀 Gift-text overlay loading...');
-Promise.all([loadGiftAssets(), loadBotAvatars()]).then(() => {
-  console.log('✅ Assets loaded, connecting WS...');
-  connect();
-});
-
-// Refresh assets mỗi 30s
+Promise.all([loadGiftAssets(), loadBotAvatars()]).then(() => connect());
 setInterval(loadGiftAssets, 30000);
 setInterval(loadBotAvatars, 30000);
-
-// Log khi có kết nối lại
-window.addEventListener('focus', () => {
-  if (!wsConnected) {
-    console.log('🔄 Window focus, reconnecting WS...');
-    connect();
-  }
-});
 </script>
 </body>
 </html>

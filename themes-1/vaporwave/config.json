@@ -1,0 +1,51 @@
+{
+  "title": "VAPORWAVE AUCTION",
+  "logo": "🌴",
+  "deco_text": "VAPORWAVE",
+  "deco_left": "🌴",
+  "deco_right": "🌊",
+  "winner_hat": "🌴",
+  "marquee": [
+    "🌴 Vaporwave",
+    "🌊 Aesthetic",
+    "💜 ＡＥＳＴＨＥＴＩＣ",
+    "🌸 90s Vibes",
+    "🛍 Mall Soft"
+  ],
+  "particles": [
+    "#ff6b9d",
+    "#a88bff",
+    "#6bb6ff",
+    "#ffb3ff"
+  ],
+  "decorations": [
+    {
+      "class": "palm",
+      "emoji": "🌴",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "wave",
+      "emoji": "🌊",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "statue",
+      "emoji": "🗿",
+      "top": "25%",
+      "right": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "disc",
+      "emoji": "💿",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

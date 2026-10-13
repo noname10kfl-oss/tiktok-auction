@@ -1,0 +1,52 @@
+{
+  "title": "GAMING AUCTION",
+  "logo": "🎮",
+  "deco_text": "GAME ON",
+  "deco_left": "🎮",
+  "deco_right": "🎯",
+  "winner_hat": "🎮",
+  "marquee": [
+    "🎮 Game On",
+    "🏆 GG WP",
+    "⚡ Ready Player One",
+    "🎯 Victory Royale",
+    "🕹 Level Up",
+    "💥 Headshot"
+  ],
+  "particles": [
+    "#00ccff",
+    "#7c5cff",
+    "#00ff88",
+    "#ff00ff"
+  ],
+  "decorations": [
+    {
+      "class": "pad",
+      "emoji": "🎮",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "target",
+      "emoji": "🎯",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "joystick",
+      "emoji": "🕹",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "trophy",
+      "emoji": "🏆",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "46px"
+    }
+  ]
+}

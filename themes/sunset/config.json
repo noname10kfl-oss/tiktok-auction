@@ -9,9 +9,7 @@
     "🌅 Golden Sunset",
     "🌇 Orange Sky",
     "☀️ Sunset Vibes",
-    "🌆 Dusk",
-    "🌉 Twilight",
-    "🎨 Colorful Sky"
+    "🌆 Dusk"
   ],
   "particles": [
     "#ff9933",
@@ -33,13 +31,6 @@
       "bottom": "8%",
       "left": "3%",
       "size": "50px"
-    },
-    {
-      "class": "city",
-      "emoji": "🌆",
-      "top": "25%",
-      "right": "5%",
-      "size": "44px"
     },
     {
       "class": "bridge",

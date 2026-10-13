@@ -1,0 +1,52 @@
+{
+  "title": "GALAXY AUCTION",
+  "logo": "🌌",
+  "deco_text": "INTERSTELLAR",
+  "deco_left": "🌌",
+  "deco_right": "🚀",
+  "winner_hat": "🌌",
+  "marquee": [
+    "🌌 Interstellar",
+    "🚀 To The Moon",
+    "⭐ Cosmic",
+    "🪐 Saturn",
+    "💫 Space Time",
+    "👽 Aliens"
+  ],
+  "particles": [
+    "#cc88ff",
+    "#66ddff",
+    "#ff88cc",
+    "#aa88ff"
+  ],
+  "decorations": [
+    {
+      "class": "galaxy",
+      "emoji": "🌌",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "rocket",
+      "emoji": "🚀",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "planet",
+      "emoji": "🪐",
+      "top": "25%",
+      "right": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "comet",
+      "emoji": "☄️",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

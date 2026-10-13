@@ -1,4 +1,4 @@
-"""TikTokLive client — dedup thông minh cho combo."""
+"""TikTokLive client — Queue tuần tự, không chồng animation."""
 import asyncio
 import re
 import time
@@ -23,15 +23,19 @@ def normalize_live_id(raw: str) -> str:
 
 class TikTokLiveRunner:
     def __init__(self, loop,
-                 on_gift: Callable[[str, int], None],
+                 on_gift: Callable[[str, int, str, str, str], None],
                  on_status: Callable[[str], None],
                  on_connected: Optional[Callable[[str], None]] = None,
-                 retry_interval: int = 10):
+                 retry_interval: int = 10,
+                 combo_wait: float = 1.5,
+                 animation_duration: float = 2.5):
         self.loop = loop
         self.on_gift = on_gift
         self.on_status = on_status
         self.on_connected = on_connected
         self.retry_interval = retry_interval
+        self.combo_wait = combo_wait                # Đợi gom combo (1.5s)
+        self.animation_duration = animation_duration  # Thời gian animation (2.5s)
 
         self.client = None
         self._connected = False
@@ -78,20 +82,85 @@ class TikTokLiveRunner:
             try:
                 client = TikTokLiveClient(unique_id=unique_id)
 
-                # ============================================================
-                # ★ STATE cho dedup thông minh
-                # Lưu trạng thái theo (user, gift_id):
-                #   - last_repeat: repeat_count lần trước
-                #   - last_time: thời điểm nhận
-                #   - total_repeat: tổng số đã cộng
-                #
-                # Logic:
-                #   - Nếu repeat_count == last_repeat (trong 6s) → SKIP (dup)
-                #   - Nếu repeat_count > last_repeat → cộng phần chênh lệch
-                #   - Nếu repeat_count < last_repeat → reset (user tặng lại từ đầu)
-                # ============================================================
-                _gift_state = {}   # {(user, gift_id): {"repeat": int, "time": float, "counted": int}}
-                _lock = asyncio.Lock()
+                # ★ QUEUE — hàng đợi event
+                _queue = asyncio.Queue()
+                _seen_msg_ids = set()
+                _worker_task = None
+
+                # ═══════════════════════════════════════════════════
+                # WORKER — lấy event từ queue, xử lý tuần tự
+                # ═══════════════════════════════════════════════════
+                async def _worker():
+                    """Worker chạy liên tục, xử lý event tuần tự."""
+                    print("[worker] Started")
+                    while True:
+                        try:
+                            # Lấy event đầu tiên từ queue (block)
+                            event_data = await _queue.get()
+
+                            # ★ Gom combo: đợi 1.5s, nếu có event cùng key → gộp
+                            key = event_data["key"]
+                            count = event_data["repeat"]
+                            last_event = event_data
+                            deadline = time.time() + self.combo_wait
+
+                            while True:
+                                remaining = deadline - time.time()
+                                if remaining <= 0:
+                                    break
+                                try:
+                                    # Đợi event mới trong `remaining` giây
+                                    next_event = await asyncio.wait_for(
+                                        _queue.get(),
+                                        timeout=remaining
+                                    )
+                                    # Nếu cùng key → gộp
+                                    if next_event["key"] == key:
+                                        count += next_event["repeat"]
+                                        last_event = next_event
+                                        # Reset deadline (chờ thêm 1.5s nữa)
+                                        deadline = time.time() + self.combo_wait
+                                        print(f"📦 COMBO MERGE: "
+                                              f"{last_event['user']} "
+                                              f"{last_event['gift_name']} × {count}")
+                                    else:
+                                        # Khác key → đẩy lại queue, thoát loop
+                                        await _queue.put(next_event)
+                                        break
+                                except asyncio.TimeoutError:
+                                    break
+
+                            # ★ Gửi callback 1 lần
+                            diamonds = last_event["diamonds"]
+                            points = diamonds * count if diamonds > 0 else count
+
+                            print(f"✅ SEND: {last_event['user']} "
+                                  f"{last_event['gift_name']} × {count} "
+                                  f"→ +{points} pts")
+
+                            try:
+                                self.on_gift(
+                                    last_event["user"],
+                                    points,
+                                    last_event["avatar"],
+                                    last_event["display_name"],
+                                    last_event["gift_name"],
+                                )
+                            except Exception as e:
+                                print(f"[on_gift callback] {e}")
+
+                            # ★ Đợi animation xong trước khi xử lý event tiếp
+                            await asyncio.sleep(self.animation_duration)
+
+                            _queue.task_done()
+
+                        except asyncio.CancelledError:
+                            print("[worker] Cancelled")
+                            break
+                        except Exception as e:
+                            print(f"[worker] Error: {e}")
+                            import traceback
+                            traceback.print_exc()
 
                 @client.on(ConnectEvent)
                 async def _on_connect(event):
@@ -113,74 +182,79 @@ class TikTokLiveRunner:
                 async def _on_gift(event):
                     try:
                         user = "@" + event.user.unique_id
+                        display_name = (
+                            getattr(event.user, "nickname", "")
+                            or getattr(event.user, "display_name", "")
+                            or event.user.unique_id
+                        )
                         gift = event.gift
                         gift_name = getattr(gift, "name", "Unknown")
                         gift_id = getattr(gift, "id", 0)
                         diamonds = getattr(gift, "diamond_count", 0) or 0
                         repeat = getattr(event, "repeat_count", 1) or 1
 
+                        # Avatar
+                        avatar_url = ""
+                        try:
+                            for attr in ["avatar_thumb", "avatar_medium", "avatar_larger"]:
+                                obj = getattr(event.user, attr, None)
+                                if obj:
+                                    urls = getattr(obj, "url_list", None)
+                                    if urls and isinstance(urls, list) and len(urls) > 0:
+                                        avatar_url = urls[0]
+                                        break
+                                    elif urls and hasattr(urls, "url_list"):
+                                        inner = urls.url_list
+                                        if isinstance(inner, list) and len(inner) > 0:
+                                            avatar_url = inner[0]
+                                            break
+                            if not avatar_url:
+                                avatar_url = getattr(event.user, "avatar_url", "") or ""
+                        except Exception as e:
+                            print(f"[avatar] {e}")
+
+                        # msg_id dedup
+                        msg_id = None
+                        try:
+                            common = getattr(event, "common", None)
+                            if common:
+                                mid = getattr(common, "msg_id", None)
+                                if mid:
+                                    msg_id = str(mid)
+                        except Exception:
+                            pass
+
+                        if msg_id:
+                            if msg_id in _seen_msg_ids:
+                                print(f"📦 SKIP (msg_id): {user} {gift_name}")
+                                return
+                            _seen_msg_ids.add(msg_id)
+                            if len(_seen_msg_ids) > 10000:
+                                _seen_msg_ids.clear()
+
+                        # ★ Đẩy vào queue
                         key = (user, gift_id)
-                        now = time.time()
+                        await _queue.put({
+                            "key": key,
+                            "user": user,
+                            "display_name": display_name,
+                            "avatar": avatar_url,
+                            "gift_name": gift_name,
+                            "gift_id": gift_id,
+                            "diamonds": diamonds,
+                            "repeat": repeat,
+                        })
 
-                        async with _lock:
-                            state = _gift_state.get(key)
-
-                            # Lần đầu nhận quà này
-                            if state is None:
-                                _gift_state[key] = {
-                                    "repeat": repeat,
-                                    "time": now,
-                                    "counted": repeat,
-                                }
-                                points_to_add = repeat * (diamonds if diamonds > 0 else 1)
-
-                                print(f"📦 GIFT NEW: {user} sent "
-                                      f"{gift_name} x{repeat} → +{points_to_add} pts")
-                                self.on_gift(user, points_to_add)
-                                return
-
-                            # Đã có state trước
-                            last_repeat = state["repeat"]
-                            last_time = state["time"]
-                            time_diff = now - last_time
-
-                            # ★ Case 1: repeat_count GIỐNG HỆT trong 6s → DUP
-                            if repeat == last_repeat and time_diff < 6.0:
-                                print(f"📦 SKIP DUP: {user} {gift_name} "
-                                      f"x{repeat} (cách {time_diff:.1f}s)")
-                                return
-
-                            # ★ Case 2: repeat_count TĂNG (combo) → cộng chênh lệch
-                            if repeat > last_repeat:
-                                diff = repeat - last_repeat
-                                points_to_add = diff * (diamonds if diamonds > 0 else 1)
-                                state["repeat"] = repeat
-                                state["time"] = now
-                                state["counted"] += diff
-
-                                print(f"📦 GIFT COMBO: {user} {gift_name} "
-                                      f"x{repeat} (+{diff}) → +{points_to_add} pts")
-                                self.on_gift(user, points_to_add)
-                                return
-
-                            # ★ Case 3: repeat_count GIẢM (user tặng lại mới) → reset
-                            if repeat < last_repeat:
-                                # Kiểm tra thêm: nếu cách > 2s thì coi là tặng mới
-                                state["repeat"] = repeat
-                                state["time"] = now
-                                state["counted"] += repeat
-
-                                points_to_add = repeat * (diamonds if diamonds > 0 else 1)
-
-                                print(f"📦 GIFT RESET: {user} {gift_name} "
-                                      f"x{repeat} → +{points_to_add} pts")
-                                self.on_gift(user, points_to_add)
-                                return
+                        print(f"📥 QUEUE: {user} {gift_name} × {repeat} "
+                              f"(queue size: {_queue.qsize()})")
 
                     except Exception as e:
                         print(f"[gift] error: {e}")
                         import traceback
                         traceback.print_exc()
+
+                # Start worker
+                _worker_task = asyncio.create_task(_worker())
 
                 self.client = client
                 await client.connect()

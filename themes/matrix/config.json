@@ -9,7 +9,6 @@
     "💚 Wake Up Neo",
     "🐇 Follow White Rabbit",
     "💊 Red or Blue",
-    "🔋 Power",
     "🌐 The Matrix"
   ],
   "particles": [
@@ -31,13 +30,6 @@
       "emoji": "🔋",
       "bottom": "8%",
       "left": "3%",
-      "size": "44px"
-    },
-    {
-      "class": "rabbit",
-      "emoji": "🐇",
-      "top": "25%",
-      "right": "5%",
       "size": "44px"
     },
     {

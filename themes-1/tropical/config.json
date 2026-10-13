@@ -1,0 +1,51 @@
+{
+  "title": "TROPICAL AUCTION",
+  "logo": "🌴",
+  "deco_text": "TROPICAL PARADISE",
+  "deco_left": "🌴",
+  "deco_right": "🍹",
+  "winner_hat": "🌴",
+  "marquee": [
+    "🌴 Tropical Paradise",
+    "🍹 Cocktail Time",
+    "🌺 Aloha",
+    "🏖 Beach Vibes",
+    "🦜 Paradise"
+  ],
+  "particles": [
+    "#ffaa00",
+    "#00ff88",
+    "#ff5500",
+    "#00ccff"
+  ],
+  "decorations": [
+    {
+      "class": "palm",
+      "emoji": "🌴",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "cocktail",
+      "emoji": "🍹",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "flower",
+      "emoji": "🌺",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "parrot",
+      "emoji": "🦜",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

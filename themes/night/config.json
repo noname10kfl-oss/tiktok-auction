@@ -9,8 +9,7 @@
     "🌙 Moonlight",
     "⭐ Starry Night",
     "🌌 Milky Way",
-    "✨ Twinkle",
-    "🌠 Shooting Star"
+    "✨ Twinkle"
   ],
   "particles": [
     "#aaccff",
@@ -31,13 +30,6 @@
       "emoji": "⭐",
       "bottom": "8%",
       "left": "3%",
-      "size": "40px"
-    },
-    {
-      "class": "sparkle",
-      "emoji": "✨",
-      "top": "25%",
-      "right": "5%",
       "size": "40px"
     },
     {

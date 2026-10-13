@@ -9,9 +9,7 @@
     "📼 Retro 80s",
     "🕹 Arcade",
     "🎵 Synthwave",
-    "📻 Radio",
-    "🌟 Retro Wave",
-    "💾 Floppy Disk"
+    "📻 Radio"
   ],
   "particles": [
     "#ff00ff",
@@ -38,13 +36,6 @@
       "class": "music",
       "emoji": "🎵",
       "top": "25%",
-      "right": "5%",
-      "size": "44px"
-    },
-    {
-      "class": "radio",
-      "emoji": "📻",
-      "bottom": "10%",
       "right": "5%",
       "size": "44px"
     }

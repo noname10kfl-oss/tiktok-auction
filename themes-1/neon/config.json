@@ -1,0 +1,52 @@
+{
+  "title": "NEON AUCTION",
+  "logo": "🌃",
+  "deco_text": "NEON NIGHTS",
+  "deco_left": "⚡",
+  "deco_right": "💜",
+  "winner_hat": "🌃",
+  "marquee": [
+    "🌃 Neon Nights",
+    "⚡ Cyberpunk",
+    "💜 Synth Wave",
+    "🎵 Retrowave",
+    "✨ Glow Up",
+    "🌆 Midnight City"
+  ],
+  "particles": [
+    "#ff00ff",
+    "#00ffff",
+    "#ff0080",
+    "#8800ff"
+  ],
+  "decorations": [
+    {
+      "class": "bolt",
+      "emoji": "⚡",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "heart",
+      "emoji": "💜",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "star",
+      "emoji": "✨",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "city",
+      "emoji": "🌆",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

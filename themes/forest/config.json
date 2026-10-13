@@ -9,9 +9,7 @@
     "🌲 Wild Forest",
     "🦌 Nature Vibes",
     "🍃 Green Life",
-    "🐺 Wild Pack",
-    "🌿 Jungle",
-    "🐻 Bear Cave"
+    "🐺 Wild Pack"
   ],
   "particles": [
     "#88ff88",
@@ -26,13 +24,6 @@
       "top": "10%",
       "left": "5%",
       "size": "50px"
-    },
-    {
-      "class": "leaf",
-      "emoji": "🍃",
-      "bottom": "8%",
-      "left": "3%",
-      "size": "44px"
     },
     {
       "class": "deer",

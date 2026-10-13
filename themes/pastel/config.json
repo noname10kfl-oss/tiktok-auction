@@ -9,8 +9,7 @@
     "🎀 Pastel Dream",
     "🌷 Soft Aesthetic",
     "🦄 Unicorn",
-    "☁️ Dreamy",
-    "🌸 Kawaii"
+    "☁️ Dreamy"
   ],
   "particles": [
     "#ffd1dc",
@@ -37,13 +36,6 @@
       "class": "unicorn",
       "emoji": "🦄",
       "top": "25%",
-      "right": "5%",
-      "size": "44px"
-    },
-    {
-      "class": "cloud",
-      "emoji": "☁️",
-      "bottom": "10%",
       "right": "5%",
       "size": "44px"
     }

@@ -9,8 +9,7 @@
     "⚙️ Steampunk Era",
     "🎩 Victorian",
     "🚂 Steam Train",
-    "🔧 Mechanic",
-    "🕰 Clockwork"
+    "🔧 Mechanic"
   ],
   "particles": [
     "#d4a574",
@@ -39,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "50px"
-    },
-    {
-      "class": "clock",
-      "emoji": "🕰",
-      "bottom": "10%",
-      "right": "5%",
-      "size": "44px"
     }
   ]
 }

@@ -9,9 +9,7 @@
     "🧧 Chúc Mừng Năm Mới",
     "🌸 Hoa Mai",
     "🏮 Lì Xì",
-    "🐉 Rồng Vàng",
-    "🎊 Tết Sum Vầy",
-    "🍀 An Khang"
+    "🐉 Rồng Vàng"
   ],
   "particles": [
     "#ffcc00",
@@ -39,13 +37,6 @@
       "emoji": "🧧",
       "bottom": "8%",
       "right": "3%",
-      "size": "50px"
-    },
-    {
-      "class": "dragon",
-      "emoji": "🐉",
-      "top": "40%",
-      "right": "5%",
       "size": "50px"
     }
   ]

@@ -1,0 +1,52 @@
+{
+  "title": "FIRE AUCTION",
+  "logo": "🔥",
+  "deco_text": "BURNING UP",
+  "deco_left": "🔥",
+  "deco_right": "💥",
+  "winner_hat": "🔥",
+  "marquee": [
+    "🔥 Burning Up",
+    "💥 Explosion",
+    "🌋 Volcano",
+    "⚡ Lightning",
+    "🚒 Fire Force",
+    "♨️ Hot Stuff"
+  ],
+  "particles": [
+    "#ff5500",
+    "#ffcc00",
+    "#ff2200",
+    "#ff8800"
+  ],
+  "decorations": [
+    {
+      "class": "fire",
+      "emoji": "🔥",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "boom",
+      "emoji": "💥",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "bolt",
+      "emoji": "⚡",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "volcano",
+      "emoji": "🌋",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

@@ -1,0 +1,400 @@
+======================================================================
+📊 THỐNG KÊ GIFT IMPORT
+======================================================================
+
+📦 Tổng gift:       1,610
+📁 Ảnh copy được:   1,610
+📁 FX có sẵn:       10
+
+🎆 FX gift:         10
+📝 Text gift:       1,600
+
+──────────────────────────────────────────────────────────────────────
+💰 PHÂN BỐ THEO COINS
+──────────────────────────────────────────────────────────────────────
+            1 coins:   191 gift
+            2 coins:     2 gift
+            5 coins:    47 gift
+            6 coins:     1 gift
+            7 coins:     2 gift
+            9 coins:     6 gift
+           10 coins:    73 gift
+           15 coins:     7 gift
+           20 coins:    15 gift
+           25 coins:     1 gift
+           29 coins:     1 gift
+           30 coins:    17 gift
+           35 coins:     1 gift
+           39 coins:     1 gift
+           49 coins:     1 gift
+           50 coins:     2 gift
+           70 coins:     1 gift
+           88 coins:     8 gift
+           90 coins:     4 gift
+           94 coins:     1 gift
+           99 coins:    59 gift
+          100 coins:    33 gift
+          129 coins:     1 gift
+          149 coins:    19 gift
+          150 coins:    10 gift
+          153 coins:     1 gift
+          169 coins:     1 gift
+          199 coins:    78 gift
+          200 coins:    16 gift
+          214 coins:     1 gift
+          222 coins:     1 gift
+          225 coins:     2 gift
+          249 coins:    23 gift
+          250 coins:     1 gift
+          289 coins:     1 gift
+          299 coins:    82 gift
+          300 coins:     7 gift
+          349 coins:    27 gift
+          388 coins:     1 gift
+          398 coins:     1 gift
+          399 coins:    62 gift
+          400 coins:    25 gift
+          449 coins:    18 gift
+          450 coins:    18 gift
+          499 coins:    17 gift
+          500 coins:    74 gift
+          530 coins:     1 gift
+          549 coins:     3 gift
+          550 coins:     1 gift
+          599 coins:     7 gift
+          600 coins:     3 gift
+          649 coins:     1 gift
+          699 coins:     1 gift
+          700 coins:     7 gift
+          799 coins:     3 gift
+          800 coins:     7 gift
+          899 coins:    11 gift
+          900 coins:     3 gift
+          999 coins:    18 gift
+        1,000 coins:    53 gift
+        1,030 coins:     2 gift
+        1,031 coins:     1 gift
+        1,088 coins:     3 gift
+        1,099 coins:     3 gift
+        1,200 coins:    13 gift
+        1,299 coins:     3 gift
+        1,300 coins:     2 gift
+        1,400 coins:     4 gift
+        1,499 coins:     2 gift
+        1,500 coins:    30 gift
+        1,580 coins:     1 gift
+        1,599 coins:     2 gift
+        1,600 coins:     3 gift
+        1,700 coins:     1 gift
+        1,799 coins:     2 gift
+        1,800 coins:     5 gift
+        1,999 coins:    20 gift
+        2,000 coins:    12 gift
+        2,025 coins:     2 gift
+        2,150 coins:     1 gift
+        2,199 coins:     6 gift
+        2,200 coins:     7 gift
+        2,380 coins:     1 gift
+        2,499 coins:     4 gift
+        2,500 coins:     3 gift
+        2,599 coins:     1 gift
+        2,800 coins:     5 gift
+        2,850 coins:     1 gift
+        2,888 coins:     1 gift
+        2,988 coins:     4 gift
+        2,999 coins:    27 gift
+        3,000 coins:     8 gift
+        3,088 coins:     5 gift
+        3,188 coins:     1 gift
+        3,200 coins:     1 gift
+        3,350 coins:     2 gift
+        3,999 coins:     9 gift
+        4,000 coins:    11 gift
+        4,088 coins:     7 gift
+        4,099 coins:     2 gift
+        4,500 coins:     1 gift
+        4,888 coins:     5 gift
+        4,918 coins:     1 gift
+        4,999 coins:    11 gift
+        5,000 coins:    30 gift
+        5,288 coins:     1 gift
+        5,388 coins:     1 gift
+        5,500 coins:     1 gift
+        5,888 coins:     2 gift
+        5,999 coins:     4 gift
+        6,000 coins:    18 gift
+        6,599 coins:     1 gift
+        6,600 coins:     1 gift
+        6,999 coins:     7 gift
+        7,000 coins:     4 gift
+        7,238 coins:     1 gift
+        7,700 coins:     2 gift
+        7,999 coins:     7 gift
+        8,000 coins:     7 gift
+        8,999 coins:     1 gift
+        9,000 coins:     3 gift
+        9,699 coins:     1 gift
+        9,999 coins:     2 gift
+       10,000 coins:    10 gift
+       10,999 coins:     3 gift
+       11,999 coins:     1 gift
+       12,000 coins:    19 gift
+       12,999 coins:     2 gift
+       13,500 coins:     3 gift
+       13,999 coins:     4 gift
+       14,000 coins:     1 gift
+       14,999 coins:    15 gift
+       15,000 coins:    56 gift
+       15,999 coins:     4 gift
+       17,000 coins:     2 gift
+       18,000 coins:     3 gift
+       18,999 coins:     2 gift
+       19,000 coins:     1 gift
+       19,999 coins:     7 gift
+       20,000 coins:     8 gift
+       20,888 coins:     1 gift
+       21,000 coins:     2 gift
+       22,000 coins:     1 gift
+       22,500 coins:     1 gift
+       23,999 coins:     1 gift
+       25,000 coins:     1 gift
+       25,999 coins:    16 gift
+       26,999 coins:     1 gift
+       28,888 coins:     1 gift
+       29,999 coins:     5 gift
+       30,000 coins:     7 gift
+       30,999 coins:     2 gift
+       34,000 coins:     2 gift
+       34,500 coins:     1 gift
+       34,999 coins:     1 gift
+       39,999 coins:     3 gift
+       40,000 coins:     1 gift
+       41,999 coins:     1 gift
+       42,999 coins:    10 gift
+       60,999 coins:     1 gift
+
+──────────────────────────────────────────────────────────────────────
+✅ FX GIFT ĐÃ CÓ FILE WEBM (10 gift)
+──────────────────────────────────────────────────────────────────────
+
+   ✅ Game Controller                               100 coins
+   ✅ Super GG                                      100 coins
+   ✅ Corgi                                         299 coins
+   ✅ Money Gun                                     500 coins
+   ✅ Swan                                          699 coins
+   ✅ Galaxy                                      1,000 coins
+   ✅ Interstellar                               10,000 coins
+   ✅ Lion                                       29,999 coins
+   ✅ TikTok Universe                            34,999 coins
+   ✅ Fire Phoenix                               41,999 coins
+
+──────────────────────────────────────────────────────────────────────
+🎯 TOP 100 GIFT GIÁ CAO — NÊN THÊM FX
+──────────────────────────────────────────────────────────────────────
+
+★ Gift ≥ 1000 coins: 583
+
+   ❌ Holiday Universe                             60,999 coins  → holiday_universe.webm
+   ❌ Arnold the Warrior                           42,999 coins  → arnold_the_warrior.webm
+   ❌ Julius the Champion                          42,999 coins  → julius_the_champion.webm
+   ❌ King Leonardo                                42,999 coins  → king_leonardo.webm
+   ❌ King of Legends                              42,999 coins  → king_of_legends.webm
+   ❌ Legend Marcellus                             42,999 coins  → legend_marcellus.webm
+   ❌ Lord Marcellus                               42,999 coins  → lord_marcellus.webm
+   ❌ Magic Marcia                                 42,999 coins  → magic_marcia.webm
+   ❌ Pegasus                                      42,999 coins  → pegasus.webm
+   ❌ Valerian's Oath                              42,999 coins  → valerian_s_oath.webm
+   ❌ Yuki's Vigilance                             42,999 coins  → yuki_s_vigilance.webm
+   ✅ Fire Phoenix                                 41,999 coins  → fire_phoenix.webm
+   ❌ Miracle ss                                   40,000 coins  → miracle_ss.webm
+   ❌ Holiday Lion                                 39,999 coins  → holiday_lion.webm
+   ❌ Thunder Falcon                               39,999 coins  → thunder_falcon.webm
+   ❌ TikTok Stars                                 39,999 coins  → tiktok_stars.webm
+   ✅ TikTok Universe                              34,999 coins  → tiktok_universe.webm
+   ❌ Seal and Whale                               34,500 coins  → seal_and_whale.webm
+   ❌ Leon and Lion                                34,000 coins  → leon_and_lion.webm
+   ❌ Zeus                                         34,000 coins  → zeus.webm
+   ❌ Crescent Lion                                30,999 coins  → crescent_lion.webm
+   ❌ Guardian Rhino                               30,999 coins  → guardian_rhino.webm
+   ❌ Community Legends                            30,000 coins  → community_legends.webm
+   ❌ Gorilla                                      30,000 coins  → gorilla.webm
+   ❌ LIVE Pro Face-Off                            30,000 coins  → live_pro_face_off.webm
+   ❌ Magic Rod                                    30,000 coins  → magic_rod.webm
+   ❌ Sam the Whale                                30,000 coins  → sam_the_whale.webm
+   ❌ Superhero fight                              30,000 coins  → superhero_fight.webm
+   ❌ TikTok Houses Glory                          30,000 coins  → tiktok_houses_glory.webm
+   ❌ Go Big LIVE Legends                          29,999 coins  → go_big_live_legends.webm
+   ❌ Golden sports car                            29,999 coins  → golden_sports_car.webm
+   ❌ Knee Sliding                                 29,999 coins  → knee_sliding.webm
+   ✅ Lion                                         29,999 coins  → lion.webm
+   ❌ LIVE Legends                                 29,999 coins  → live_legends.webm
+   ❌ Towards Future                               28,888 coins  → towards_future.webm
+   ❌ Dragon Flame                                 26,999 coins  → dragon_flame.webm
+   ❌ Adam’s Dream                                 25,999 coins  → adam_s_dream.webm
+   ❌ Chasing Glory                                25,999 coins  → chasing_glory.webm
+   ❌ Cyber Roar                                   25,999 coins  → cyber_roar.webm
+   ❌ Flamenco dancers                             25,999 coins  → flamenco_dancers.webm
+   ❌ Gate of Trial                                25,999 coins  → gate_of_trial.webm
+   ❌ Greatsword Temple                            25,999 coins  → greatsword_temple.webm
+   ❌ Griffin                                      25,999 coins  → griffin.webm
+   ❌ Light Castle                                 25,999 coins  → light_castle.webm
+   ❌ Phoenix                                      25,999 coins  → phoenix.webm
+   ❌ Rin the Snowborn                             25,999 coins  → rin_the_snowborn.webm
+   ❌ Skyforge Citadel                             25,999 coins  → skyforge_citadel.webm
+   ❌ Solar Temple                                 25,999 coins  → solar_temple.webm
+   ❌ Stellar Ark                                  25,999 coins  → stellar_ark.webm
+   ❌ T-rex                                        25,999 coins  → t_rex.webm
+   ❌ Undersea Kingdom                             25,999 coins  → undersea_kingdom.webm
+   ❌ Vulcan                                       25,999 coins  → vulcan.webm
+   ❌ Rose Carriage                                25,000 coins  → rose_carriage.webm
+   ❌ Infinite Heart                               23,999 coins  → infinite_heart.webm
+   ❌ Siren's Aria                                 22,500 coins  → siren_s_aria.webm
+   ❌ Black Tiger                                  22,000 coins  → black_tiger.webm
+   ❌ Pop Off                                      21,000 coins  → pop_off.webm
+   ❌ Water Puppetry                               21,000 coins  → water_puppetry.webm
+   ❌ Dragon Gate                                  20,888 coins  → dragon_gate.webm
+   ❌ Castle Fantasy                               20,000 coins  → castle_fantasy.webm
+   ❌ Gyeongbokgung                                20,000 coins  → gyeongbokgung.webm
+   ❌ Premium Shuttle                              20,000 coins  → premium_shuttle.webm
+   ❌ Red Devil Corgi                              20,000 coins  → red_devil_corgi.webm
+   ❌ Spark                                        20,000 coins  → spark.webm
+   ❌ TikTok Shuttle                               20,000 coins  → tiktok_shuttle.webm
+   ❌ Winter Magic                                 20,000 coins  → winter_magic.webm
+   ❌ Yacht                                        20,000 coins  → yacht.webm
+   ❌ Fly Love                                     19,999 coins  → fly_love.webm
+   ❌ Mount Olympus                                19,999 coins  → mount_olympus.webm
+   ❌ Party Boat                                   19,999 coins  → party_boat.webm
+   ❌ Ramadan Celebration                          19,999 coins  → ramadan_celebration.webm
+   ❌ TaiPei 101                                   19,999 coins  → taipei_101.webm
+   ❌ Team Up                                      19,999 coins  → team_up.webm
+   ❌ Tiger                                        19,999 coins  → tiger.webm
+   ❌ Super Car                                    19,000 coins  → super_car.webm
+   ❌ Rust vs World                                18,999 coins  → rust_vs_world.webm
+   ❌ Wrath of Kings                               18,999 coins  → wrath_of_kings.webm
+   ❌ Diamond flight                               18,000 coins  → diamond_flight.webm
+   ❌ Golden Hall                                  18,000 coins  → golden_hall.webm
+   ❌ Shell Castle                                 18,000 coins  → shell_castle.webm
+   ❌ Amusement Park                               17,000 coins  → amusement_park.webm
+   ❌ Jet Car                                      17,000 coins  → jet_car.webm
+   ❌ Malayan Tiger                                15,999 coins  → malayan_tiger.webm
+   ❌ Racing Legend                                15,999 coins  → racing_legend.webm
+   ❌ Stadium                                      15,999 coins  → stadium.webm
+   ❌ White Tiger                                  15,999 coins  → white_tiger.webm
+   ❌ Alpha Wolves Scepter                         15,000 coins  → alpha_wolves_scepter.webm
+   ❌ Arabian Cheetah                              15,000 coins  → arabian_cheetah.webm
+   ❌ Arabian Stallion                             15,000 coins  → arabian_stallion.webm
+   ❌ Battle Champion                              15,000 coins  → battle_champion.webm
+   ❌ Black Wolf                                   15,000 coins  → black_wolf.webm
+   ❌ Bran Castle                                  15,000 coins  → bran_castle.webm
+   ❌ Carpathian Deer                              15,000 coins  → carpathian_deer.webm
+   ❌ Community Support                            15,000 coins  → community_support.webm
+   ❌ Corgi's Happy Chuseok                        15,000 coins  → corgi_s_happy_chuseok.webm
+   ❌ Diamond Stage                                15,000 coins  → diamond_stage.webm
+   ❌ DJ Peak                                      15,000 coins  → dj_peak.webm
+   ❌ Dream Ride                                   15,000 coins  → dream_ride.webm
+   ❌ F1 Austin L                                  15,000 coins  → f1_austin_l.webm
+   ❌ Firelight Kingdom                            15,000 coins  → firelight_kingdom.webm
+
+──────────────────────────────────────────────────────────────────────
+📁 DANH SÁCH FILE WEBM CẦN THÊM VÀO assets/gift-effects/
+──────────────────────────────────────────────────────────────────────
+
+   holiday_universe.webm
+   arnold_the_warrior.webm
+   julius_the_champion.webm
+   king_leonardo.webm
+   king_of_legends.webm
+   legend_marcellus.webm
+   lord_marcellus.webm
+   magic_marcia.webm
+   pegasus.webm
+   valerian_s_oath.webm
+   yuki_s_vigilance.webm
+   miracle_ss.webm
+   holiday_lion.webm
+   thunder_falcon.webm
+   tiktok_stars.webm
+   seal_and_whale.webm
+   leon_and_lion.webm
+   zeus.webm
+   crescent_lion.webm
+   guardian_rhino.webm
+   community_legends.webm
+   gorilla.webm
+   live_pro_face_off.webm
+   magic_rod.webm
+   sam_the_whale.webm
+   superhero_fight.webm
+   tiktok_houses_glory.webm
+   go_big_live_legends.webm
+   golden_sports_car.webm
+   knee_sliding.webm
+   live_legends.webm
+   towards_future.webm
+   dragon_flame.webm
+   adam_s_dream.webm
+   chasing_glory.webm
+   cyber_roar.webm
+   flamenco_dancers.webm
+   gate_of_trial.webm
+   greatsword_temple.webm
+   griffin.webm
+   light_castle.webm
+   phoenix.webm
+   rin_the_snowborn.webm
+   skyforge_citadel.webm
+   solar_temple.webm
+   stellar_ark.webm
+   t_rex.webm
+   undersea_kingdom.webm
+   vulcan.webm
+   rose_carriage.webm
+   infinite_heart.webm
+   siren_s_aria.webm
+   black_tiger.webm
+   pop_off.webm
+   water_puppetry.webm
+   dragon_gate.webm
+   castle_fantasy.webm
+   gyeongbokgung.webm
+   premium_shuttle.webm
+   red_devil_corgi.webm
+   spark.webm
+   tiktok_shuttle.webm
+   winter_magic.webm
+   yacht.webm
+   fly_love.webm
+   mount_olympus.webm
+   party_boat.webm
+   ramadan_celebration.webm
+   taipei_101.webm
+   team_up.webm
+   tiger.webm
+   super_car.webm
+   rust_vs_world.webm
+   wrath_of_kings.webm
+   diamond_flight.webm
+   golden_hall.webm
+   shell_castle.webm
+   amusement_park.webm
+   jet_car.webm
+   malayan_tiger.webm
+   racing_legend.webm
+   stadium.webm
+   white_tiger.webm
+   alpha_wolves_scepter.webm
+   arabian_cheetah.webm
+   arabian_stallion.webm
+   battle_champion.webm
+   black_wolf.webm
+   bran_castle.webm
+   carpathian_deer.webm
+   community_support.webm
+   corgi_s_happy_chuseok.webm
+   diamond_stage.webm
+   dj_peak.webm
+   dream_ride.webm
+   f1_austin_l.webm
+   firelight_kingdom.webm
+
+======================================================================

@@ -9,9 +9,7 @@
     "👑 Royal Gold",
     "💰 Money Rain",
     "🏆 Champion",
-    "💎 Diamond",
-    "⭐ VIP",
-    "🎖 Royal Family"
+    "💎 Diamond"
   ],
   "particles": [
     "#ffd700",
@@ -40,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "44px"
-    },
-    {
-      "class": "trophy",
-      "emoji": "🏆",
-      "bottom": "10%",
-      "right": "5%",
-      "size": "50px"
     }
   ]
 }

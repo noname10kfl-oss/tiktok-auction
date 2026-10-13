@@ -1,0 +1,52 @@
+{
+  "title": "OCEAN AUCTION",
+  "logo": "🌊",
+  "deco_text": "DEEP OCEAN",
+  "deco_left": "🌊",
+  "deco_right": "🐠",
+  "winner_hat": "🌊",
+  "marquee": [
+    "🌊 Deep Ocean",
+    "🐠 Under The Sea",
+    "🐚 Ocean Vibes",
+    "🦈 Jaws",
+    "💧 Aqua",
+    "🐙 Deep Blue"
+  ],
+  "particles": [
+    "#00ccff",
+    "#00ffcc",
+    "#0088ff",
+    "#00ddff"
+  ],
+  "decorations": [
+    {
+      "class": "wave",
+      "emoji": "🌊",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "fish",
+      "emoji": "🐠",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "shell",
+      "emoji": "🐚",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "shark",
+      "emoji": "🦈",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

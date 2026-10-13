@@ -8,11 +8,8 @@
   "marquee": [
     "🎃 Trick or Treat",
     "🦇 Spooky Vibes",
-    "🎃 Boo!",
-    "🧙 Happy Halloween",
-    "👻 Halloween Night",
-    "🍬 Candy Time",
-    "🕷 Spider Web"
+    "👻 Boo!",
+    "🧙 Happy Halloween"
   ],
   "particles": [
     "#ff8000",
@@ -41,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "38px"
-    },
-    {
-      "class": "spider",
-      "emoji": "🕷",
-      "top": "55%",
-      "left": "4%",
-      "size": "36px"
     }
   ]
 }

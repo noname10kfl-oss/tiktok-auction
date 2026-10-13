@@ -1,0 +1,52 @@
+{
+  "title": "RAINBOW AUCTION",
+  "logo": "🌈",
+  "deco_text": "TASTE THE RAINBOW",
+  "deco_left": "🌈",
+  "deco_right": "☁️",
+  "winner_hat": "🌈",
+  "marquee": [
+    "🌈 Taste The Rainbow",
+    "☁️ Over The Rainbow",
+    "🌸 Colorful",
+    "🎨 Rainbow Road",
+    "✨ Color Magic"
+  ],
+  "particles": [
+    "#ff0000",
+    "#ffff00",
+    "#00ff00",
+    "#00ccff",
+    "#ff00ff"
+  ],
+  "decorations": [
+    {
+      "class": "rainbow",
+      "emoji": "🌈",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "cloud",
+      "emoji": "☁️",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "sparkle",
+      "emoji": "✨",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "flower",
+      "emoji": "🌸",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

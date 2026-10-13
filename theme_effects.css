@@ -1,0 +1,376 @@
+/* ═══════════════════════════════════════════════════════════
+   THEME EFFECTS — Bộ animation dùng chung cho mọi theme
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Hiệu ứng 1: Viền conic xoay ─── */
+@keyframes spinBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ─── Hiệu ứng 2: Shine quét ngang ─── */
+@keyframes shineSweep {
+  0% { left: -100%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* ─── Hiệu ứng 3: Title gradient chạy ─── */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Hiệu ứng 4: Pulse glow ─── */
+@keyframes glowPulse {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(0 0 10px currentColor);
+  }
+  50% { 
+    filter: brightness(1.3) drop-shadow(0 0 30px currentColor);
+  }
+}
+
+/* ─── Hiệu ứng 5: Float ─── */
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ─── Hiệu ứng 6: Bounce ─── */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.1); }
+}
+
+/* ─── Hiệu ứng 7: Shake ─── */
+@keyframes shake {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+/* ─── Hiệu ứng 8: Spin ─── */
+@keyframes spin360 {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ─── Hiệu ứng 9: Twinkle ─── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* ─── Hiệu ứng 10: Slide in ─── */
+@keyframes slideInLeft {
+  0% { transform: translateX(-100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  0% { transform: translateX(100px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 11: Pop ─── */
+@keyframes popIn {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.1) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 12: Bay lượn ─── */
+@keyframes flyAround {
+  0% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(30px, -25px) rotate(-15deg); }
+  50% { transform: translate(60px, 20px) rotate(15deg); }
+  75% { transform: translate(90px, -15px) rotate(-15deg); }
+  100% { transform: translate(120px, 0) rotate(0); }
+}
+
+/* ─── Hiệu ứng 13: Rơi từ trên ─── */
+@keyframes fallDown {
+  0% { transform: translateY(-100px) rotate(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 14: Ripple ─── */
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 15: Neon flicker ─── */
+@keyframes neonFlicker {
+  0%, 100% { 
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+  }
+  50% { 
+    text-shadow: 0 0 2px currentColor, 0 0 5px currentColor, 0 0 10px currentColor;
+  }
+}
+
+/* ─── Hiệu ứng 16: Rainbow ─── */
+@keyframes rainbowHue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ─── Hiệu ứng 17: Wave ─── */
+@keyframes wave {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(10px) translateY(-5px); }
+  50% { transform: translateX(0) translateY(-10px); }
+  75% { transform: translateX(-10px) translateY(-5px); }
+}
+
+/* ─── Hiệu ứng 18: Breathing ─── */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 19: Heartbeat ─── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.15); }
+}
+
+/* ─── Hiệu ứng 20: Smoke ─── */
+@keyframes smoke {
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-40px) scale(1.5); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 21: Explosion ─── */
+@keyframes explode {
+  0% { transform: scale(0.5); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 22: Slide up ─── */
+@keyframes slideUp {
+  0% { transform: translateY(30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 23: Typewriter ─── */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ─── Hiệu ứng 24: Hologram ─── */
+@keyframes hologram {
+  0%, 100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(30deg) brightness(1.2);
+  }
+}
+
+/* ─── Hiệu ứng 25: Matrix rain ─── */
+@keyframes matrixRain {
+  0% { transform: translateY(-100%); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 26: Orbit ─── */
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+}
+
+/* ─── Hiệu ứng 27: Zap ─── */
+@keyframes zap {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  10% { opacity: 0.3; transform: scale(1.1); }
+  20% { opacity: 1; transform: scale(1); }
+  30% { opacity: 0.5; transform: scale(1.15); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Hiệu ứng 28: Wobble ─── */
+@keyframes wobble {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  15% { transform: translateX(-10px) rotate(-5deg); }
+  30% { transform: translateX(8px) rotate(3deg); }
+  45% { transform: translateX(-6px) rotate(-3deg); }
+  60% { transform: translateX(4px) rotate(2deg); }
+  75% { transform: translateX(-2px) rotate(-1deg); }
+}
+
+/* ─── Hiệu ứng 29: Swing ─── */
+@keyframes swing {
+  0%, 100% { transform: rotate(-10deg); transform-origin: top center; }
+  50% { transform: rotate(10deg); transform-origin: top center; }
+}
+
+/* ─── Hiệu ứng 30: Jello ─── */
+@keyframes jello {
+  0%, 100% { transform: skewX(0deg) skewY(0deg); }
+  15% { transform: skewX(-12deg) skewY(-12deg); }
+  30% { transform: skewX(6deg) skewY(6deg); }
+  45% { transform: skewX(-4deg) skewY(-4deg); }
+  60% { transform: skewX(2deg) skewY(2deg); }
+  75% { transform: skewX(-1deg) skewY(-1deg); }
+}
+
+/* ─── Hiệu ứng 31: Rubber band ─── */
+@keyframes rubberBand {
+  0%, 100% { transform: scale(1, 1); }
+  30% { transform: scale(1.25, 0.75); }
+  40% { transform: scale(0.75, 1.25); }
+  50% { transform: scale(1.15, 0.85); }
+  65% { transform: scale(0.95, 1.05); }
+  75% { transform: scale(1.05, 0.95); }
+}
+
+/* ─── Hiệu ứng 32: Fade in up ─── */
+@keyframes fadeInUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 33: Zoom in ─── */
+@keyframes zoomIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 34: Blur in ─── */
+@keyframes blurIn {
+  0% { filter: blur(10px); opacity: 0; }
+  100% { filter: blur(0); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 35: Rotate in ─── */
+@keyframes rotateIn {
+  0% { transform: rotate(-180deg) scale(0); opacity: 0; }
+  100% { transform: rotate(0) scale(1); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 36: Bounce in ─── */
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* ─── Hiệu ứng 37: Flip ─── */
+@keyframes flip {
+  0% { transform: perspective(400px) rotateY(0); }
+  100% { transform: perspective(400px) rotateY(360deg); }
+}
+
+/* ─── Hiệu ứng 38: Slide diagonal ─── */
+@keyframes slideDiagonal {
+  0% { transform: translate(-50px, 50px) rotate(-45deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 39: Aurora ─── */
+@keyframes aurora {
+  0%, 100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  50% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(60deg);
+  }
+}
+
+/* ─── Hiệu ứng 40: Lightning ─── */
+@keyframes lightning {
+  0%, 100% { opacity: 0; }
+  5% { opacity: 1; }
+  10% { opacity: 0; }
+  15% { opacity: 1; }
+  20% { opacity: 0; }
+  50% { opacity: 0; }
+  55% { opacity: 1; }
+  60% { opacity: 0; }
+}
+
+/* ─── Hiệu ứng 41: Sparkle ─── */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+/* ─── Hiệu ứng 42: Fire fly ─── */
+@keyframes fireFly {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  25% { transform: translate(20px, -30px); opacity: 1; }
+  50% { transform: translate(-30px, -20px); opacity: 0.5; }
+  75% { transform: translate(30px, 10px); opacity: 1; }
+}
+
+/* ─── Hiệu ứng 43: Bubbles ─── */
+@keyframes bubbles {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-200px) scale(1.2); opacity: 0; }
+}
+
+/* ─── Hiệu ứng 44: Vortex ─── */
+@keyframes vortex {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ─── Hiệu ứng 45: Shockwave ─── */
+@keyframes shockwave {
+  0% { transform: scale(0); opacity: 1; border-width: 20px; }
+  100% { transform: scale(3); opacity: 0; border-width: 1px; }
+}
+
+/* ─── Hiệu ứng 46: Static noise ─── */
+@keyframes staticNoise {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.15; }
+}
+
+/* ─── Hiệu ứng 47: Scanline ─── */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ─── Hiệu ứng 48: Glitch ─── */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+}
+
+/* ─── Hiệu ứng 49: Breathing glow ─── */
+@keyframes breathingGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px currentColor, 0 0 80px currentColor;
+    transform: scale(1.02);
+  }
+}
+
+/* ─── Hiệu ứng 50: Pendulum ─── */
+@keyframes pendulum {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+}

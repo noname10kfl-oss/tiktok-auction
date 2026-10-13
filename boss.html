@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BOSS + ROBUX POT</title>
+<link rel="stylesheet" href="/static/boss.css?v=20">
+</head>
+<body>
+
+<div class="boss-wrap">
+
+  <!-- ═══════════ BOSS ═══════════ -->
+  <div class="boss-board" id="bossBoard">
+    <div class="boss-header">
+      <span class="boss-icon" id="bossIcon">🟢</span>
+      <span class="boss-name" id="bossName">SLIME</span>
+      <span class="boss-level" id="bossLevel">Lv.1</span>
+    </div>
+    <div class="boss-hp-bar" id="bossHpBar">
+      <div class="boss-hp-fill" id="bossHpFill"></div>
+      <div class="boss-hp-text" id="bossHpText">0 / 0 HP</div>
+    </div>
+    <div class="boss-reward">
+      🎁 Reward: <span id="bossReward">0</span> ROBUX
+    </div>
+
+    <!-- Defeat overlay — căn giữa bảng boss -->
+    <div class="defeat-overlay" id="defeatOverlay">
+      <div class="defeat-content">
+        <div class="defeat-boom">💥</div>
+        <div class="defeat-text">BOSS DEFEATED!</div>
+        <div class="defeat-reward" id="defeatReward">+0 ROBUX</div>
+        <div class="defeat-sparks">
+          <span class="spark s1">✨</span>
+          <span class="spark s2">🔥</span>
+          <span class="spark s3">✨</span>
+          <span class="spark s4">💀</span>
+          <span class="spark s5">🔥</span>
+          <span class="spark s6">✨</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ROBUX POT ═══════════ -->
+  <div class="pot-board" id="potBoard">
+    <div class="pot-title">🏆 ROBUX POT</div>
+    <div class="pot-amount">
+      <span class="pot-coin">💰</span>
+      <span class="pot-value" id="potValue">0</span>
+    </div>
+    <div class="pot-label">ROBUX</div>
+
+    <!-- Last winner -->
+    <div class="pot-divider"></div>
+    <div class="pot-last-winner">
+      <div class="pot-last-row">
+        <span class="pot-last-label">🏆 LAST WINNER:</span>
+        <span class="pot-last-name" id="potLastName">—</span>
+      </div>
+      <div class="pot-last-row">
+        <span class="pot-last-label">💰 WON:</span>
+        <span class="pot-last-robux" id="potLastRobux">0 ROBUX</span>
+      </div>
+    </div>
+
+    <!-- ★ Winner popup — căn giữa POT -->
+    <div class="winner-popup" id="winnerPopup">
+      <div class="winner-card">
+        <div class="winner-label">🏆 WINNER 🏆</div>
+        <div class="winner-name" id="winnerName">—</div>
+        <div class="winner-amount">💰 <span id="winnerAmount">0</span> ROBUX</div>
+        <div class="winner-congrats">👑 CONGRATULATIONS!</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let ws;
+let reconnectTimer = null;
+let _lastBossKey = "";
+let _lastPotKey = "";
+let _lastPhase = "";
+let _lastWinnerKey = "";
+let _lastHp = null;
+let _lastKilledCount = 0;
+let _winnerTimer = null;
+let _defeatTimer = null;
+
+function renderBoss(d) {
+  if (!d || !d.boss) return;
+  const b = d.boss;
+
+  const key = [b.level, b.hp, b.max_hp, b.alive, b.reward, b.killed_count].join('::');
+  if (key === _lastBossKey) return;
+  _lastBossKey = key;
+
+  document.getElementById('bossIcon').textContent = b.emoji || '🟢';
+  document.getElementById('bossName').textContent = b.name || 'BOSS';
+  document.getElementById('bossLevel').textContent = 'Lv.' + b.level;
+  document.getElementById('bossReward').textContent = (b.reward || 0).toLocaleString();
+
+  const pct = b.max_hp > 0 ? (b.hp / b.max_hp * 100) : 0;
+  document.getElementById('bossHpFill').style.width = pct + '%';
+  document.getElementById('bossHpText').textContent =
+    b.hp.toLocaleString() + ' / ' + b.max_hp.toLocaleString() + ' HP';
+
+  const hpBar = document.getElementById('bossHpBar');
+  if (_lastHp !== null && b.hp < _lastHp && b.alive) {
+    hpBar.classList.remove('damaged');
+    void hpBar.offsetWidth;
+    hpBar.classList.add('damaged');
+    setTimeout(() => hpBar.classList.remove('damaged'), 400);
+  }
+  _lastHp = b.hp;
+
+  document.getElementById('bossBoard').classList.toggle('dead', !b.alive);
+
+  const defeatOverlay = document.getElementById('defeatOverlay');
+  if (b.killed_count > _lastKilledCount) {
+    _lastKilledCount = b.killed_count;
+    showDefeat(b.reward || 0);
+  }
+  if (b.alive && defeatOverlay.classList.contains('show')) {
+    defeatOverlay.classList.remove('show');
+  }
+}
+
+function showDefeat(reward) {
+  const overlay = document.getElementById('defeatOverlay');
+  const rewardEl = document.getElementById('defeatReward');
+  if (!overlay) return;
+  if (rewardEl) rewardEl.textContent = '+' + reward.toLocaleString() + ' ROBUX';
+  overlay.classList.remove('show');
+  void overlay.offsetWidth;
+  overlay.classList.add('show');
+  if (_defeatTimer) clearTimeout(_defeatTimer);
+  _defeatTimer = setTimeout(() => overlay.classList.remove('show'), 2800);
+}
+
+function renderPot(d) {
+  if (!d) return;
+
+  const pot = d.robux_pot || 0;
+  const potKey = String(pot);
+  if (potKey !== _lastPotKey) {
+    _lastPotKey = potKey;
+    document.getElementById('potValue').textContent = pot.toLocaleString();
+  }
+
+  const lastNameEl = document.getElementById('potLastName');
+  const lastRobuxEl = document.getElementById('potLastRobux');
+  const lastWinner = d.last_winner;
+  const lastDisplay = d.last_winner_display || '';
+  const lastRobux = d.last_winner_robux || 0;
+
+  const winnerKey = `${lastWinner}|${lastRobux}`;
+  if (winnerKey !== _lastWinnerKey) {
+    _lastWinnerKey = winnerKey;
+    if (lastNameEl) lastNameEl.textContent = lastDisplay || '—';
+    if (lastRobuxEl) {
+      lastRobuxEl.textContent = lastRobux > 0
+        ? lastRobux.toLocaleString() + ' ROBUX'
+        : '0 ROBUX';
+    }
+  }
+}
+
+function showWinnerPopup(name, amount) {
+  const popup = document.getElementById('winnerPopup');
+  document.getElementById('winnerName').textContent = name;
+  document.getElementById('winnerAmount').textContent = amount.toLocaleString();
+  popup.classList.remove('show');
+  void popup.offsetWidth;
+  popup.classList.add('show');
+  if (_winnerTimer) clearTimeout(_winnerTimer);
+  _winnerTimer = setTimeout(() => popup.classList.remove('show'), 7000);
+}
+
+function handlePhase(d) {
+  const phase = d.phase;
+  if (phase === 'finished' && _lastPhase !== 'finished') {
+    const winner = d.winner;
+    const display = d.winner_display || (winner ? winner.replace(/^@/, '') : '');
+    const pot = d.last_winner_robux || d.robux_pot || 0;
+    if (winner && pot > 0) showWinnerPopup(display, pot);
+  }
+  _lastPhase = phase;
+}
+
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try { ws = new WebSocket(proto + '://' + location.host + '/ws'); }
+  catch (e) { reconnectTimer = setTimeout(connect, 2000); return; }
+  ws.onopen = () => console.log('Boss overlay connected');
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      const data = msg.type === 'state' ? msg.data : (msg.type ? null : msg);
+      if (data) {
+        renderBoss(data);
+        renderPot(data);
+        handlePhase(data);
+      }
+    } catch (err) {}
+  };
+  ws.onclose = () => { reconnectTimer = setTimeout(connect, 2000); };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+connect();
+</script>
+</body>
+</html>

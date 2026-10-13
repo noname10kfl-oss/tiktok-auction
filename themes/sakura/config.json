@@ -9,8 +9,7 @@
     "🌸 Sakura Season",
     "🍃 Cherry Blossom",
     "🌸 Spring Time",
-    "✨ Peaceful",
-    "🎋 Japan Vibes"
+    "✨ Peaceful"
   ],
   "particles": [
     "#ffb3cc",
@@ -25,13 +24,6 @@
       "top": "10%",
       "left": "5%",
       "size": "44px"
-    },
-    {
-      "class": "blossom2",
-      "emoji": "🌸",
-      "bottom": "8%",
-      "left": "3%",
-      "size": "40px"
     },
     {
       "class": "leaf",

@@ -9,8 +9,7 @@
     "🤖 Cyberpunk",
     "⚙️ Cyborg",
     "🔌 Neo Tokyo",
-    "🌐 Netrunner",
-    "⚡ High Tech Low Life"
+    "🌐 Netrunner"
   ],
   "particles": [
     "#ff00ff",
@@ -37,13 +36,6 @@
       "class": "plug",
       "emoji": "🔌",
       "top": "25%",
-      "right": "5%",
-      "size": "44px"
-    },
-    {
-      "class": "globe",
-      "emoji": "🌐",
-      "bottom": "10%",
       "right": "5%",
       "size": "44px"
     }

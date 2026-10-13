@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gift Chat</title>
+<link rel="stylesheet" href="/static/gift-chat.css?v=20">
+</head>
+<body>
+<div class="chat-wrap">
+  <div class="chat-list" id="chatList"></div>
+</div>
+<script>
+let ws;
+let reconnectTimer = null;
+let giftIcons = {};
+
+let activeItems = {};   // key = "user|gift_name"
+let pendingQueue = [];
+let rafScheduled = false;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+async function loadGiftIcons() {
+  try {
+    const r = await fetch('/api/gifts/list');
+    const data = await r.json();
+    giftIcons = data.icons || {};
+  } catch (e) { giftIcons = {}; }
+}
+
+function getGiftIconUrl(folder) {
+  if (!folder) return null;
+  const key = String(folder).toLowerCase();
+  const filename = giftIcons[key];
+  if (!filename) return null;
+  return '/static/assets/gift-icons/' + filename;
+}
+
+function isDefaultAvatar(url) {
+  if (!url) return true;
+  const u = String(url).toLowerCase();
+  if (u.length < 30) return true;
+  if (u.includes('default')) return true;
+  if (u.includes('avatar_default')) return true;
+  if (u.includes('tiktok_default')) return true;
+  if (u.includes('musically')) return true;
+  return false;
+}
+
+function buildItemHtml(data) {
+  const emojiIcon = data.gift_icon || '🎁';
+  const name = data.gift_name || 'Gift';
+  const display = data.display_name || (data.user || '').replace(/^@/, '');
+  const avatarUrl = data.avatar || '';
+  const folder = data.folder || '';
+  const iconUrl = getGiftIconUrl(folder);
+  const initials = display.slice(0, 2).toUpperCase();
+
+  let avatarHtml;
+  if (avatarUrl && !isDefaultAvatar(avatarUrl)) {
+    avatarHtml = '<img src="' + escapeHtml(avatarUrl) +
+                 '" alt="" onerror="this.style.display=\'none\';' +
+                 'this.parentNode.innerHTML=\'<span>' + initials + '</span>\'">';
+  } else {
+    avatarHtml = '<span>' + escapeHtml(initials) + '</span>';
+  }
+
+  let giftIconHtml;
+  if (iconUrl) {
+    giftIconHtml = '<img src="' + iconUrl +
+                   '" alt="" onerror="this.style.display=\'none\';' +
+                   'this.parentNode.innerHTML=\'<span class=&quot;emoji-fallback&quot;>' +
+                   emojiIcon + '</span>\'">';
+  } else {
+    giftIconHtml = '<span class="emoji-fallback">' + emojiIcon + '</span>';
+  }
+
+  return { avatarHtml, giftIconHtml, name, display };
+}
+
+function processQueue() {
+  rafScheduled = false;
+  if (pendingQueue.length === 0) return;
+
+  const merged = {};
+  for (const data of pendingQueue) {
+    const display = data.display_name || (data.user || '').replace(/^@/, '');
+    const giftName = data.gift_name || 'Gift';
+    const key = display + '|' + giftName;
+    if (merged[key]) {
+      merged[key].gift_count = (merged[key].gift_count || 1) + (data.gift_count || 1);
+    } else {
+      merged[key] = { ...data, gift_count: data.gift_count || 1 };
+    }
+  }
+  pendingQueue = [];
+
+  Object.values(merged).forEach(data => renderItem(data));
+}
+
+function scheduleProcess() {
+  if (!rafScheduled) {
+    rafScheduled = true;
+    requestAnimationFrame(processQueue);
+  }
+}
+
+function addChatItem(data) {
+  pendingQueue.push(data);
+  scheduleProcess();
+}
+
+function renderItem(data) {
+  const list = document.getElementById('chatList');
+  if (!list) return;
+
+  const display = data.display_name || (data.user || '').replace(/^@/, '');
+  const giftName = data.gift_name || 'Gift';
+  const count = data.gift_count || 1;
+  const key = display + '|' + giftName;
+  const now = Date.now();
+
+  // ★ Nếu đã có item → update count
+  if (activeItems[key]) {
+    const existing = activeItems[key];
+    existing.count += count;
+    existing.expiresAt = now + 4000;
+
+    const countEl = existing.el.querySelector('.chat-gift-count');
+    if (countEl) {
+      countEl.textContent = '×' + existing.count;
+      countEl.classList.remove('pop');
+      void countEl.offsetWidth;
+      countEl.classList.add('pop');
+    }
+    return;
+  }
+
+  // ★ Tạo item mới
+  const html = buildItemHtml(data);
+
+  const item = document.createElement('div');
+  item.className = 'chat-item';
+  item.innerHTML =
+    '<div class="chat-avatar">' + html.avatarHtml + '</div>' +
+    '<div class="chat-content">' +
+      '<div class="chat-name">' + escapeHtml(html.display) + '</div>' +
+      '<div class="chat-gift">sent ' + escapeHtml(html.name) + '</div>' +
+    '</div>' +
+    '<div class="chat-gift-icon">' + html.giftIconHtml + '</div>' +
+    '<div class="chat-gift-count">×' + count + '</div>';
+
+  list.appendChild(item);
+
+  // ★ Giới hạn 2 dòng
+  while (list.children.length > 2) {
+    const firstChild = list.firstChild;
+    const oldName = firstChild.querySelector('.chat-name');
+    if (oldName) {
+      const oldDisplay = oldName.textContent;
+      Object.keys(activeItems).forEach(k => {
+        if (k.startsWith(oldDisplay + '|')) {
+          delete activeItems[k];
+        }
+      });
+    }
+    firstChild.classList.add('slide-out');
+    const fc = firstChild;
+    setTimeout(() => {
+      if (fc.parentNode) fc.parentNode.removeChild(fc);
+    }, 400);
+  }
+
+  activeItems[key] = {
+    el: item,
+    count: count,
+    expiresAt: now + 4000,
+  };
+}
+
+// ★ Cleanup loop — chạy mỗi 500ms
+function startCleanupLoop() {
+  setInterval(() => {
+    const now = Date.now();
+    Object.keys(activeItems).forEach(key => {
+      const item = activeItems[key];
+      if (!item) return;
+      if (item.expiresAt <= now) {
+        const el = item.el;
+        if (el && el.parentNode) {
+          el.classList.add('slide-out');
+          setTimeout(() => {
+            if (el.parentNode) el.parentNode.removeChild(el);
+          }, 400);
+        }
+        delete activeItems[key];
+      }
+    });
+  }, 500);
+}
+
+function connect() {
+  if (reconnectTimer) clearTimeout(reconnectTimer);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  try { ws = new WebSocket(proto + '://' + location.host + '/ws'); }
+  catch (e) { reconnectTimer = setTimeout(connect, 2000); return; }
+
+  ws.onopen = () => console.log('[gift-chat] connected');
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'gift_event') {
+        // ★ Bỏ qua gift thật từ TikTok — chỉ hiện bot + manual
+        if (msg.data && msg.data.is_real === true) {
+          console.log('[gift-chat] skip real TikTok gift');
+          return;
+        }
+        addChatItem(msg.data);
+      }
+    } catch (err) {}
+  };
+  ws.onclose = () => { reconnectTimer = setTimeout(connect, 2000); };
+  ws.onerror = () => { try { ws.close(); } catch(e) {} };
+}
+
+loadGiftIcons().then(() => {
+  startCleanupLoop();
+  connect();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "title": "FOREST AUCTION",
+  "logo": "🌲",
+  "deco_text": "WILD FOREST",
+  "deco_left": "🌲",
+  "deco_right": "🦌",
+  "winner_hat": "🌲",
+  "marquee": [
+    "🌲 Wild Forest",
+    "🦌 Nature Vibes",
+    "🍃 Green Life",
+    "🐺 Wild Pack",
+    "🌿 Jungle",
+    "🐻 Bear Cave"
+  ],
+  "particles": [
+    "#88ff88",
+    "#44cc44",
+    "#aaffaa",
+    "#66dd66"
+  ],
+  "decorations": [
+    {
+      "class": "tree",
+      "emoji": "🌲",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "leaf",
+      "emoji": "🍃",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "deer",
+      "emoji": "🦌",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "wolf",
+      "emoji": "🐺",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "46px"
+    }
+  ]
+}

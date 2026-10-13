@@ -1,0 +1,52 @@
+{
+  "title": "RETRO AUCTION",
+  "logo": "📼",
+  "deco_text": "RETRO 80s",
+  "deco_left": "📼",
+  "deco_right": "🕹",
+  "winner_hat": "📼",
+  "marquee": [
+    "📼 Retro 80s",
+    "🕹 Arcade",
+    "🎵 Synthwave",
+    "📻 Radio",
+    "🌟 Retro Wave",
+    "💾 Floppy Disk"
+  ],
+  "particles": [
+    "#ff00ff",
+    "#ffff00",
+    "#00ffff",
+    "#ff8800"
+  ],
+  "decorations": [
+    {
+      "class": "tape",
+      "emoji": "📼",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "joystick",
+      "emoji": "🕹",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "music",
+      "emoji": "🎵",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "radio",
+      "emoji": "📻",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

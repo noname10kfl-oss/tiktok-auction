@@ -9,9 +9,7 @@
     "🩸 Blood Moon",
     "🗡 Death Match",
     "💀 Last One",
-    "⚔️ Duel",
-    "🩸 Blood Bath",
-    "🔪 Killer"
+    "⚔️ Duel"
   ],
   "particles": [
     "#ff0000",
@@ -40,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "44px"
-    },
-    {
-      "class": "knife",
-      "emoji": "🔪",
-      "bottom": "10%",
-      "right": "5%",
-      "size": "46px"
     }
   ]
 }

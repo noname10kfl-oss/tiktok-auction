@@ -9,9 +9,7 @@
     "🌌 Interstellar",
     "🚀 To The Moon",
     "⭐ Cosmic",
-    "🪐 Saturn",
-    "💫 Space Time",
-    "👽 Aliens"
+    "🪐 Saturn"
   ],
   "particles": [
     "#cc88ff",
@@ -40,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "50px"
-    },
-    {
-      "class": "comet",
-      "emoji": "☄️",
-      "bottom": "10%",
-      "right": "5%",
-      "size": "44px"
     }
   ]
 }

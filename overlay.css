@@ -24,7 +24,6 @@ html, body {
   will-change: transform, opacity;
 }
 
-/* Particles */
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -56,13 +55,14 @@ html, body {
   border-radius: 26px;
   padding: 20px 24px 24px;
   z-index: 10;
-  overflow: hidden;
+  /* ★ Bỏ overflow: hidden — cho phép khung dài ra */
+  /* ★ Nền đục hoàn toàn — không lộ pattern phía sau */
   background: linear-gradient(160deg,
-    rgba(30, 10, 45, 0.85) 0%,
-    rgba(60, 15, 80, 0.85) 50%,
-    rgba(20, 5, 35, 0.85) 100%);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+    #1e0a2d 0%,
+    #3c0f50 50%,
+    #140523 100%);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
   box-shadow:
     0 30px 100px rgba(0, 0, 0, 0.6),
     0 8px 24px rgba(0, 0, 0, 0.4),
@@ -385,6 +385,7 @@ html, body {
 .row {
   display: flex;
   align-items: center;
+  gap: 12px;
   padding: 16px 20px;
   border-radius: 16px;
   min-height: 72px;
@@ -396,13 +397,7 @@ html, body {
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
     inset 0 -1px 0 rgba(0, 0, 0, 0.15),
     0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: rowEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-@keyframes rowEnter {
-  0% { transform: translateX(30px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  transition: box-shadow 0.3s ease;
 }
 
 .row::before {
@@ -426,80 +421,46 @@ html, body {
 
 .row.rank-1 {
   min-height: 86px;
-  transform: scale(1.02);
-  animation: rowEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-             rank1Pulse 2s ease-in-out infinite;
-}
-
-@keyframes rank1Pulse {
-  0%, 100% { box-shadow: 0 0 20px currentColor, inset 0 1px 0 rgba(255,255,255,0.2); }
-  50% { box-shadow: 0 0 40px currentColor, 0 0 80px currentColor, inset 0 1px 0 rgba(255,255,255,0.3); }
-}
-
-.row:hover {
-  transform: translateY(-2px) scale(1.02);
 }
 
 .medal {
-  width: 52px;
-  font-size: 34px;
+  width: 44px;
+  font-size: 32px;
   font-weight: 900;
   text-align: center;
   flex-shrink: 0;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 }
 .row.rank-1 .medal {
-  font-size: 42px;
-  animation: medalBounce 1.5s ease-in-out infinite;
-}
-
-@keyframes medalBounce {
-  0%, 100% { transform: scale(1) rotate(-5deg); }
-  50% { transform: scale(1.15) rotate(5deg); }
+  font-size: 40px;
 }
 
 .user {
   flex: 1;
-  font-size: 24px;
+  min-width: 0;
+  font-size: 22px;
   font-weight: 900;
-  margin-left: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 .row.rank-1 .user {
-  font-size: 28px;
-  animation: userNameShimmer 3s ease-in-out infinite;
-}
-
-@keyframes userNameShimmer {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.3); }
+  font-size: 26px;
 }
 
 .score {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 900;
   flex-shrink: 0;
+  margin-left: auto;
+  min-width: 60px;
+  text-align: right;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 0 12px currentColor;
-  animation: scorePulse 1.5s ease-in-out infinite;
 }
-
-@keyframes scorePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
 .row.rank-1 .score {
-  font-size: 32px;
-  animation: scoreGlow 1s ease-in-out infinite alternate;
-}
-
-@keyframes scoreGlow {
-  0% { text-shadow: 0 0 10px currentColor; }
-  100% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+  font-size: 30px;
 }
 
 .empty {
@@ -514,6 +475,67 @@ html, body {
 @keyframes emptyPulse {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.7; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AVATAR
+   ═══════════════════════════════════════════════════════════ */
+.row .avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.row.rank-1 .avatar {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(255, 215, 0, 0.8);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.row .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.row .avatar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TẮT HIỆU ỨNG GIẬT
+   ═══════════════════════════════════════════════════════════ */
+.row,
+.row.rank-1 {
+  animation: none !important;
+}
+
+.row .user,
+.row.rank-1 .user {
+  animation: none !important;
+  transform: none !important;
+}
+
+.row.rank-1 .medal {
+  animation: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -633,11 +655,7 @@ html, body {
 }
 
 .tie-name { font-size: 16px; font-weight: 900; }
-.tie-score {
-  font-size: 20px;
-  font-weight: 900;
-  animation: scorePulse 1.5s ease-in-out infinite;
-}
+.tie-score { font-size: 20px; font-weight: 900; }
 
 .tie-vs {
   font-size: 28px;
@@ -701,10 +719,8 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   DECORATION ANIMATIONS — 60+ hiệu ứng chuyển động
+   DECORATION ANIMATIONS
    ═══════════════════════════════════════════════════════════ */
-
-/* Bay lượn */
 @keyframes batFly {
   0% { transform: translate(0, 0) rotate(0); }
   25% { transform: translate(30px, -25px) rotate(-15deg); }
@@ -712,180 +728,124 @@ html, body {
   75% { transform: translate(120px, -15px) rotate(-15deg); }
   100% { transform: translate(160px, 0) rotate(0); }
 }
-
-/* Pulse */
 @keyframes pumpkinPulse {
   0%, 100% { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 20px currentColor); }
   50% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 40px currentColor); }
 }
-
-/* Float */
 @keyframes ghostFloat {
   0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
   50% { transform: translateY(-30px) translateX(15px); opacity: 0.95; }
 }
-
-/* Spider drop */
 @keyframes spiderDrop {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(80px) rotate(15deg); }
 }
-
-/* Snow fall */
 @keyframes snowFall {
   0% { transform: translateY(-100px) rotate(0); }
   100% { transform: translateY(100vh) rotate(360deg); }
 }
-
-/* Tree shake */
 @keyframes treeShake {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(3deg); }
 }
-
-/* Gift bounce */
 @keyframes giftBounce {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-15px) scale(1.1); }
 }
-
-/* Bell ring */
 @keyframes bellRing {
   0%, 100% { transform: rotate(-15deg); }
   50% { transform: rotate(15deg); }
 }
-
-/* Lantern swing */
 @keyframes lanternSwing {
   0%, 100% { transform: rotate(-10deg) translateY(0); }
   50% { transform: rotate(10deg) translateY(5px); }
 }
-
-/* Flower spin */
 @keyframes flowerSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.15); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Envelope pop */
 @keyframes envelopePop {
   0%, 100% { transform: scale(1) rotate(0); }
   50% { transform: scale(1.2) rotate(-10deg); }
 }
-
-/* Dragon wiggle */
 @keyframes dragonWiggle {
   0%, 100% { transform: translateX(0) scale(1); }
   50% { transform: translateX(15px) scale(1.1); }
 }
-
-/* Heart beat */
 @keyframes heartBeat {
   0%, 100% { transform: scale(1); }
   25% { transform: scale(1.25); }
   50% { transform: scale(1); }
   75% { transform: scale(1.15); }
 }
-
-/* Rose sway */
 @keyframes roseSway {
   0%, 100% { transform: rotate(-8deg); }
   50% { transform: rotate(8deg); }
 }
-
-/* Kiss float */
 @keyframes kissFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px) rotate(10deg); }
 }
-
-/* Ring spin */
 @keyframes ringSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.15); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Pad shake */
 @keyframes padShake {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
-
-/* Target pulse */
 @keyframes targetPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.15); filter: drop-shadow(0 0 30px currentColor); }
 }
-
-/* Joystick move */
 @keyframes joystickMove {
   0%, 100% { transform: translate(0, 0); }
   25% { transform: translate(8px, -5px); }
   50% { transform: translate(0, 5px); }
   75% { transform: translate(-8px, -5px); }
 }
-
-/* Trophy bounce */
 @keyframes trophyBounce {
   0%, 100% { transform: translateY(0) rotate(-5deg); }
   50% { transform: translateY(-15px) rotate(5deg); }
 }
-
-/* Bolt zap */
 @keyframes boltZap {
   0%, 100% { opacity: 1; transform: scale(1) rotate(0); }
   25% { opacity: 0.5; transform: scale(1.15) rotate(-15deg); }
   50% { opacity: 1; transform: scale(1) rotate(0); }
   75% { opacity: 0.7; transform: scale(1.1) rotate(15deg); }
 }
-
-/* Star twinkle */
 @keyframes starTwinkle {
   0%, 100% { opacity: 0.5; transform: scale(1) rotate(0); }
   50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
 }
-
-/* City glow */
 @keyframes cityGlow {
   0%, 100% { filter: brightness(1) drop-shadow(0 0 10px currentColor); }
   50% { filter: brightness(1.5) drop-shadow(0 0 30px currentColor); }
 }
-
-/* Blossom fall */
 @keyframes blossomFall {
   0% { transform: translate(0, -50px) rotate(0); opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
   100% { transform: translate(-100px, 100vh) rotate(720deg); opacity: 0; }
 }
-
-/* Leaf sway */
 @keyframes leafSway {
   0%, 100% { transform: translateX(0) rotate(-10deg); }
   50% { transform: translateX(20px) rotate(10deg); }
 }
-
-/* Temple glow */
 @keyframes templeGlow {
   0%, 100% { filter: drop-shadow(0 0 10px currentColor); }
   50% { filter: drop-shadow(0 0 30px currentColor) brightness(1.3); }
 }
-
-/* Fire flicker */
 @keyframes fireFlicker {
   0%, 100% { transform: scale(1) rotate(-5deg); opacity: 1; }
   50% { transform: scale(1.15) rotate(5deg); opacity: 0.85; }
 }
-
-/* Wave move */
 @keyframes waveMove {
   0%, 100% { transform: translateX(0) translateY(0); }
   50% { transform: translateX(20px) translateY(-10px); }
 }
-
-/* Fish swim */
 @keyframes fishSwim {
   0% { transform: translateX(0) translateY(0) rotate(0); }
   25% { transform: translateX(30px) translateY(-10px) rotate(-5deg); }
@@ -893,454 +853,496 @@ html, body {
   75% { transform: translateX(30px) translateY(10px) rotate(5deg); }
   100% { transform: translateX(0) translateY(0) rotate(0); }
 }
-
-/* Shell rock */
 @keyframes shellRock {
   0%, 100% { transform: rotate(-10deg); }
   50% { transform: rotate(10deg); }
 }
-
-/* Shark swim */
 @keyframes sharkSwim {
   0% { transform: translateX(0) rotate(0); }
   50% { transform: translateX(-30px) rotate(-10deg); }
   100% { transform: translateX(0) rotate(0); }
 }
-
-/* Deer jump */
 @keyframes deerJump {
   0%, 100% { transform: translateY(0) rotate(-5deg); }
   50% { transform: translateY(-25px) rotate(5deg); }
 }
-
-/* Wolf howl */
 @keyframes wolfHowl {
   0%, 100% { transform: scale(1) rotate(0); }
   50% { transform: scale(1.15) rotate(-15deg); }
 }
-
-/* Sun glow */
 @keyframes sunGlow {
   0%, 100% { filter: drop-shadow(0 0 15px currentColor); transform: scale(1); }
   50% { filter: drop-shadow(0 0 40px currentColor); transform: scale(1.15); }
 }
-
-/* Skyline pulse */
 @keyframes skylinePulse {
   0%, 100% { opacity: 0.8; }
   50% { opacity: 1; transform: scale(1.05); }
 }
-
-/* Bridge glow */
 @keyframes bridgeGlow {
   0%, 100% { filter: drop-shadow(0 0 10px currentColor); }
   50% { filter: drop-shadow(0 0 25px currentColor); }
 }
-
-/* Moon glow */
 @keyframes moonGlow {
   0%, 100% { filter: drop-shadow(0 0 20px #ffee88); transform: scale(1); }
   50% { filter: drop-shadow(0 0 40px #ffee88); transform: scale(1.1); }
 }
-
-/* Sparkle twinkle */
 @keyframes sparkleTwinkle {
   0%, 100% { opacity: 0.6; transform: scale(1) rotate(0); }
   50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
 }
-
-/* Galaxy spin */
 @keyframes galaxySpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.15); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Rocket launch */
 @keyframes rocketLaunch {
   0%, 100% { transform: translateY(0) rotate(-15deg); }
   50% { transform: translateY(-30px) rotate(-25deg); }
 }
-
-/* Planet spin */
 @keyframes planetSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Comet fly */
 @keyframes cometFly {
   0% { transform: translate(0, 0) rotate(45deg); }
   100% { transform: translate(150px, -80px) rotate(45deg); }
 }
-
-/* Boom pop */
 @keyframes boomPop {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.3); opacity: 0.8; }
 }
-
-/* Volcano rumble */
 @keyframes volcanoRumble {
   0%, 100% { transform: translate(0, 0) rotate(0); }
   25% { transform: translate(3px, -2px) rotate(-3deg); }
   75% { transform: translate(-3px, 2px) rotate(3deg); }
 }
-
-/* Cube spin */
 @keyframes cubeSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Snowman wobble */
 @keyframes snowmanWobble {
   0%, 100% { transform: rotate(-8deg); }
   50% { transform: rotate(8deg); }
 }
-
-/* Penguin waddle */
 @keyframes penguinWaddle {
   0%, 100% { transform: rotate(-10deg) translateX(0); }
   50% { transform: rotate(10deg) translateX(10px); }
 }
-
-/* Crown glow */
 @keyframes crownGlow {
   0%, 100% { filter: drop-shadow(0 0 15px gold); transform: scale(1); }
   50% { filter: drop-shadow(0 0 40px gold); transform: scale(1.15); }
 }
-
-/* Money rain */
 @keyframes moneyRain {
   0% { transform: translateY(-100px) rotate(0); }
   100% { transform: translateY(100vh) rotate(360deg); }
 }
-
-/* Diamond sparkle */
 @keyframes diamondSparkle {
   0%, 100% { filter: brightness(1) drop-shadow(0 0 15px cyan); transform: scale(1); }
   50% { filter: brightness(1.5) drop-shadow(0 0 40px cyan); transform: scale(1.15); }
 }
-
-/* Blood drip */
 @keyframes bloodDrip {
   0%, 100% { transform: translateY(0); opacity: 1; }
   50% { transform: translateY(15px); opacity: 0.7; }
 }
-
-/* Sword swing */
 @keyframes swordSwing {
   0%, 100% { transform: rotate(-25deg); }
   50% { transform: rotate(25deg); }
 }
-
-/* Skull glow */
 @keyframes skullGlow {
   0%, 100% { filter: drop-shadow(0 0 15px #ff0000); }
   50% { filter: drop-shadow(0 0 40px #ff0000); }
 }
-
-/* Knife spin */
 @keyframes knifeSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Battery pulse */
 @keyframes batteryPulse {
   0%, 100% { filter: brightness(0.8); }
   50% { filter: brightness(1.5); transform: scale(1.1); }
 }
-
-/* Rabbit hop */
 @keyframes rabbitHop {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
 }
-
-/* Pill spin */
 @keyframes pillSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Tape spin */
 @keyframes tapeSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Music float */
 @keyframes musicFloat {
   0%, 100% { transform: translateY(0) rotate(0); }
   50% { transform: translateY(-20px) rotate(15deg); }
 }
-
-/* Radio wave */
 @keyframes radioWave {
   0%, 100% { filter: brightness(1); transform: scale(1); }
   50% { filter: brightness(1.5); transform: scale(1.1); }
 }
-
-/* Rainbow glow */
 @keyframes rainbowGlow {
   0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px currentColor); }
   100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px currentColor); }
 }
-
-/* Cloud float */
 @keyframes cloudFloat {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(30px); }
 }
-
-/* Robot beep */
 @keyframes robotBeep {
   0%, 100% { transform: scale(1) rotate(0); filter: hue-rotate(0); }
   25% { transform: scale(1.1) rotate(-5deg); }
   75% { transform: scale(1.1) rotate(5deg); filter: hue-rotate(90deg); }
 }
-
-/* Gear spin */
 @keyframes gearSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Plug zap */
 @keyframes plugZap {
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.5) drop-shadow(0 0 20px yellow); }
 }
-
-/* Globe spin */
 @keyframes globeSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Bow sway */
 @keyframes bowSway {
   0%, 100% { transform: rotate(-8deg); }
   50% { transform: rotate(8deg); }
 }
-
-/* Tulip sway */
 @keyframes tulipSway {
   0%, 100% { transform: rotate(-5deg) translateY(0); }
   50% { transform: rotate(5deg) translateY(-10px); }
 }
-
-/* Unicorn run */
 @keyframes unicornRun {
   0%, 100% { transform: translateX(0) rotate(-5deg); }
   50% { transform: translateX(20px) rotate(5deg); }
 }
-
-/* Palm sway */
 @keyframes palmSway {
   0%, 100% { transform: rotate(-8deg); }
   50% { transform: rotate(8deg); }
 }
-
-/* Statue spin */
 @keyframes statueSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Disc spin */
 @keyframes discSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Train run */
 @keyframes trainRun {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(40px); }
 }
-
-/* Clock tick */
 @keyframes clockTick {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
-
-/* Candle flicker */
 @keyframes candleFlicker {
   0%, 100% { transform: scale(1) rotate(-3deg); filter: brightness(1); }
   50% { transform: scale(1.15) rotate(3deg); filter: brightness(1.4); }
 }
-
-/* Coffin shake */
 @keyframes coffinShake {
   0%, 100% { transform: rotate(0); }
   25% { transform: rotate(-8deg); }
   75% { transform: rotate(8deg); }
 }
-
-/* Cocktail shake */
 @keyframes cocktailShake {
   0%, 100% { transform: rotate(-10deg); }
   50% { transform: rotate(10deg); }
 }
-
-/* Parrot bob */
 @keyframes parrotBob {
   0%, 100% { transform: translateY(0) rotate(-5deg); }
   50% { transform: translateY(-10px) rotate(5deg); }
 }
-
-/* Castle glow */
 @keyframes castleGlow {
   0%, 100% { filter: drop-shadow(0 0 15px currentColor); }
   50% { filter: drop-shadow(0 0 40px currentColor) brightness(1.3); }
 }
-
-/* Katana swing */
 @keyframes katanaSwing {
   0%, 100% { transform: rotate(-30deg); }
   50% { transform: rotate(30deg); }
 }
-
-/* Pyramid glow */
 @keyframes pyramidGlow {
   0%, 100% { filter: drop-shadow(0 0 20px gold) brightness(1); }
   50% { filter: drop-shadow(0 0 40px gold) brightness(1.5); }
 }
-
-/* Camel walk */
 @keyframes camelWalk {
   0%, 100% { transform: translateX(0) rotate(-3deg); }
   50% { transform: translateX(20px) rotate(3deg); }
 }
-
-/* Eye blink */
 @keyframes eyeBlink {
   0%, 90%, 100% { transform: scaleY(1); }
   95% { transform: scaleY(0.1); }
 }
-
-/* Jar wobble */
 @keyframes jarWobble {
   0%, 100% { transform: rotate(-8deg) translateY(0); }
   50% { transform: rotate(8deg) translateY(-10px); }
 }
-
-/* Flag wave */
 @keyframes flagWave {
   0%, 100% { transform: rotate(-8deg) skewX(0); }
   25% { transform: rotate(-4deg) skewX(5deg); }
   75% { transform: rotate(8deg) skewX(-5deg); }
 }
-
-/* Anchor swing */
 @keyframes anchorSwing {
   0%, 100% { transform: rotate(-15deg); }
   50% { transform: rotate(15deg); }
 }
-
-/* UFO hover */
 @keyframes ufoHover {
   0%, 100% { transform: translateY(0) rotate(0); }
   50% { transform: translateY(-20px) rotate(10deg); }
 }
-
-/* Alien beep */
 @keyframes alienBeep {
   0%, 100% { transform: scale(1) rotate(0); filter: hue-rotate(0); }
   50% { transform: scale(1.2) rotate(-10deg); filter: hue-rotate(180deg); }
 }
-
-/* Earth spin */
 @keyframes earthSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Shooting star */
 @keyframes shootingStar {
   0% { transform: translate(0, 0) rotate(30deg); opacity: 0; }
   10% { opacity: 1; }
   100% { transform: translate(200px, -100px) rotate(30deg); opacity: 0; }
 }
-
-/* Film spin */
 @keyframes filmSpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Coffee steam */
 @keyframes coffeeSteam {
   0%, 100% { transform: translateY(0) scale(1); filter: brightness(1); }
   50% { transform: translateY(-10px) scale(1.1); filter: brightness(1.2); }
 }
-
-/* TV flicker */
 @keyframes tvFlicker {
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.4) hue-rotate(20deg); }
 }
-
-/* Wrench turn */
 @keyframes wrenchTurn {
   0%, 100% { transform: rotate(-20deg); }
   50% { transform: rotate(20deg); }
 }
-
-/* Yin spin */
 @keyframes yinSpin {
   0% { transform: rotate(0) scale(1); }
   50% { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-
-/* Bamboo sway */
 @keyframes bambooSway {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
-
-/* Tea steam */
 @keyframes teaSteam {
   0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
   50% { transform: translateY(-8px) scale(1.1); opacity: 1; }
 }
-
-/* Honey wobble */
 @keyframes honeyWobble {
   0%, 100% { transform: rotate(-5deg) scale(1); }
   50% { transform: rotate(5deg) scale(1.1); }
 }
-
-/* Bee fly */
 @keyframes beeFly {
   0%, 100% { transform: translate(0, 0) rotate(0); }
   25% { transform: translate(15px, -15px) rotate(15deg); }
   50% { transform: translate(30px, 0) rotate(0); }
   75% { transform: translate(15px, 15px) rotate(-15deg); }
 }
-
-/* Dizzy spin */
 @keyframes dizzySpin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
 }
-
-/* Shopping bounce */
 @keyframes shoppingBounce {
   0%, 100% { transform: translateY(0) rotate(-5deg); }
   50% { transform: translateY(-15px) rotate(5deg); }
 }
-
-/* Fallback */
 @keyframes decoBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+/* ═══════════════════════════════════════════════════════════
+   INFO ROW — Min + Vouch
+   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   VOUCHES ROW
+   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   VOUCHES ROW — dùng theme variables
+   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   NGƯỜI CHƯA ĐỦ MIN_COINS — hiện mờ
+   ═══════════════════════════════════════════════════════════ */
+.row.unqualified {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+}
+
+.row.unqualified .medal {
+  opacity: 0.5;
+}
+
+.row.unqualified .avatar {
+  border-color: rgba(150, 150, 150, 0.5);
+  box-shadow: none;
+}
+
+.row.unqualified .score {
+  color: #888888;
+  text-shadow: none;
+}
+/* ═══════════════════════════════════════════════════════════
+   INFO ROW — VOUCHES + MIN trên 1 dòng
+   ═══════════════════════════════════════════════════════════ */
+.info-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.info-row .vouch-row,
+.info-row .min-row {
+  flex: 1;
+  margin-bottom: 0;   /* Reset margin từ style cũ */
+}
+
+/* Style VOUCHES */
+.info-row .vouch-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--info-bg, #0a0a0a);
+  border: 2px solid var(--info-border, #ff1a1a);
+  box-shadow:
+    0 0 12px var(--info-glow, rgba(255, 26, 26, 0.5)),
+    inset 0 0 8px var(--info-inner, rgba(255, 26, 26, 0.15));
+}
+
+.info-row .vouch-icon {
+  font-size: 20px;
+  color: var(--info-border, #ff1a1a);
+  filter: drop-shadow(0 0 8px var(--info-border, #ff1a1a));
+  line-height: 1;
+}
+
+.info-row .vouch-text {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--info-text, #ffffff);
+  letter-spacing: 1.5px;
+  text-shadow:
+    0 0 4px var(--info-text-glow, rgba(255, 255, 255, 0.6)),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Style MIN */
+.info-row .min-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--info-bg, #0a0a0a);
+  border: 2px solid var(--info-border, #ff1a1a);
+  box-shadow:
+    0 0 12px var(--info-glow, rgba(255, 26, 26, 0.5)),
+    inset 0 0 8px var(--info-inner, rgba(255, 26, 26, 0.15));
+}
+
+.info-row .min-label {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--info-text, #ffffff);
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.info-row .min-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: linear-gradient(135deg,
+    var(--badge-c1, #e60000),
+    var(--badge-c2, #b30000));
+  border: 2px solid var(--badge-border, #ff3333);
+  box-shadow:
+    0 0 12px var(--badge-glow, rgba(255, 26, 26, 0.8)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.info-row .min-value {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--badge-text, #ffffff);
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.info-row .min-coin {
+  font-size: 16px;
+  filter: drop-shadow(0 0 6px var(--badge-border, #ffcc00));
+}
+/* ═══════════════════════════════════════════════════════════
+   FORCE NỀN ĐỤC — che hết pattern phía sau
+   ═══════════════════════════════════════════════════════════ */
+.wrap {
+  background-color: var(--c-bg, #1a0828) !important;
+  background-image:
+    radial-gradient(circle at 15% 15%,
+      rgba(255, 255, 255, 0.04) 0%,
+      var(--c-bg, #1a0828) 45%,
+      var(--c-bg, #1a0828) 100%),
+    radial-gradient(circle at 85% 85%,
+      rgba(255, 255, 255, 0.04) 0%,
+      var(--c-bg, #1a0828) 45%,
+      var(--c-bg, #1a0828) 100%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+/* ═══════════════════════════════════════════════════════════
+   CLEAN MODE — chỉ giữ bảng đấu giá
+   ═══════════════════════════════════════════════════════════ */
+
+/* 1. Ẩn particles + decorations bay xung quanh */
+.theme-decorations,
+.particle,
+[class^="deco-"],
+[class*=" deco-"] {
+  display: none !important;
+}
+
+/* 2. Ẩn viền conic gradient xoay quanh khung */
+.wrap::after {
+  display: none !important;
+}
+
+/* 3. Ẩn shine quét qua khung */
+.wrap::before {
+  display: none !important;
+}
+
+/* 4. Bỏ glow ngoài + animation phồng */
+.wrap {
+  animation: none !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 5. Ẩn shine + bounce của top-deco */
+.top-deco::before {
+  display: none !important;
+}
+
+.top-deco .deco-item {
+  animation: none !important;
 }

@@ -9,9 +9,7 @@
     "🌊 Deep Ocean",
     "🐠 Under The Sea",
     "🐚 Ocean Vibes",
-    "🦈 Jaws",
-    "💧 Aqua",
-    "🐙 Deep Blue"
+    "🦈 Jaws"
   ],
   "particles": [
     "#00ccff",
@@ -32,13 +30,6 @@
       "emoji": "🐠",
       "bottom": "8%",
       "left": "3%",
-      "size": "44px"
-    },
-    {
-      "class": "shell",
-      "emoji": "🐚",
-      "top": "25%",
-      "right": "5%",
       "size": "44px"
     },
     {

@@ -6,6 +6,10 @@ html, body {
   font-family: 'TikTok Sans', 'Segoe UI', Roboto, -apple-system, sans-serif;
   color: #fff;
   overflow: hidden;
+  /* ★ Chống mờ chữ */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -30,18 +34,19 @@ html, body {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 10px 12px;
-  background: rgba(18, 18, 18, 0.94);
+  padding: 12px 14px;
+  background: rgba(10, 10, 10, 0.98);       /* ★ Đậm hơn (98%) */
   border-radius: 14px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px) saturate(180%);  /* ★ Blur mạnh hơn */
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    0 4px 20px rgba(0, 0, 0, 0.7),           /* ★ Bóng đậm hơn */
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transform: translateX(-120%);
   opacity: 0;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   max-width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);  /* ★ Viền nhẹ */
 }
 
 .tiktok-pin-cmt.hide {
@@ -100,16 +105,19 @@ html, body {
 
 /* Tên + icon ✦ dính liền */
 .pin-name {
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.1px;
+  font-weight: 900;                        /* ★ Đậm hơn */
+  color: #ffffff;
+  letter-spacing: 0.2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 160px;
+  max-width: 180px;
   display: inline-flex;
   align-items: center;
   gap: 2px;
+  text-shadow:                             /* ★ Đổ bóng đậm */
+    0 1px 3px rgba(0, 0, 0, 1),
+    0 0 8px rgba(0, 0, 0, 0.8);
 }
 
 /* Icon ✦ hồng — dính liền sau tên */
@@ -132,10 +140,11 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  color: #fff;
+  color: #ffffff;                      /* ★ Full trắng */
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 900;                    /* ★ Tăng từ 700 → 900 */
   flex-shrink: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);   /* ★ Thêm bóng */
 }
 
 .pin-star {
@@ -144,33 +153,36 @@ html, body {
 }
 
 .pin-sec {
-  font-weight: 800;
+  font-weight: 900;                    /* ★ Tăng từ 800 → 900 */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.3px;
   min-width: 28px;
   display: inline-block;
   transition: color 0.3s;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);   /* ★ Thêm bóng */
 }
 
 /* ─── Nút ✕ ─── */
 .pin-close {
   font-size: 13px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.75);    /* ★ Tăng từ 0.55 → 0.75 */
   margin-left: auto;
   flex-shrink: 0;
   padding: 0 2px;
   cursor: default;
   transition: color 0.2s;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);   /* ★ Thêm bóng */
 }
 
 /* ─── Dòng 2: Nội dung comment ─── */
 .pin-text {
   font-size: 15px;
-  font-weight: 400;
-  color: #fff;
+  font-weight: 600;                    /* ★ Tăng từ 400 → 600 */
+  color: #ffffff;                      /* ★ Full trắng */
   line-height: 1.3;
   word-wrap: break-word;
   letter-spacing: 0.1px;
-  opacity: 0.95;
+  opacity: 1;                          /* ★ Tăng từ 0.95 → 1 */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);   /* ★ Thêm bóng đậm */
 }

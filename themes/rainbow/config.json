@@ -9,8 +9,7 @@
     "🌈 Taste The Rainbow",
     "☁️ Over The Rainbow",
     "🌸 Colorful",
-    "🎨 Rainbow Road",
-    "✨ Color Magic"
+    "🎨 Rainbow Road"
   ],
   "particles": [
     "#ff0000",
@@ -32,13 +31,6 @@
       "emoji": "☁️",
       "bottom": "8%",
       "left": "3%",
-      "size": "44px"
-    },
-    {
-      "class": "sparkle",
-      "emoji": "✨",
-      "top": "25%",
-      "right": "5%",
       "size": "44px"
     },
     {

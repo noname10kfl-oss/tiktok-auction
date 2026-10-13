@@ -9,9 +9,7 @@
     "❄️ Frozen World",
     "🧊 Ice Cold",
     "⛄ Snowman",
-    "🌨 Blizzard",
-    "💧 Chill",
-    "🐧 Penguin"
+    "🌨 Blizzard"
   ],
   "particles": [
     "#aae0ff",
@@ -33,13 +31,6 @@
       "bottom": "8%",
       "left": "3%",
       "size": "44px"
-    },
-    {
-      "class": "snowman",
-      "emoji": "⛄",
-      "top": "25%",
-      "right": "5%",
-      "size": "50px"
     },
     {
       "class": "penguin",

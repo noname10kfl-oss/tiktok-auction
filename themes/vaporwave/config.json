@@ -9,8 +9,7 @@
     "🌴 Vaporwave",
     "🌊 Aesthetic",
     "💜 ＡＥＳＴＨＥＴＩＣ",
-    "🌸 90s Vibes",
-    "🛍 Mall Soft"
+    "🌸 90s Vibes"
   ],
   "particles": [
     "#ff6b9d",
@@ -39,13 +38,6 @@
       "top": "25%",
       "right": "5%",
       "size": "50px"
-    },
-    {
-      "class": "disc",
-      "emoji": "💿",
-      "bottom": "10%",
-      "right": "5%",
-      "size": "44px"
     }
   ]
 }

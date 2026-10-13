@@ -1,20 +1,17 @@
-"""WebSocket + HTTP server for 5 overlays."""
+"""WebSocket + HTTP server for overlays."""
 import asyncio
 import hashlib
 import json
 import platform
-import random
 import socket
 import uuid
 from pathlib import Path
-
 from aiohttp import web
-
 
 DEVICE_FILE = Path.home() / ".tiktok_auction_device"
 
 
-def get_device_id() -> str:
+def get_device_id():
     if DEVICE_FILE.exists():
         try:
             dev = DEVICE_FILE.read_text().strip()
@@ -33,7 +30,7 @@ def get_device_id() -> str:
     return dev_id
 
 
-def get_lan_ip() -> str:
+def get_lan_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
@@ -56,14 +53,11 @@ class OverlayServer:
         self.runner = None
         self._loop = None
 
-    # ============ URL BUILDERS ============
     def _base_url(self, host, path):
-        return (
-            f"http://{host}:{self.port}/{path}"
-            f"?key={self.license_key}"
-            f"&deviceId={self.device_id}"
-            f"&isWidget=true"
-        )
+        return (f"http://{host}:{self.port}/{path}"
+                f"?key={self.license_key}"
+                f"&deviceId={self.device_id}"
+                f"&isWidget=true")
 
     def build_widget_url(self, host="localhost"):
         return self._base_url(host, "widget.html")
@@ -80,6 +74,12 @@ class OverlayServer:
     def build_vtuber_url(self, host="localhost"):
         return self._base_url(host, "vtuber.html")
 
+    def build_boss_url(self, host="localhost"):
+        return self._base_url(host, "boss.html")
+
+    def build_gift_chat_url(self, host="localhost"):
+        return self._base_url(host, "gift-chat.html")
+
     def build_all_urls(self, host="localhost"):
         return {
             "widget":    self.build_widget_url(host),
@@ -87,6 +87,8 @@ class OverlayServer:
             "gift_fx":   self.build_gift_fx_url(host),
             "gift_text": self.build_gift_text_url(host),
             "vtuber":    self.build_vtuber_url(host),
+            "boss":      self.build_boss_url(host),
+            "gift_chat": self.build_gift_chat_url(host),
         }
 
     def build_all_local(self):
@@ -95,13 +97,11 @@ class OverlayServer:
     def build_all_lan(self):
         return self.build_all_urls(get_lan_ip())
 
-    # ============ BROADCAST ============
     async def broadcast(self, data=None):
         if data is None:
             data = {"type": "state", "data": self.engine.snapshot()}
         elif "type" not in data:
             data = {"type": "state", "data": data}
-
         if not self.ws_clients:
             return
         msg = json.dumps(data)
@@ -114,7 +114,7 @@ class OverlayServer:
         for ws in dead:
             self.ws_clients.discard(ws)
 
-    async def send_event(self, event_type: str, payload: dict):
+    async def send_event(self, event_type, payload):
         if not self.ws_clients:
             return
         msg = json.dumps({"type": event_type, "data": payload})
@@ -132,14 +132,11 @@ class OverlayServer:
             return
         asyncio.run_coroutine_threadsafe(self.broadcast(data), self._loop)
 
-    def send_event_sync(self, event_type: str, payload: dict):
+    def send_event_sync(self, event_type, payload):
         if self._loop is None:
             return
-        asyncio.run_coroutine_threadsafe(
-            self.send_event(event_type, payload), self._loop
-        )
+        asyncio.run_coroutine_threadsafe(self.send_event(event_type, payload), self._loop)
 
-    # ============ HANDLERS ============
     async def _widget(self, request):
         return web.FileResponse(self.static_dir / "overlay.html")
 
@@ -153,55 +150,35 @@ class OverlayServer:
         return web.FileResponse(self.static_dir / "gift-text.html")
 
     async def _vtuber(self, request):
-        return web.FileResponse(
-            self.static_dir / "vtuber" / "vtuber.html"
-        )
+        return web.FileResponse(self.static_dir / "vtuber" / "vtuber.html")
+
+    async def _boss(self, request):
+        return web.FileResponse(self.static_dir / "boss.html")
+
+    async def _gift_chat(self, request):
+        return web.FileResponse(self.static_dir / "gift-chat.html")
 
     async def _ws_handler(self, request):
         ws = web.WebSocketResponse(heartbeat=30)
         await ws.prepare(request)
         self.ws_clients.add(ws)
-        print(f"🔌 Client connected ({len(self.ws_clients)})")
+        print(f"Client connected ({len(self.ws_clients)})")
         try:
             await ws.send_str(json.dumps({
-                "type": "state",
-                "data": self.engine.snapshot()
+                "type": "state", "data": self.engine.snapshot()
             }))
             async for msg in ws:
                 if msg.type == web.WSMsgType.TEXT:
                     try:
                         data = json.loads(msg.data)
                         if data.get("type") == "vtuber_volume":
-                            await self.send_event(
-                                "vtuber_volume", data.get("data", {})
-                            )
+                            await self.send_event("vtuber_volume", data.get("data", {}))
                     except Exception:
                         pass
         finally:
             self.ws_clients.discard(ws)
-            print(f"🔌 Client disconnected ({len(self.ws_clients)})")
+            print(f"Client disconnected ({len(self.ws_clients)})")
         return ws
-
-    async def send_event(self, event_type: str, payload: dict):
-        if not self.ws_clients:
-            return
-
-        msg = json.dumps({"type": event_type, "data": payload})
-        dead = []
-
-        for ws in list(self.ws_clients):
-            try:
-                await ws.send_str(msg)
-            except Exception as e:
-                print(f"❌ send_event error: {e}")
-                dead.append(ws)
-
-        for ws in dead:
-            self.ws_clients.discard(ws)
-
-        # ★ Chỉ log event quan trọng (không log vtuber_volume)
-        if event_type != "vtuber_volume":
-            print(f"📤 send_event '{event_type}' → {len(self.ws_clients)} client(s)")
 
     async def _state(self, request):
         return web.json_response(self.engine.snapshot())
@@ -212,7 +189,6 @@ class OverlayServer:
             "clients": len(self.ws_clients),
             "lan_ip": get_lan_ip(),
             "device_id": self.device_id,
-            "key": self.license_key,
             "urls_local": self.build_all_local(),
             "urls_lan": self.build_all_lan(),
         })
@@ -220,14 +196,15 @@ class OverlayServer:
     async def _ping(self, request):
         return web.Response(text="pong")
 
-    # ============ GIFT ASSETS SCAN ============
     async def _gifts_list(self, request):
+        """Trả về danh sách gift icons."""
         icons_dir = self.static_dir / "assets" / "gift-icons"
         effects_dir = self.static_dir / "assets" / "gift-effects"
 
         icons = {}
         effects = {}
 
+        # Icons
         if icons_dir.exists():
             icon_exts = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif"}
             for f in icons_dir.iterdir():
@@ -239,6 +216,7 @@ class OverlayServer:
                 if stem not in icons:
                     icons[stem] = f.name
 
+        # Effects
         if effects_dir.exists():
             priority = {
                 ".webm": ("video", 1),
@@ -266,9 +244,7 @@ class OverlayServer:
             "effects": effects,
         })
 
-    # ============ BOT AVATARS ============
     async def _bot_avatars(self, request):
-        """Trả về danh sách avatar bot có sẵn."""
         avatars_dir = self.static_dir / "assets" / "bots" / "avatars"
         avatars = []
         if avatars_dir.exists():
@@ -278,18 +254,17 @@ class OverlayServer:
                     avatars.append(f.name)
         return web.json_response({"avatars": sorted(avatars)})
 
-    # ============ LIFECYCLE ============
     async def start(self):
         self._loop = asyncio.get_running_loop()
         app = web.Application()
-
         app.router.add_get("/widget.html", self._widget)
         app.router.add_get("/overlay", self._widget)
         app.router.add_get("/cmt.html", self._cmt)
         app.router.add_get("/gift-fx.html", self._gift_fx)
         app.router.add_get("/gift-text.html", self._gift_text)
         app.router.add_get("/vtuber.html", self._vtuber)
-
+        app.router.add_get("/boss.html", self._boss)
+        app.router.add_get("/gift-chat.html", self._gift_chat)
         app.router.add_get("/ws", self._ws_handler)
         app.router.add_get("/api/state", self._state)
         app.router.add_get("/api/health", self._health)
@@ -310,15 +285,13 @@ class OverlayServer:
             return resp
 
         app.middlewares.append(cors_middleware)
-
         self.runner = web.AppRunner(app)
         await self.runner.setup()
         site = web.TCPSite(self.runner, "0.0.0.0", self.port)
         await site.start()
-
         print("=" * 70)
-        print("🌐 OVERLAY SERVER RUNNING — Port:", self.port)
-        print(f"   Device ID: {self.device_id}")
+        print("OVERLAY SERVER RUNNING — Port:", self.port)
+        print(f"Device ID: {self.device_id}")
         print("=" * 70)
 
     async def stop(self):

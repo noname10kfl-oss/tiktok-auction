@@ -1,0 +1,52 @@
+{
+  "title": "GOLD AUCTION",
+  "logo": "👑",
+  "deco_text": "ROYAL GOLD",
+  "deco_left": "👑",
+  "deco_right": "💰",
+  "winner_hat": "👑",
+  "marquee": [
+    "👑 Royal Gold",
+    "💰 Money Rain",
+    "🏆 Champion",
+    "💎 Diamond",
+    "⭐ VIP",
+    "🎖 Royal Family"
+  ],
+  "particles": [
+    "#ffd700",
+    "#ffaa00",
+    "#ff8c00",
+    "#ffe066"
+  ],
+  "decorations": [
+    {
+      "class": "crown",
+      "emoji": "👑",
+      "top": "10%",
+      "left": "5%",
+      "size": "50px"
+    },
+    {
+      "class": "money",
+      "emoji": "💰",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "diamond",
+      "emoji": "💎",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "trophy",
+      "emoji": "🏆",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "50px"
+    }
+  ]
+}

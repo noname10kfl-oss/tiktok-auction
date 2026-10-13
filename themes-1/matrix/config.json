@@ -1,0 +1,51 @@
+{
+  "title": "MATRIX AUCTION",
+  "logo": "💚",
+  "deco_text": "ENTER THE MATRIX",
+  "deco_left": "💚",
+  "deco_right": "🔋",
+  "winner_hat": "💚",
+  "marquee": [
+    "💚 Wake Up Neo",
+    "🐇 Follow White Rabbit",
+    "💊 Red or Blue",
+    "🔋 Power",
+    "🌐 The Matrix"
+  ],
+  "particles": [
+    "#00ff00",
+    "#00cc00",
+    "#88ff88",
+    "#00ff88"
+  ],
+  "decorations": [
+    {
+      "class": "heart",
+      "emoji": "💚",
+      "top": "10%",
+      "left": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "battery",
+      "emoji": "🔋",
+      "bottom": "8%",
+      "left": "3%",
+      "size": "44px"
+    },
+    {
+      "class": "rabbit",
+      "emoji": "🐇",
+      "top": "25%",
+      "right": "5%",
+      "size": "44px"
+    },
+    {
+      "class": "pill",
+      "emoji": "💊",
+      "bottom": "10%",
+      "right": "5%",
+      "size": "44px"
+    }
+  ]
+}

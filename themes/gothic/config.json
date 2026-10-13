@@ -9,8 +9,7 @@
     "🥀 Gothic Romance",
     "🦇 Dark Wings",
     "🕯 Candle Light",
-    "🌹 Black Rose",
-    "⚰️ Vampire"
+    "🌹 Black Rose"
   ],
   "particles": [
     "#8b0000",
@@ -31,13 +30,6 @@
       "emoji": "🦇",
       "bottom": "8%",
       "left": "3%",
-      "size": "44px"
-    },
-    {
-      "class": "candle",
-      "emoji": "🕯",
-      "top": "25%",
-      "right": "5%",
       "size": "44px"
     },
     {

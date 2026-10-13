@@ -75,7 +75,7 @@ DEFAULT_NAMES = [
 
 class BotManager:
     def __init__(self, base_dir: Path,
-                 on_gift: Callable[[str, int], None],
+                 on_gift: Callable[[str, int, str, str], None],
                  on_log: Callable[[str], None],
                  on_overlay_event: Optional[Callable[[str, dict], None]] = None,
                  get_top_user: Optional[Callable[[], tuple]] = None):
@@ -94,6 +94,9 @@ class BotManager:
             self._write_default_names()
 
         self.bots: List[Bot] = []
+        
+        self.auto_fake_gift_enabled = False
+        
         self.enabled = False
         self.interval_min = 3.0
         self.interval_max = 8.0
@@ -145,6 +148,11 @@ class BotManager:
             p for p in self.avatars_dir.iterdir()
             if p.is_file() and p.suffix.lower() in exts
         ])
+
+    def get_avatar_url(self, bot: Bot) -> str:
+        if bot.avatar_path and bot.avatar_path.exists():
+            return f"/static/assets/bots/avatars/{bot.avatar_path.name}"
+        return ""
 
     # ============ BOT CRUD ============
     def add_bot(self, display_name: Optional[str] = None,
@@ -222,31 +230,18 @@ class BotManager:
         if interval is not None:
             self.chase_interval = max(1.0, float(interval))
 
-    # ============ GIFT PICKER ============
     def _pick_gift(self, max_points: int):
-        """
-        Chọn quà có giá <= max_points.
-        Ưu tiên: Rose, TikTok, GG, Finger Heart (70%).
-        """
-        affordable = [
-            g for g in gift_data.GIFTS if g[2] <= max_points
-        ]
+        affordable = [g for g in gift_data.GIFTS if g[2] <= max_points]
         if not affordable:
             affordable = [min(gift_data.GIFTS, key=lambda g: g[2])]
-
         priority_names = ["Rose", "TikTok", "GG", "Finger Heart"]
-        priority_gifts = [
-            g for g in affordable if g[0] in priority_names
-        ]
-
+        priority_gifts = [g for g in affordable if g[0] in priority_names]
         if priority_gifts and random.random() < 0.7:
             return random.choice(priority_gifts)
-
         return random.choice(affordable)
 
-    # ============ GIFT EFFECTS ============
-    def _emit_gift_event(self, bot: Bot, gift: tuple, count: int):
-        """Emit gift event với thông tin quà + số lượng."""
+    def _emit_gift_event(self, bot, gift, count):
+        """Gửi gift_event cho bot + auto fake gift."""
         if not self.gift_effects_enabled or not self.on_overlay_event:
             return
         name, icon, gift_pts, effect, folder = gift
@@ -255,6 +250,7 @@ class BotManager:
         payload = {
             "user": bot.user,
             "display_name": bot.display_name,
+            "avatar": "",   # Bot sẽ dùng avatar từ folder
             "points": total_points,
             "gift_name": name,
             "gift_icon": icon,
@@ -263,10 +259,48 @@ class BotManager:
             "effect": effect,
             "folder": folder,
             "is_bot": True,
-            "is_chaser": bot.is_chaser,
+            "is_real": False,
         }
         self.on_overlay_event("gift_event", payload)
 
+        # ★ AUTO FAKE GIFT (nếu bật)
+        # Bot cần tự chọn fake gift — nhưng bot_manager không có engine
+        # → Cách 1: truyền callback từ app
+        # → Cách 2: bot_manager tự pick từ mapping hardcode
+        if getattr(self, "auto_fake_gift_enabled", False):
+            fake = self._pick_fake_gift_by_points(total_points)
+            if fake:
+                fake_payload = dict(payload)
+                fake_payload["gift_name"] = fake["name"]
+                fake_payload["gift_icon"] = fake["icon"]
+                fake_payload["folder"] = fake["folder"]
+                fake_payload["gift_points"] = total_points
+                fake_payload["gift_count"] = 1
+                self.on_overlay_event("gift_event", fake_payload)
+                self.on_log(f"🎁 Bot auto fake: {fake['name']}")
+
+    def _pick_fake_gift_by_points(self, points):
+        """Chọn gift ảo theo điểm."""
+        mapping = [
+            (30,   "Donut",           "🍩", "doughnut"),
+            (100,  "Game Controller", "🎮", "game_controller"),
+            (299,  "Corgi",           "🐕", "corgi"),
+            (500,  "Money Gun",       "💸", "money_gun"),
+            (699,  "Swan",            "🦢", "swan"),
+            (1000, "Galaxy",          "🌌", "galaxy"),
+        ]
+        chosen = None
+        for threshold, name, icon, folder in mapping:
+            if points >= threshold:
+                chosen = {"name": name, "icon": icon, "folder": folder}
+            else:
+                break
+        return chosen
+
+    def set_auto_fake_gift(self, enabled):
+        """Bật/tắt auto fake gift cho bot."""
+        self.auto_fake_gift_enabled = bool(enabled)
+        self.on_log(f"Bot Auto Fake Gift: {self.auto_fake_gift_enabled}")
     def _emit_roblox_comment(self, bot: Bot):
         if not self.roblox_cmt_enabled or not self.on_overlay_event:
             return
@@ -283,14 +317,12 @@ class BotManager:
             f"comment Roblox: {bot.roblox_username}"
         )
 
-    # ============ CHASE LOOP ============
     async def _chase_loop(self):
         self.on_log(
             f"🎯 [CHASE] Bật — {self.chase_count} bot, "
             f"hơn top 1 từ {self.chase_gap_min}-{self.chase_gap_max} điểm, "
             f"mỗi {self.chase_interval}s"
         )
-
         chasers = [b for b in self.bots if b.is_chaser]
         while len(chasers) < self.chase_count:
             new_bot = self.add_bot(is_chaser=True)
@@ -299,36 +331,34 @@ class BotManager:
         while self.enabled and self.chase_enabled:
             try:
                 await asyncio.sleep(self.chase_interval)
-
                 if not self.get_top_user:
                     continue
                 top_user, top_score = self.get_top_user()
                 if not top_user or top_score <= 0:
                     continue
-
                 for chaser in chasers:
                     if not chaser.active:
                         continue
                     if chaser.user == top_user:
                         continue
-
                     gap = random.randint(
                         self.chase_gap_min, self.chase_gap_max
                     )
                     target = top_score + gap
                     delta = target - chaser.score
-
                     if delta <= 0:
                         continue
-
                     chaser.score += delta
                     gift = gift_data.gift_from_points(delta)
                     self._emit_gift_event(chaser, gift, 1)
                     try:
-                        self.on_gift(chaser.user, delta)
+                        self.on_gift(
+                            chaser.user, delta,
+                            self.get_avatar_url(chaser),
+                            chaser.display_name,
+                        )
                     except Exception as e:
                         self.on_log(f"❌ Chase gift error: {e}")
-
                     self.on_log(
                         f"🎯 [CHASE] {chaser.display_name} vượt top — "
                         f"+{delta} điểm (tổng {chaser.score})"
@@ -337,10 +367,8 @@ class BotManager:
                 break
             except Exception as e:
                 self.on_log(f"❌ Chase loop error: {e}")
-
         self.on_log("🎯 [CHASE] Đã tắt")
 
-    # ============ MAIN LOOP ============
     async def run(self):
         self.on_log(
             f"🤖 [BOT] BẮT ĐẦU — {len(self.bots)} bot, "
@@ -350,7 +378,6 @@ class BotManager:
             "⚠️  [BOT] CẢNH BÁO: Đây là bot TEST. "
             "Không dùng khi live thật."
         )
-
         chase_task = None
         if self.chase_enabled:
             chase_task = asyncio.create_task(self._chase_loop())
@@ -376,33 +403,22 @@ class BotManager:
                         continue
                     if self.max_score > 0 and bot.score >= self.max_score:
                         continue
-
-                    # BƯỚC 1: Mục tiêu điểm
                     target_points = random.randint(
                         self.points_min, self.points_max
                     )
-
                     if self.max_score > 0:
                         remaining = self.max_score - bot.score
                         if remaining <= 0:
                             continue
                         target_points = min(target_points, remaining)
-
                     if target_points <= 0:
                         continue
-
-                    # BƯỚC 2: Chọn quà <= target
                     gift = self._pick_gift(target_points)
                     gift_name, gift_icon, gift_pts, gift_effect, gift_folder = gift
-
                     if gift_pts <= 0:
                         continue
-
-                    # BƯỚC 3: Tính count (chia nguyên)
                     count = max(1, target_points // gift_pts)
                     total_points = gift_pts * count
-
-                    # BƯỚC 4: Cắt nếu vượt max
                     if self.max_score > 0:
                         remaining = self.max_score - bot.score
                         if total_points > remaining:
@@ -410,23 +426,23 @@ class BotManager:
                             if count <= 0:
                                 continue
                             total_points = gift_pts * count
-
                     if total_points <= 0:
                         continue
-
                     bot.score += total_points
                     self._emit_gift_event(bot, gift, count)
                     try:
-                        self.on_gift(bot.user, total_points)
+                        self.on_gift(
+                            bot.user, total_points,
+                            self.get_avatar_url(bot),
+                            bot.display_name,
+                        )
                     except Exception as e:
                         self.on_log(f"❌ Bot gift error: {e}")
-
                     self.on_log(
                         f"🤖 [BOT] {bot.display_name} tặng "
                         f"{gift_name} x{count} (+{total_points} điểm) "
                         f"→ tổng {bot.score}"
                     )
-
                     bot.next_gift_at = now + random.uniform(
                         self.interval_min, self.interval_max
                     )
@@ -441,7 +457,6 @@ class BotManager:
                 await chase_task
             except Exception:
                 pass
-
         self.on_log("🤖 [BOT] ĐÃ DỪNG toàn bộ bot")
 
     def start(self, loop):
